@@ -1,0 +1,22 @@
+﻿<Window x:Class="Przychodnia.Views.DoctorsListView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Przychodnia.Views" xmlns:viewmodels="clr-namespace:Przychodnia.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:DoctorsListViewModel}"
+        mc:Ignorable="d"
+        Title="DoctorsListView" Height="450" Width="800">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <DataGrid ItemsSource ="{Binding Users}" AutoGenerateColumns="True" Grid.Row="0" Margin="10"/>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="10" VerticalAlignment="Top">
+            <TextBox Width="120" Height="24" Margin="5" Text="{Binding Login}" />
+            <TextBox Width="120" Height="24" Margin="5" Text="{Binding LastName}" />
+            <Button Content="Zapisz" Width="80" Margin="5" Command="{Binding SaveCommand}"/>
+        </StackPanel>
+    </Grid>
+</Window>
