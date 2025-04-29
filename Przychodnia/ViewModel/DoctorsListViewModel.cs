@@ -1,6 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using Przychodnia.Data;
-using Przychodnia.Models;
+using Przychodnia.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -10,9 +10,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace Przychodnia.ViewModels
+namespace Przychodnia.ViewModel
 {
-    class DoctorsListViewModel : INotifyPropertyChanged
+    class DoctorsListViewModel : ViewModelBase
     {
         private string _firstName;
         private string _lastName;
@@ -21,25 +21,25 @@ namespace Przychodnia.ViewModels
         public string Login
         {
             get => _login;
-            set { _login = value; OnPropertyChanged(nameof(Login)); }
+            set => SetProperty(ref _login, value);
         }
         public string FirstName
         {
             get => _firstName;
-            set { _firstName = value; OnPropertyChanged(nameof(FirstName)); }
+            set => SetProperty(ref _firstName, value);
         }
 
         public string LastName
         {
             get => _lastName;
-            set { _lastName = value; OnPropertyChanged(nameof(LastName)); }
+            set => SetProperty(ref _lastName, value);
         }
 
         public ICommand SaveCommand { get; }
         public ObservableCollection<User> Users { get; set; }
         public DoctorsListViewModel()
         {
-            using var db = new MyAppContext();
+            using var db = new AppDbContext();
             db.Database.EnsureCreated();
 
             Users = new ObservableCollection<User>(db.Users.ToList());
@@ -61,16 +61,12 @@ namespace Przychodnia.ViewModels
         {
             var newUser = new User { UserTypeId = 1, Login = Login };
 
-            using var db = new MyAppContext();
+            using var db = new AppDbContext();
 
             db.Users.Add(newUser);
             db.SaveChanges();
 
             Users.Add(newUser);
         }
-
-        public event PropertyChangedEventHandler? PropertyChanged;
-        private void OnPropertyChanged(string propertyName) =>
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 }

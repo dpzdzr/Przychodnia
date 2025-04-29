@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Przychodnia.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -26,20 +26,17 @@ namespace Przychodnia.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Patients",
+                name: "PostalCodes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Pesel = table.Column<string>(type: "TEXT", maxLength: 11, nullable: true),
-                    FirstName = table.Column<string>(type: "TEXT", nullable: false),
-                    LastName = table.Column<string>(type: "TEXT", nullable: false),
-                    Address = table.Column<string>(type: "TEXT", nullable: true),
-                    sex = table.Column<int>(type: "INTEGER", nullable: true)
+                    Code = table.Column<string>(type: "TEXT", nullable: false),
+                    City = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Patients", x => x.Id);
+                    table.PrimaryKey("PK_PostalCodes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -53,6 +50,32 @@ namespace Przychodnia.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Patients",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    Pesel = table.Column<string>(type: "TEXT", maxLength: 11, nullable: true),
+                    FirstName = table.Column<string>(type: "TEXT", nullable: false),
+                    LastName = table.Column<string>(type: "TEXT", nullable: false),
+                    PostalCodeId = table.Column<int>(type: "INTEGER", nullable: false),
+                    Street = table.Column<string>(type: "TEXT", nullable: true),
+                    HouseNumber = table.Column<string>(type: "TEXT", nullable: true),
+                    ApartmentNumber = table.Column<string>(type: "TEXT", nullable: true),
+                    sex = table.Column<int>(type: "INTEGER", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Patients", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Patients_PostalCodes_PostalCodeId",
+                        column: x => x.PostalCodeId,
+                        principalTable: "PostalCodes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -163,7 +186,7 @@ namespace Przychodnia.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ManagementPeriod",
+                name: "ManagementPeriods",
                 columns: table => new
                 {
                     ManagerId = table.Column<int>(type: "INTEGER", nullable: false),
@@ -173,20 +196,30 @@ namespace Przychodnia.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ManagementPeriod", x => new { x.ManagerId, x.LaboratoryId });
+                    table.PrimaryKey("PK_ManagementPeriods", x => new { x.ManagerId, x.LaboratoryId });
                     table.ForeignKey(
-                        name: "FK_ManagementPeriod_Laboratories_LaboratoryId",
+                        name: "FK_ManagementPeriods_Laboratories_LaboratoryId",
                         column: x => x.LaboratoryId,
                         principalTable: "Laboratories",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ManagementPeriod_Users_ManagerId",
+                        name: "FK_ManagementPeriods_Users_ManagerId",
                         column: x => x.ManagerId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "UserTypes",
+                columns: new[] { "Id", "Name" },
+                values: new object[] { 1, "Admin" });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "FirstName", "IsActive", "LaboratoryId", "LastName", "LicenseNumber", "Login", "PasswordHash", "UserTypeId" },
+                values: new object[] { 1, null, null, null, null, null, "admin", "admin", 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Appointments_AttendingDoctorId",
@@ -224,9 +257,14 @@ namespace Przychodnia.Migrations
                 column: "PerformingLaboratoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ManagementPeriod_LaboratoryId",
-                table: "ManagementPeriod",
+                name: "IX_ManagementPeriods_LaboratoryId",
+                table: "ManagementPeriods",
                 column: "LaboratoryId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Patients_PostalCodeId",
+                table: "Patients",
+                column: "PostalCodeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_LaboratoryId",
@@ -250,13 +288,16 @@ namespace Przychodnia.Migrations
                 name: "Examinations");
 
             migrationBuilder.DropTable(
-                name: "ManagementPeriod");
+                name: "ManagementPeriods");
 
             migrationBuilder.DropTable(
                 name: "Patients");
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "PostalCodes");
 
             migrationBuilder.DropTable(
                 name: "Laboratories");

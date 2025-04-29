@@ -22,7 +22,7 @@ namespace Przychodnia.Views
         public DoctorsListView()
         {
             InitializeComponent();
-            DataContext = new ViewModels.DoctorsListViewModel();
+            DataContext = new ViewModel.DoctorsListViewModel();
         }
     }
 }

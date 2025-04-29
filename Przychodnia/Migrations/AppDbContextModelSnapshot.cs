@@ -2,7 +2,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Przychodnia.Data;
 
@@ -10,17 +9,15 @@ using Przychodnia.Data;
 
 namespace Przychodnia.Migrations
 {
-    [DbContext(typeof(MyAppContext))]
-    [Migration("20250412113248_InitialMigration")]
-    partial class InitialMigration
+    [DbContext(typeof(AppDbContext))]
+    partial class AppDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.3");
 
-            modelBuilder.Entity("Przychodnia.Models.Appointment", b =>
+            modelBuilder.Entity("Przychodnia.Model.Appointment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -52,7 +49,7 @@ namespace Przychodnia.Migrations
                     b.ToTable("Appointments");
                 });
 
-            modelBuilder.Entity("Przychodnia.Models.Examination", b =>
+            modelBuilder.Entity("Przychodnia.Model.Examination", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -86,7 +83,7 @@ namespace Przychodnia.Migrations
                     b.ToTable("Examinations");
                 });
 
-            modelBuilder.Entity("Przychodnia.Models.Laboratory", b =>
+            modelBuilder.Entity("Przychodnia.Model.Laboratory", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -105,7 +102,7 @@ namespace Przychodnia.Migrations
                     b.ToTable("Laboratories");
                 });
 
-            modelBuilder.Entity("Przychodnia.Models.ManagementPeriod", b =>
+            modelBuilder.Entity("Przychodnia.Model.ManagementPeriod", b =>
                 {
                     b.Property<int>("ManagerId")
                         .HasColumnType("INTEGER");
@@ -123,20 +120,23 @@ namespace Przychodnia.Migrations
 
                     b.HasIndex("LaboratoryId");
 
-                    b.ToTable("ManagementPeriod");
+                    b.ToTable("ManagementPeriods");
                 });
 
-            modelBuilder.Entity("Przychodnia.Models.Patient", b =>
+            modelBuilder.Entity("Przychodnia.Model.Patient", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<string>("Address")
+                    b.Property<string>("ApartmentNumber")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("FirstName")
                         .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("HouseNumber")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("LastName")
@@ -147,15 +147,41 @@ namespace Przychodnia.Migrations
                         .HasMaxLength(11)
                         .HasColumnType("TEXT");
 
+                    b.Property<int>("PostalCodeId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Street")
+                        .HasColumnType("TEXT");
+
                     b.Property<int?>("sex")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("PostalCodeId");
+
                     b.ToTable("Patients");
                 });
 
-            modelBuilder.Entity("Przychodnia.Models.User", b =>
+            modelBuilder.Entity("Przychodnia.Model.PostalCode", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("City")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PostalCodes");
+                });
+
+            modelBuilder.Entity("Przychodnia.Model.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -194,9 +220,18 @@ namespace Przychodnia.Migrations
                     b.HasIndex("UserTypeId");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Login = "admin",
+                            PasswordHash = "admin",
+                            UserTypeId = 1
+                        });
                 });
 
-            modelBuilder.Entity("Przychodnia.Models.UserType", b =>
+            modelBuilder.Entity("Przychodnia.Model.UserType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -209,23 +244,30 @@ namespace Przychodnia.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UserTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Admin"
+                        });
                 });
 
-            modelBuilder.Entity("Przychodnia.Models.Appointment", b =>
+            modelBuilder.Entity("Przychodnia.Model.Appointment", b =>
                 {
-                    b.HasOne("Przychodnia.Models.User", "AttendingDoctor")
+                    b.HasOne("Przychodnia.Model.User", "AttendingDoctor")
                         .WithMany("AttendedAppointments")
                         .HasForeignKey("AttendingDoctorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Przychodnia.Models.Patient", "Patient")
+                    b.HasOne("Przychodnia.Model.Patient", "Patient")
                         .WithMany()
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Przychodnia.Models.User", "ScheduledBy")
+                    b.HasOne("Przychodnia.Model.User", "ScheduledBy")
                         .WithMany("ScheduledAppointments")
                         .HasForeignKey("ScheduledById")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -238,27 +280,27 @@ namespace Przychodnia.Migrations
                     b.Navigation("ScheduledBy");
                 });
 
-            modelBuilder.Entity("Przychodnia.Models.Examination", b =>
+            modelBuilder.Entity("Przychodnia.Model.Examination", b =>
                 {
-                    b.HasOne("Przychodnia.Models.User", "OrderedBy")
+                    b.HasOne("Przychodnia.Model.User", "OrderedBy")
                         .WithMany()
                         .HasForeignKey("OrderedById")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Przychodnia.Models.Patient", "Patient")
+                    b.HasOne("Przychodnia.Model.Patient", "Patient")
                         .WithMany()
                         .HasForeignKey("PatientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Przychodnia.Models.User", "PerformingDoctor")
+                    b.HasOne("Przychodnia.Model.User", "PerformingDoctor")
                         .WithMany()
                         .HasForeignKey("PerformingDoctorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Przychodnia.Models.Laboratory", "PerformingLaboratory")
+                    b.HasOne("Przychodnia.Model.Laboratory", "PerformingLaboratory")
                         .WithMany()
                         .HasForeignKey("PerformingLaboratoryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -273,15 +315,15 @@ namespace Przychodnia.Migrations
                     b.Navigation("PerformingLaboratory");
                 });
 
-            modelBuilder.Entity("Przychodnia.Models.ManagementPeriod", b =>
+            modelBuilder.Entity("Przychodnia.Model.ManagementPeriod", b =>
                 {
-                    b.HasOne("Przychodnia.Models.Laboratory", "Laboratory")
+                    b.HasOne("Przychodnia.Model.Laboratory", "Laboratory")
                         .WithMany()
                         .HasForeignKey("LaboratoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Przychodnia.Models.User", "Manager")
+                    b.HasOne("Przychodnia.Model.User", "Manager")
                         .WithMany()
                         .HasForeignKey("ManagerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -292,13 +334,24 @@ namespace Przychodnia.Migrations
                     b.Navigation("Manager");
                 });
 
-            modelBuilder.Entity("Przychodnia.Models.User", b =>
+            modelBuilder.Entity("Przychodnia.Model.Patient", b =>
                 {
-                    b.HasOne("Przychodnia.Models.Laboratory", "Laboratory")
-                        .WithOne("Manager")
-                        .HasForeignKey("Przychodnia.Models.User", "LaboratoryId");
+                    b.HasOne("Przychodnia.Model.PostalCode", "PostalCode")
+                        .WithMany()
+                        .HasForeignKey("PostalCodeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("Przychodnia.Models.UserType", "UserType")
+                    b.Navigation("PostalCode");
+                });
+
+            modelBuilder.Entity("Przychodnia.Model.User", b =>
+                {
+                    b.HasOne("Przychodnia.Model.Laboratory", "Laboratory")
+                        .WithOne("Manager")
+                        .HasForeignKey("Przychodnia.Model.User", "LaboratoryId");
+
+                    b.HasOne("Przychodnia.Model.UserType", "UserType")
                         .WithMany()
                         .HasForeignKey("UserTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -309,13 +362,13 @@ namespace Przychodnia.Migrations
                     b.Navigation("UserType");
                 });
 
-            modelBuilder.Entity("Przychodnia.Models.Laboratory", b =>
+            modelBuilder.Entity("Przychodnia.Model.Laboratory", b =>
                 {
                     b.Navigation("Manager")
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Przychodnia.Models.User", b =>
+            modelBuilder.Entity("Przychodnia.Model.User", b =>
                 {
                     b.Navigation("AttendedAppointments");
 

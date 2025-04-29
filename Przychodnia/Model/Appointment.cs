@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Przychodnia.Models;
+namespace Przychodnia.Model;
 class Appointment
 {
     public int Id { get; set; }

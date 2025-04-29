@@ -5,17 +5,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Przychodnia.Models;
+namespace Przychodnia.Model;
 class Patient
 {
     public int Id { get; set; }
     [StringLength(11)]
     public string? Pesel { get; set; }
     [Required]
-    public string FirstName { get; set; }
+    public required string FirstName { get; set; }
     [Required]
-    public string LastName { get; set; }
-    public string? Address {  get; set; }
+    public required string LastName { get; set; }
+    public int PostalCodeId { get; set; }
+    public PostalCode? PostalCode {  get; set; }
+    public string? Street { get; set; }
+    public string? HouseNumber { get; set; }
+    public string? ApartmentNumber { get; set; }
     public Sex? sex { get; set; }
 }
 
