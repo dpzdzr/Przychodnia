@@ -9,7 +9,7 @@ namespace Przychodnia.ViewModel;
 
 internal class LoginViewModel : ViewModelBase
 {
-    private readonly IUserSessionService _userSessionService;
+    //private readonly IUserSessionService _userSessionService;
 
 
 }

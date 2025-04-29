@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Przychodnia.Model;
 
-namespace Przychodnia.Service;
+namespace Przychodnia.Service.Interface;
 
 interface IUserSessionService
 {

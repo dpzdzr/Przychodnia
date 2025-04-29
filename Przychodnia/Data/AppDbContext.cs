@@ -22,7 +22,7 @@ namespace Przychodnia.Data
         private string DbPath { get; }
         public AppDbContext()
         {
-            DbPath = "database.db";
+            DbPath = System.IO.Path.Combine(AppContext.BaseDirectory, "database.db");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -31,8 +31,15 @@ namespace Przychodnia.Data
             modelBuilder.Entity<ManagementPeriod>()
                 .HasKey(mp => new { mp.ManagerId, mp.LaboratoryId });
 
-            modelBuilder.Entity<UserType>().HasData(new UserType { Id = 1, Name = "Admin" });
-            modelBuilder.Entity<User>().HasData(new User { Id = 1, Login = "admin", PasswordHash="admin", UserTypeId = 1 });
+            modelBuilder.Entity<UserType>().HasData(
+                new UserType { Id = 1, Name = "Admin" },
+                new UserType { Id = 2, Name = "Lekarz" },
+                new UserType { Id = 3, Name = "Laborant" },
+                new UserType { Id = 4, Name = "Rejestrator" },
+                new UserType { Id = 5, Name = "Menadżer" },
+                new UserType { Id = 6, Name = "Kierownik laboratorium" }
+                );
+            modelBuilder.Entity<User>().HasData(new User { Id = 1, Login = "admin", PasswordHash = "admin", UserTypeId = 1 });
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

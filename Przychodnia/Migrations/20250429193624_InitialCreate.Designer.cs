@@ -11,7 +11,7 @@ using Przychodnia.Data;
 namespace Przychodnia.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250429164124_InitialCreate")]
+    [Migration("20250429193624_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -253,6 +253,31 @@ namespace Przychodnia.Migrations
                         {
                             Id = 1,
                             Name = "Admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Lekarz"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Laborant"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Rejestrator"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Menadżer"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Kierownik laboratorium"
                         });
                 });
 

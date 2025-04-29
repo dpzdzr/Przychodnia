@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Przychodnia.Migrations
 {
     /// <inheritdoc />
@@ -214,7 +216,15 @@ namespace Przychodnia.Migrations
             migrationBuilder.InsertData(
                 table: "UserTypes",
                 columns: new[] { "Id", "Name" },
-                values: new object[] { 1, "Admin" });
+                values: new object[,]
+                {
+                    { 1, "Admin" },
+                    { 2, "Lekarz" },
+                    { 3, "Laborant" },
+                    { 4, "Rejestrator" },
+                    { 5, "Menadżer" },
+                    { 6, "Kierownik laboratorium" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Users",

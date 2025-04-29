@@ -9,10 +9,10 @@ using Przychodnia.Repository.Interface;
 
 namespace Przychodnia.Repository.Implementation;
 
-internal class UserRepository(DbContext context) : BaseRepository<User>(context), IUserRepository
+internal class UserTypeRepository(DbContext context) : BaseRepository<UserType>(context), IUserTypeRepository
 {
-    public IEnumerable<User> GetUsersByType(UserType type)
+    public IEnumerable<string> GetNames()
     {
-        return [.. _dbSet.Where(u => u.UserType == type)];
+        return [.. _dbSet.Select(t => t.Name)];
     }
 }

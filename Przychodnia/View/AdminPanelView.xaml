@@ -3,10 +3,56 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Przychodnia.View"
+        xmlns:local="clr-namespace:Przychodnia.View" xmlns:viewmodel="clr-namespace:Przychodnia.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:AdminPanelViewModel}"
         mc:Ignorable="d"
         Title="AdminPanelView" Height="450" Width="800">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </Window.Resources>
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Row="1" Text="Dodaj nowego użytkownika" Margin="20" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="25" FontWeight="Bold"/>
+        <StackPanel Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="250">
+            <TextBlock Text="Imię" Margin="0,0,0,0"/>
+            <TextBox Text="{Binding FirstName}"/>
+            <TextBlock Text="Nazwisko" Margin="0,5,0,0"/>
+            <TextBox Text="{Binding LastName}"/>
+            <TextBlock Text="Login" Margin="0,5,0,0"/>
+            <TextBox Text="{Binding Login}"/>
+            <TextBlock Text="Hasło" Margin="0,5,0,0"/>
+            <TextBox Text="{Binding Password}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Width="250">
+            <TextBlock Text="Rola"/>
+            <ComboBox 
+                ItemsSource="{Binding UserTypes}"
+                SelectedItem="{Binding SelectedUserType}"
+                DisplayMemberPath="Name"
+                />
+            <TextBlock Text="Numer licencji" Margin="0,5,0,0" 
+                       Visibility="{Binding IsDoctorOrLabTechnician, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <TextBox Visibility="{Binding IsDoctorOrLabTechnician, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <TextBlock Text="Nazwa laboratorium" Margin="0,5,0,0" 
+                       Visibility="{Binding IsLabTechnician, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <ComboBox 
+                ItemsSource="{Binding Laboratories}"
+                Visibility="{Binding IsLabTechnician, Converter={StaticResource BoolToVisibilityConverter}}"
+                DisplayMemberPath="Name"/>
+        </StackPanel>
+        <Button
+            Grid.Row="3" Grid.ColumnSpan="2" Content="Dodaj" 
+            Width="150" Height="25" Margin="0,20,0,0"/>
     </Grid>
 </Window>
