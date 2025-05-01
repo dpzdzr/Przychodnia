@@ -41,18 +41,20 @@
                 SelectedItem="{Binding SelectedUserType}"
                 DisplayMemberPath="Name"
                 />
-            <TextBlock Text="Numer licencji" Margin="0,5,0,0" 
+            <TextBlock Text="Numer licencji" Margin="0,5,0,0"
                        Visibility="{Binding IsDoctorOrLabTechnician, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <TextBox Visibility="{Binding IsDoctorOrLabTechnician, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <TextBox Text="{Binding LicenseNumber}" Visibility="{Binding IsDoctorOrLabTechnician, Converter={StaticResource BoolToVisibilityConverter}}"/>
             <TextBlock Text="Nazwa laboratorium" Margin="0,5,0,0" 
                        Visibility="{Binding IsLabTechnician, Converter={StaticResource BoolToVisibilityConverter}}"/>
             <ComboBox 
                 ItemsSource="{Binding Laboratories}"
                 Visibility="{Binding IsLabTechnician, Converter={StaticResource BoolToVisibilityConverter}}"
                 DisplayMemberPath="Name"/>
+            <TextBlock Text="Użytkownik aktywny" Margin="0,5,0,0"/>
+            <CheckBox IsChecked="{Binding IsActive}"/>
         </StackPanel>
         <Button
             Grid.Row="3" Grid.ColumnSpan="2" Content="Dodaj" 
-            Width="150" Height="25" Margin="0,20,0,0"/>
+            Width="150" Height="25" Margin="0,30,0,0" Command="{Binding SaveUserCommand}"/>
     </Grid>
 </Window>

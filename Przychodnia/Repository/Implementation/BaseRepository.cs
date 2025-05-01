@@ -37,4 +37,9 @@ public class BaseRepository<T> where T : class
     {
         _dbSet.Remove(entity);
     }
+
+    public virtual void SaveChanges()
+    {
+        _context.SaveChanges();
+    }
 }

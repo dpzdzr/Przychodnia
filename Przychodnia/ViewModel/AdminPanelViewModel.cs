@@ -29,6 +29,8 @@ internal class AdminPanelViewModel : ViewModelBase
     private string _lastName;
     private string _login;
     private string _password;
+    private string _licenseNumber;
+    private bool _isActive;
 
     public string FirstName
     {
@@ -49,6 +51,18 @@ internal class AdminPanelViewModel : ViewModelBase
     {
         get => _password;
         set => SetProperty(ref _password, value);
+    }
+
+    public string LicenseNumber
+    {
+        get => _licenseNumber;
+        set => SetProperty(ref _licenseNumber, value);
+    }
+
+    public bool IsActive
+    {
+        get => _isActive;
+        set=> SetProperty(ref _isActive, value);
     }
 
     public ObservableCollection<UserType> UserTypes
@@ -87,8 +101,7 @@ internal class AdminPanelViewModel : ViewModelBase
 
     public bool IsDoctorOrLabTechnician => IsDoctor || IsLabTechnician;
 
-    public ICommand SaveUserCommand;
-
+    public ICommand SaveUserCommand { get; }
     public AdminPanelViewModel(IUserRepository userRepository, IUserTypeRepository userTypeRepository, ILaboratoryRepository laboratoryRepository, IUserCreationService userCreationService)
     {
         _userRepository = userRepository;
@@ -107,7 +120,14 @@ internal class AdminPanelViewModel : ViewModelBase
     {
         var userInputModel = new UserInputModel
         {
-
+            FirstName = this.FirstName,
+            LastName = this.LastName,
+            Login = this.Login,
+            PasswordHash = this.Password,
+            UserType = this.SelectedUserType,
+            LicenseNumber = this.LicenseNumber,
+            Laboratory = this.SelectedLaboratory,
+            IsActive = this.IsActive
         };
         _userCreationService.CreateUser(userInputModel);
     }

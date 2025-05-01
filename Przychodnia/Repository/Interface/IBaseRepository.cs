@@ -12,4 +12,6 @@ internal interface IBaseRepository<T> where T : class
     void Remove(T entity);
     IEnumerable<T> GetAll();
     T? GetById(int id);
+
+    void SaveChanges();
 }
