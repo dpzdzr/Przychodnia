@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Przychodnia.Model;
 
-class User
+public class User
 {
     public int Id { get; set; }
     [Required]

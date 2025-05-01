@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Przychodnia.Data;
 using Przychodnia.Repository.Implementation;
 using Przychodnia.Repository.Interface;
-using Przychodnia.Service;
 using Przychodnia.Service.Implementation;
 using Przychodnia.Service.Interface;
 using Przychodnia.View;
@@ -45,6 +44,7 @@ namespace Przychodnia
 
             // ViewModels
             services.AddTransient<LoginViewModel>();
+            services.AddTransient<AddUserViewModel>();
             services.AddTransient<AdminPanelViewModel>();
         }
 
@@ -59,13 +59,13 @@ namespace Przychodnia
             //};
             //loginWindow.Show();
 
-            var adminPanelViewModel = _serviceProvider.GetService<AdminPanelViewModel>();
-            var adminPanelView = new AdminPanelView
-            {
-                DataContext = adminPanelViewModel
-            };
-
-            adminPanelView.Show();
+            //var adminPanelViewModel = _serviceProvider.GetService<AdminPanelViewModel>();
+            //var adminPanelView = new AdminPanelView(adminPanelViewModel);
+            //adminPanelView.Show();
+            
+            var mainViewModel = _serviceProvider.GetService<AdminPanelViewModel>();
+            var mainView = new MainWindow(mainViewModel);
+            mainView.ShowDialog();
         }
     }
 }

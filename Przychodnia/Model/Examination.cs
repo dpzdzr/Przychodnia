@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Przychodnia.Model;
 
-class Examination
+public class Examination
 {
     public int Id { get; set; }
     [Required]
@@ -29,7 +29,7 @@ class Examination
 
 }
 
-enum ExaminationType
+public enum ExaminationType
 {
     Physical,
     Laboratory

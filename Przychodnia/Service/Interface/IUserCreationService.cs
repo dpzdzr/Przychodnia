@@ -5,10 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Przychodnia.ViewModel.Model;
 
-namespace Przychodnia.Service.Interface
+namespace Przychodnia.Service.Interface;
+
+public interface IUserCreationService
 {
-    interface IUserCreationService
-    {
-        void CreateUser(UserInputModel model);
-    }
+    void CreateUser(UserInputModel model);
 }

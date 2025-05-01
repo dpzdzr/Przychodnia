@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Przychodnia.Model;
 
 namespace Przychodnia.Model;
-class ManagementPeriod
+public class ManagementPeriod
 {
     public int ManagerId { get; set; }
     public virtual User Manager { get; set; }

@@ -7,7 +7,7 @@ using Przychodnia.Model;
 
 namespace Przychodnia.Repository.Interface;
 
-internal interface IUserTypeRepository : IBaseRepository<UserType>
+public interface IUserTypeRepository : IBaseRepository<UserType>
 {
     IEnumerable<string> GetNames();
 }

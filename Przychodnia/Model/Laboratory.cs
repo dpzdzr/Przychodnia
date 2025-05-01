@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Przychodnia.Model;
-class Laboratory
+public class Laboratory
 {
     public int Id { get; set; }
     public string Name { get; set; }

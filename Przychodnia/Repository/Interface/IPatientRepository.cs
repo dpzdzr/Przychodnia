@@ -7,6 +7,6 @@ using Przychodnia.Model;
 
 namespace Przychodnia.Repository.Interface;
 
-internal interface IPatientRepository : IBaseRepository<Patient>
+public interface IPatientRepository : IBaseRepository<Patient>
 {
 }

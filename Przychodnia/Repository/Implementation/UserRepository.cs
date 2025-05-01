@@ -9,7 +9,7 @@ using Przychodnia.Repository.Interface;
 
 namespace Przychodnia.Repository.Implementation;
 
-internal class UserRepository(DbContext context) : BaseRepository<User>(context), IUserRepository
+public class UserRepository(DbContext context) : BaseRepository<User>(context), IUserRepository
 {
     public IEnumerable<User> GetUsersByType(UserType type)
     {

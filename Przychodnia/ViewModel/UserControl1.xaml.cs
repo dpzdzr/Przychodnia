@@ -10,19 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Przychodnia.Views
+namespace Przychodnia.ViewModel
 {
     /// <summary>
-    /// Interaction logic for DoctorsListView.xaml
+    /// Interaction logic for UserControl1.xaml
     /// </summary>
-    public partial class DoctorsListView : Window
+    public partial class UserControl1 : UserControl
     {
-        public DoctorsListView()
+        public UserControl1()
         {
             InitializeComponent();
-            DataContext = new ViewModel.DoctorsListViewModel();
         }
     }
 }

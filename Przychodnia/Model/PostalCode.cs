@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Przychodnia.Model;
 
-class PostalCode
+public class PostalCode
 {
     public int Id { get; set; }
     [Required]

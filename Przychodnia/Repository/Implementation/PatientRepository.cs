@@ -9,6 +9,6 @@ using Przychodnia.Repository.Interface;
 
 namespace Przychodnia.Repository.Implementation;
 
-internal class PatientRepository(DbContext context) : BaseRepository<Patient>(context), IPatientRepository
+public class PatientRepository(DbContext context) : BaseRepository<Patient>(context), IPatientRepository
 {
 }

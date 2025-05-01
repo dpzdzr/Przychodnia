@@ -7,7 +7,7 @@ using Przychodnia.Model;
 
 namespace Przychodnia.Repository.Interface;
 
-interface ILaboratoryRepository : IBaseRepository<Laboratory>
+public interface ILaboratoryRepository : IBaseRepository<Laboratory>
 {
     Laboratory? GetLaboratoryByName(string laboratoryName);
 }

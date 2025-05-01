@@ -9,7 +9,7 @@ using Przychodnia.Repository.Interface;
 
 namespace Przychodnia.Repository.Implementation;
 
-class LaboratoryRepository(DbContext context) : BaseRepository<Laboratory>(context), ILaboratoryRepository
+public class LaboratoryRepository(DbContext context) : BaseRepository<Laboratory>(context), ILaboratoryRepository
 {
     public Laboratory? GetLaboratoryByName(string laboratoryName)
     {

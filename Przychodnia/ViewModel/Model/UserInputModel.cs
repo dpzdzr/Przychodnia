@@ -8,7 +8,7 @@ using Przychodnia.Service.Interface;
 
 namespace Przychodnia.ViewModel.Model;
 
-class UserInputModel
+public class UserInputModel
 {
     public string? FirstName { get; set; }
     public string? LastName { get; set; }

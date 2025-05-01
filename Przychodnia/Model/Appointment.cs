@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Przychodnia.Model;
-class Appointment
+public class Appointment
 {
     public int Id { get; set; }
     public DateTime? Date { get; set; }

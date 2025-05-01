@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Przychodnia.Model;
-class Patient
+public class Patient
 {
     public int Id { get; set; }
     [StringLength(11)]
@@ -23,7 +23,7 @@ class Patient
     public Sex? sex { get; set; }
 }
 
-enum Sex
+public enum Sex
 {
     Male,
     Female

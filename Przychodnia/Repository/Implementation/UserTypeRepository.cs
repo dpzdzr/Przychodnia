@@ -9,7 +9,7 @@ using Przychodnia.Repository.Interface;
 
 namespace Przychodnia.Repository.Implementation;
 
-internal class UserTypeRepository(DbContext context) : BaseRepository<UserType>(context), IUserTypeRepository
+public class UserTypeRepository(DbContext context) : BaseRepository<UserType>(context), IUserTypeRepository
 {
     public IEnumerable<string> GetNames()
     {

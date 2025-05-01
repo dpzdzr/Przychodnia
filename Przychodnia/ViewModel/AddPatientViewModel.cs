@@ -4,11 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Przychodnia.Model;
+namespace Przychodnia.ViewModel;
 
-public class UserType
+public class AddPatientViewModel
 {
-    public int Id { get; set; }
-    public string Name { get; set; }
 }
-

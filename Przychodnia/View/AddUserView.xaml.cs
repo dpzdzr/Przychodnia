@@ -11,17 +11,17 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Przychodnia.ViewModel;
 
-namespace Przychodnia.View
+namespace Przychodnia.View;
+
+/// <summary>
+/// Interaction logic for AdminPanelView.xaml
+/// </summary>
+public partial class AddUserView : UserControl
 {
-    /// <summary>
-    /// Interaction logic for AdminPanelView.xaml
-    /// </summary>
-    public partial class AdminPanelView : Window
+    public AddUserView()
     {
-        public AdminPanelView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

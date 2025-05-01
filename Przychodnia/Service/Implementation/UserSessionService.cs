@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Przychodnia.Model;
 using Przychodnia.Service.Interface;
 
-namespace Przychodnia.Service;
+namespace Przychodnia.Service.Implementation;
 
 internal class UserSessionService : IUserSessionService
 {
