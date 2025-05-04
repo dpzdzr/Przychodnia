@@ -4,16 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using Przychodnia.Model.DTO;
 using Przychodnia.Repository.Interface;
 using Przychodnia.Service.Interface;
-using Przychodnia.ViewModel.Model;
 
 namespace Przychodnia.Service.Implementation;
 
 public class UserCreationService(IUserRepository userRepository) : IUserCreationService
 {
     private readonly IUserRepository _userRepository = userRepository;
-    public void CreateUser(UserInputModel model)
+    public void CreateUser(UserInputDTO model)
     {
         try
         {

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using Przychodnia.Model;
 using Przychodnia.Service.Interface;
 
-namespace Przychodnia.ViewModel.Model;
+namespace Przychodnia.Model.DTO;
 
-public class UserInputModel
+public class UserInputDTO
 {
     public string? FirstName { get; set; }
     public string? LastName { get; set; }

@@ -15,4 +15,10 @@ public class UserRepository(DbContext context) : BaseRepository<User>(context), 
     {
         return [.. _dbSet.Where(u => u.UserType == type)];
     }
+
+    public IEnumerable<User> GetAllWithUserType()
+    {
+        return [.. _dbSet.Include(u => u.UserType)];
+    }
+
 }

@@ -3,12 +3,15 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Przychodnia.View" xmlns:viewmodel="clr-namespace:Przychodnia.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:AddUserViewModel}"
-             mc:Ignorable="d" Width="600" Height="400">
+        xmlns:local="clr-namespace:Przychodnia.View"
+        xmlns:viewmodel="clr-namespace:Przychodnia.ViewModel" 
+        d:DataContext="{d:DesignInstance Type=viewmodel:AddUserViewModel}"
+        mc:Ignorable="d" 
+        d:Width="600" d:Height="400">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </UserControl.Resources>
-    <Grid Background="White">
+    <Grid d:Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>

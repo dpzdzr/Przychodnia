@@ -19,7 +19,7 @@ namespace Przychodnia
     /// </summary>
     public partial class App : Application
     {
-        private ServiceProvider _serviceProvider;
+        private readonly ServiceProvider _serviceProvider;
 
         public App()
         {
@@ -41,28 +41,19 @@ namespace Przychodnia
             // Services
             services.AddSingleton<IUserSessionService, UserSessionService>();
             services.AddTransient<IUserCreationService, UserCreationService>();
+            services.AddSingleton<IDialogService, DialogService>();
 
             // ViewModels
             services.AddTransient<LoginViewModel>();
             services.AddTransient<AddUserViewModel>();
             services.AddTransient<AdminPanelViewModel>();
+            services.AddTransient<UsersListViewModel>();
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
 
-            //var loginViewModel = _serviceProvider.GetService<LoginViewModel>();
-            //var loginWindow = new LoginWindow
-            //{
-            //    DataContext = loginViewModel
-            //};
-            //loginWindow.Show();
-
-            //var adminPanelViewModel = _serviceProvider.GetService<AdminPanelViewModel>();
-            //var adminPanelView = new AdminPanelView(adminPanelViewModel);
-            //adminPanelView.Show();
-            
             var mainViewModel = _serviceProvider.GetService<AdminPanelViewModel>();
             var mainView = new MainWindow(mainViewModel);
             mainView.ShowDialog();

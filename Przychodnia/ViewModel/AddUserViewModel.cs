@@ -8,9 +8,9 @@ using System.Windows;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using Przychodnia.Model;
+using Przychodnia.Model.DTO;
 using Przychodnia.Repository.Interface;
 using Przychodnia.Service.Interface;
-using Przychodnia.ViewModel.Model;
 
 namespace Przychodnia.ViewModel;
 
@@ -97,13 +97,13 @@ public class AddUserViewModel : ViewModelBase
         set => SetProperty(ref _selectedLaboratory, value);
     }
 
-    public bool IsDoctor => SelectedUserType?.Name == "Lekarz";
-    public bool IsLabTechnician => SelectedUserType?.Name == "Laborant" || SelectedUserType?.Name == "Kierownik laboratorium";
+    public bool IsDoctor => SelectedUserType?.Type == UserTypeEnum.Lekarz;
+    public bool IsLabTechnician => SelectedUserType?.Type == UserTypeEnum.Laborant || SelectedUserType?.Type == UserTypeEnum.KierownikLaboratorium;
 
     public bool IsDoctorOrLabTechnician => IsDoctor || IsLabTechnician;
 
     public ICommand SaveUserCommand { get; }
-    public AddUserViewModel(IUserRepository userRepository, IUserTypeRepository userTypeRepository, 
+    public AddUserViewModel(IUserRepository userRepository, IUserTypeRepository userTypeRepository,
         ILaboratoryRepository laboratoryRepository, IUserCreationService userCreationService)
     {
         _userRepository = userRepository;
@@ -122,7 +122,7 @@ public class AddUserViewModel : ViewModelBase
     {
         try
         {
-            var userInputModel = new UserInputModel
+            var userInputModel = new UserInputDTO
             {
                 FirstName = this.FirstName,
                 LastName = this.LastName,

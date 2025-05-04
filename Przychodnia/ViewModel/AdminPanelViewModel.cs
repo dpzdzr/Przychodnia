@@ -14,6 +14,7 @@ public class AdminPanelViewModel : NavigableViewModelBase
 {
     private readonly IServiceProvider _serviceProvider;
     public ICommand NavigateToAddUserCommand { get; }
+    public ICommand NavigateToUsersListCommand { get; }
     public ICommand NavigateBackCommand { get; }
 
     public AdminPanelViewModel(IServiceProvider serviceProvider)
@@ -23,6 +24,12 @@ public class AdminPanelViewModel : NavigableViewModelBase
         NavigateToAddUserCommand = new RelayCommand(() =>
         {
             var vm = _serviceProvider.GetRequiredService<AddUserViewModel>();
+            NavigateTo(vm);
+        });
+
+        NavigateToUsersListCommand = new RelayCommand(() =>
+        {
+            var vm = _serviceProvider.GetRequiredService<UsersListViewModel>();
             NavigateTo(vm);
         });
 

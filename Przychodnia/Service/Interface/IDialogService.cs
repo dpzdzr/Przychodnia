@@ -3,11 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Przychodnia.Model.DTO;
 
 namespace Przychodnia.Service.Interface;
 
-public interface IUserCreationService
+public interface IDialogService
 {
-    void CreateUser(UserInputDTO model);
+    bool Confirm(string title, string message);
 }

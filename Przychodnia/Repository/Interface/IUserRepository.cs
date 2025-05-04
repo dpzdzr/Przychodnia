@@ -10,4 +10,6 @@ namespace Przychodnia.Repository.Interface;
 public interface IUserRepository : IBaseRepository<User>
 {
     IEnumerable<User> GetUsersByType(UserType type);
+    IEnumerable<User> GetAllWithUserType();
+
 }

@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Przychodnia.ViewModel
+namespace Przychodnia.View
 {
     /// <summary>
-    /// Interaction logic for UserControl1.xaml
+    /// Interaction logic for UsersListView.xaml
     /// </summary>
-    public partial class UserControl1 : UserControl
+    public partial class UsersListView : UserControl
     {
-        public UserControl1()
+        public UsersListView()
         {
             InitializeComponent();
         }
