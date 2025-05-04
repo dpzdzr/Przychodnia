@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Przychodnia.ViewModel;
+namespace Przychodnia.ViewModel.Shared;
 
 public class AddPatientViewModel
 {

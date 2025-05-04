@@ -11,8 +11,6 @@ namespace Przychodnia.Repository.Implementation;
 
 public class UserTypeRepository(DbContext context) : BaseRepository<UserType>(context), IUserTypeRepository
 {
-    public IEnumerable<string> GetNames()
-    {
-        return [.. _dbSet.Select(t => t.Name)];
-    }
+    public async Task<List<string>> GetNamesAsync()
+        => await _dbSet.Select(t => t.Name).ToListAsync();
 }

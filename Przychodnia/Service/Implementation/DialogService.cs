@@ -15,4 +15,9 @@ public class DialogService : IDialogService
         var result = MessageBox.Show(message, title, MessageBoxButton.YesNo, MessageBoxImage.Warning);
         return result == MessageBoxResult.Yes;
     }
+
+    public void Show(string title, string message)
+    {
+        MessageBox.Show(message, title);
+    }
 }

@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Przychodnia.ViewModel;
+namespace Przychodnia.ViewModel.Base;
 
 public abstract class ViewModelBase : INotifyPropertyChanged
 {

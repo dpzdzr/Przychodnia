@@ -9,5 +9,5 @@ namespace Przychodnia.Repository.Interface;
 
 public interface IUserTypeRepository : IBaseRepository<UserType>
 {
-    IEnumerable<string> GetNames();
+    Task<List<string>> GetNamesAsync();
 }

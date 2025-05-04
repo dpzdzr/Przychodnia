@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Przychodnia.View"
              mc:Ignorable="d"
-             xmlns:viewmodel="clr-namespace:Przychodnia.ViewModel"
+             xmlns:viewmodel="clr-namespace:Przychodnia.ViewModel.Admin"
              xmlns:converter="clr-namespace:Przychodnia.Converter"
              d:DataContext="{d:DesignInstance Type=viewmodel:UsersListViewModel}"
              d:DesignHeight="450" d:DesignWidth="800">
@@ -37,8 +37,8 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Button Content="Edytuj" Grid.Column="0" Width="120" Height="35" Margin="5" IsEnabled="{Binding CanExecute}"/>
-            <Button Content="Usuń" Grid.Column="1" Width="120" Height="35" Margin="5" Command="{Binding DeleteUserCommand}" IsEnabled="{Binding CanExecute}"/>
+            <Button Content="Edytuj" Grid.Column="0" Width="120" Height="35" Margin="5" Command="{Binding EditUserCommand}"/>
+            <Button Content="Usuń" Grid.Column="1" Width="120" Height="35" Margin="5" Command="{Binding DeleteUserCommand}"/>
         </Grid>
     </Grid>
 </UserControl>

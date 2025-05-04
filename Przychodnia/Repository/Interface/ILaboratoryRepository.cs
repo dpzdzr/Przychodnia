@@ -9,5 +9,5 @@ namespace Przychodnia.Repository.Interface;
 
 public interface ILaboratoryRepository : IBaseRepository<Laboratory>
 {
-    Laboratory? GetLaboratoryByName(string laboratoryName);
+    Task<Laboratory?> GetLaboratoryByNameAsync(string laboratoryName);
 }

@@ -8,9 +8,9 @@ namespace Przychodnia.Repository.Interface;
 
 public interface IBaseRepository<T> where T : class
 {
-    void Add(T entity);
+    Task AddAsync(T entity);
     void Remove(T entity);
-    IEnumerable<T> GetAll();
-    T? GetById(int id);
-    void SaveChanges();
+    Task<List<T>> GetAllAsync();
+    Task<T?> GetByIdAsync(int id);
+    Task SaveChangesAsync();
 }

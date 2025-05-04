@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Przychodnia.Model;
 
 namespace Przychodnia.Service.Interface;
 
-public interface IDialogService
+public interface IUserTypeService
 {
-    bool Confirm(string title, string message);
-    void Show(string title, string message);
+    Task<List<string>> GetNamesAsync();
+    Task<List<UserType>> GetAllAsync();
 }

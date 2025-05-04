@@ -9,7 +9,8 @@ using Przychodnia.Repository.Interface;
 using Przychodnia.Service.Implementation;
 using Przychodnia.Service.Interface;
 using Przychodnia.View;
-using Przychodnia.ViewModel;
+using Przychodnia.ViewModel.Admin;
+using Przychodnia.ViewModel.Login;
 
 namespace Przychodnia
 {
@@ -40,14 +41,18 @@ namespace Przychodnia
 
             // Services
             services.AddSingleton<IUserSessionService, UserSessionService>();
-            services.AddTransient<IUserCreationService, UserCreationService>();
             services.AddSingleton<IDialogService, DialogService>();
+            // Entities services
+            services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IUserTypeService, UserTypeService>();
+            services.AddTransient<ILaboratoryService, LaboratoryService>();
 
             // ViewModels
             services.AddTransient<LoginViewModel>();
             services.AddTransient<AddUserViewModel>();
             services.AddTransient<AdminPanelViewModel>();
             services.AddTransient<UsersListViewModel>();
+            services.AddSingleton<AdminPanelHomePageViewModel>();
         }
 
         protected override void OnStartup(StartupEventArgs e)

@@ -4,42 +4,33 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Przychodnia.Repository.Interface;
 
 namespace Przychodnia.Repository.Implementation;
 
-public class BaseRepository<T> where T : class
+public class BaseRepository<T> : IBaseRepository<T> where T : class
 {
     protected readonly DbContext _context;
     protected readonly DbSet<T> _dbSet;
 
     public BaseRepository(DbContext context)
     {
-        _context = context ?? throw new ArgumentNullException(nameof(context));
+        _context = context;
         _dbSet = _context.Set<T>();
     }
 
-    public virtual IEnumerable<T> GetAll()
-    {
-        return [.. _dbSet];
-    }
+    public virtual async Task<List<T>> GetAllAsync()
+        => await _dbSet.ToListAsync();
 
-    public virtual T? GetById(int id)
-    {
-        return _dbSet.Find(id);
-    }
+    public virtual async Task<T?> GetByIdAsync(int id)
+        => await _dbSet.FindAsync(id);
 
-    public virtual void Add(T entity)
-    {
-        _dbSet.Add(entity);
-    }
+    public virtual async Task AddAsync(T entity)
+        => await _dbSet.AddAsync(entity);
 
     public virtual void Remove(T entity)
-    {
-        _dbSet.Remove(entity);
-    }
+        => _dbSet.Remove(entity);
 
-    public virtual void SaveChanges()
-    {
-        _context.SaveChanges();
-    }
+    public virtual async Task SaveChangesAsync()
+        => await _context.SaveChangesAsync();
 }

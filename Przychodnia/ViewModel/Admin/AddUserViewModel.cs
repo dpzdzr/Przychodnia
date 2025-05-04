@@ -11,15 +11,16 @@ using Przychodnia.Model;
 using Przychodnia.Model.DTO;
 using Przychodnia.Repository.Interface;
 using Przychodnia.Service.Interface;
+using Przychodnia.ViewModel.Base;
 
-namespace Przychodnia.ViewModel;
+namespace Przychodnia.ViewModel.Admin;
 
 public class AddUserViewModel : ViewModelBase
 {
-    private readonly IUserRepository _userRepository;
-    private readonly IUserTypeRepository _userTypeRepository;
-    private readonly ILaboratoryRepository _laboratoryRepository;
-    private readonly IUserCreationService _userCreationService;
+    private readonly IDialogService _dialogService;
+    private readonly ILaboratoryService _labService;
+    private readonly IUserTypeService _userTypeService;
+    private readonly IUserService _userService;
 
     private ObservableCollection<UserType> _userTypes;
     private ObservableCollection<Laboratory> _laboratories;
@@ -103,42 +104,55 @@ public class AddUserViewModel : ViewModelBase
     public bool IsDoctorOrLabTechnician => IsDoctor || IsLabTechnician;
 
     public ICommand SaveUserCommand { get; }
-    public AddUserViewModel(IUserRepository userRepository, IUserTypeRepository userTypeRepository,
-        ILaboratoryRepository laboratoryRepository, IUserCreationService userCreationService)
+    public AddUserViewModel(IUserService userService, IUserTypeService userTypeService, ILaboratoryService labService, IDialogService dialogService)
     {
-        _userRepository = userRepository;
-        _userTypeRepository = userTypeRepository;
-        _laboratoryRepository = laboratoryRepository;
-        _userCreationService = userCreationService;
+        _userService = userService;
+        _userTypeService = userTypeService;
+        _labService = labService;
+        _dialogService = dialogService;
 
-        UserTypes = [.. _userTypeRepository.GetAll()];
-        Laboratories = [.. _laboratoryRepository.GetAll()];
-        Laboratories.Insert(0, new Laboratory { Name = "" });
-
-        SaveUserCommand = new RelayCommand(AddUser);
+        SaveUserCommand = new AsyncRelayCommand(AddUserAsync);
     }
 
-    private void AddUser()
+    private async Task AddUserAsync()
     {
         try
         {
-            var userInputModel = new UserInputDTO
+            var newUser = new UserInputDTO
             {
-                FirstName = this.FirstName,
-                LastName = this.LastName,
-                Login = this.Login,
-                PasswordHash = this.Password,
-                UserType = this.SelectedUserType,
-                LicenseNumber = this.LicenseNumber,
-                Laboratory = this.SelectedLaboratory,
-                IsActive = this.IsActive
+                FirstName = FirstName,
+                LastName = LastName,
+                Login = Login,
+                PasswordHash = Password,
+                UserType = SelectedUserType,
+                LicenseNumber = LicenseNumber,
+                Laboratory = SelectedLaboratory,
+                IsActive = IsActive
             };
-            _userCreationService.CreateUser(userInputModel);
+            await _userService.CreateUserAsync(newUser);
+            ClearForm();
+            _dialogService.Show("Sukces", "Pomyślnie dodano nowego użytkownika");
 
         }
         catch (Exception ex)
         {
             MessageBox.Show($"{ex.Message}");
         }
+    }
+
+    public async Task InitializeAsync()
+    {
+        var userTypes = await _userTypeService.GetAllAsync();
+        UserTypes = [.. userTypes];
+
+        var labs = await _labService.GetAllAsync();
+        Laboratories = [.. labs];
+        Laboratories.Insert(0, new Laboratory { Name = "" });
+    }
+
+    private void ClearForm()
+    {
+        FirstName = string.Empty; LastName = string.Empty; Login = string.Empty;
+        Password = string.Empty; LicenseNumber = string.Empty; IsActive = false;
     }
 }
