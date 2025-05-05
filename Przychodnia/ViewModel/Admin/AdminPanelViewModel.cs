@@ -8,10 +8,11 @@ using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.DependencyInjection;
 using Przychodnia.ViewModel.Base;
+using Przychodnia.ViewModel.Interface;
 
 namespace Przychodnia.ViewModel.Admin;
 
-public class AdminPanelViewModel : NavigableViewModelBase
+public class AdminPanelViewModel : NavigableViewModelBase, IAdminNavigationService
 {
     private readonly IServiceProvider _serviceProvider;
     public IAsyncRelayCommand NavigateToAddUserCommand { get; }
@@ -26,12 +27,18 @@ public class AdminPanelViewModel : NavigableViewModelBase
 
         NavigateToAddUserCommand = new AsyncRelayCommand(async () =>
         {
+            if (CurrentViewModel is AddUserViewModel)
+                return;
+
             IsBusy = true;
             try
             {
                 var vm = _serviceProvider.GetRequiredService<AddUserViewModel>();
-                await vm.InitializeAsync();
-                NavigateTo(vm);
+                if (vm != CurrentViewModel)
+                {
+                    await vm.InitializeAsync();
+                    NavigateTo(vm);
+                }
             }
             finally
             {
@@ -41,6 +48,9 @@ public class AdminPanelViewModel : NavigableViewModelBase
 
         NavigateToUsersListCommand = new AsyncRelayCommand(async () =>
         {
+            if (CurrentViewModel is UsersListViewModel)
+                return;
+
             IsBusy = true;
             try
             {
@@ -56,4 +66,8 @@ public class AdminPanelViewModel : NavigableViewModelBase
 
         NavigateBackCommand = new RelayCommand(NavigateBack);
     }
+
+    public new void NavigateTo(ViewModelBase viewModel) => base.NavigateTo(viewModel);
+    public new void NavigateBack() => base.NavigateBack();
+
 }

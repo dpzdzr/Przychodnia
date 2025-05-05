@@ -10,6 +10,7 @@ using Przychodnia.Service.Implementation;
 using Przychodnia.Service.Interface;
 using Przychodnia.View;
 using Przychodnia.ViewModel.Admin;
+using Przychodnia.ViewModel.Interface;
 using Przychodnia.ViewModel.Login;
 
 namespace Przychodnia
@@ -50,9 +51,14 @@ namespace Przychodnia
             // ViewModels
             services.AddTransient<LoginViewModel>();
             services.AddTransient<AddUserViewModel>();
-            services.AddTransient<AdminPanelViewModel>();
+            services.AddSingleton<AdminPanelViewModel>();
             services.AddTransient<UsersListViewModel>();
             services.AddSingleton<AdminPanelHomePageViewModel>();
+            services.AddTransient<EditUserViewModel>();
+
+            // ViewModelService
+            services.AddSingleton<IAdminNavigationService>(provider 
+                => { return provider.GetRequiredService<AdminPanelViewModel>(); });
         }
 
         protected override void OnStartup(StartupEventArgs e)

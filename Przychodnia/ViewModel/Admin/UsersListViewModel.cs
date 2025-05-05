@@ -6,10 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.DependencyInjection;
 using Przychodnia.Model;
 using Przychodnia.Repository.Interface;
 using Przychodnia.Service.Interface;
 using Przychodnia.ViewModel.Base;
+using Przychodnia.ViewModel.Interface;
 
 namespace Przychodnia.ViewModel.Admin;
 
@@ -17,11 +19,14 @@ public class UsersListViewModel : ViewModelBase
 {
     private readonly IDialogService _dialogService;
     private readonly IUserService _userService;
+    private readonly IAdminNavigationService _navigationService;
+    private readonly IServiceProvider _serviceProvider;
+
     private User _selectedUser;
     private ObservableCollection<User> _users;
 
     public IAsyncRelayCommand DeleteUserCommand { get; }
-    public IAsyncRelayCommand EditUserCommand { get; }
+    public IRelayCommand EditUserCommand { get; }
     public ObservableCollection<User> Users
     {
         get => _users;
@@ -36,18 +41,20 @@ public class UsersListViewModel : ViewModelBase
             if (SetProperty(ref _selectedUser, value))
             {
                 (DeleteUserCommand as AsyncRelayCommand)?.NotifyCanExecuteChanged();
-                (EditUserCommand as AsyncRelayCommand)?.NotifyCanExecuteChanged();
+                (EditUserCommand as RelayCommand)?.NotifyCanExecuteChanged();
             }
         }
     }
 
-    public UsersListViewModel(IDialogService dialogService, IUserService userService)
+    public UsersListViewModel(IDialogService dialogService, IUserService userService, 
+        IAdminNavigationService navigationService, IServiceProvider serviceProvider)
     {
         _dialogService = dialogService;
         _userService = userService;
-
+        _navigationService = navigationService;
+        _serviceProvider = serviceProvider;
         DeleteUserCommand = new AsyncRelayCommand(RemoveUser, () => SelectedUser != null);
-        EditUserCommand = new AsyncRelayCommand(EditUser, () => SelectedUser != null);
+        EditUserCommand = new RelayCommand(EditUser, () => SelectedUser != null);
     }
 
     private async Task RemoveUser()
@@ -59,9 +66,10 @@ public class UsersListViewModel : ViewModelBase
         }
     }
 
-    private async Task EditUser()
+    private void EditUser()
     {
-
+        var editVm = _serviceProvider.GetRequiredService<EditUserViewModel>();
+        _navigationService.NavigateTo(editVm);
     }
 
     public async Task InitializeAsync()

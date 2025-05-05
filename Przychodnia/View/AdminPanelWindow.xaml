@@ -47,6 +47,9 @@
                 <DataTemplate DataType="{x:Type viewmodels:AdminPanelHomePageViewModel}">
                     <views:AdminPanelHomePageView/>
                 </DataTemplate>
+                <DataTemplate DataType="{x:Type viewmodels:EditUserViewModel}">
+                    <views:EditUserView/>
+                </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>
     </DockPanel>
