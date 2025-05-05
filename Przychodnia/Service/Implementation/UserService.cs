@@ -39,4 +39,9 @@ public class UserService(IUserRepository userRepository) : IUserService
         _userRepo.Remove(user);
         await _userRepo.SaveChangesAsync();
     }
+
+    public async Task<User?> GetByIdWithDetailsAsync(int id)
+    {
+        return await _userRepo.GetByIdAsync(id);
+    }
 }

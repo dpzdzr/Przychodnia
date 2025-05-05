@@ -12,6 +12,7 @@ using Przychodnia.Model.DTO;
 using Przychodnia.Repository.Interface;
 using Przychodnia.Service.Interface;
 using Przychodnia.ViewModel.Base;
+using Przychodnia.ViewModel.Forms;
 
 namespace Przychodnia.ViewModel.Admin;
 
@@ -24,48 +25,8 @@ public class AddUserViewModel : ViewModelBase
 
     private ObservableCollection<UserType> _userTypes;
     private ObservableCollection<Laboratory> _laboratories;
-    private UserType _selectedUserType;
-    private Laboratory _selectedLaboratory;
 
-    private string _firstName;
-    private string _lastName;
-    private string _login;
-    private string _password;
-    private string _licenseNumber;
-    private bool _isActive;
-
-    public string FirstName
-    {
-        get => _firstName;
-        set => SetProperty(ref _firstName, value);
-    }
-    public string LastName
-    {
-        get => _lastName;
-        set => SetProperty(ref _lastName, value);
-    }
-    public string Login
-    {
-        get => _login;
-        set => SetProperty(ref _login, value);
-    }
-    public string Password
-    {
-        get => _password;
-        set => SetProperty(ref _password, value);
-    }
-
-    public string LicenseNumber
-    {
-        get => _licenseNumber;
-        set => SetProperty(ref _licenseNumber, value);
-    }
-
-    public bool IsActive
-    {
-        get => _isActive;
-        set => SetProperty(ref _isActive, value);
-    }
+    public UserFormData FormData { get; } = new();
 
     public ObservableCollection<UserType> UserTypes
     {
@@ -78,30 +39,13 @@ public class AddUserViewModel : ViewModelBase
         get => _laboratories;
         set => SetProperty(ref _laboratories, value);
     }
-    public UserType SelectedUserType
-    {
-        get => _selectedUserType;
-        set
-        {
-            if (SetProperty(ref _selectedUserType, value))
-            {
-                OnPropertyChanged(nameof(IsDoctor));
-                OnPropertyChanged(nameof(IsDoctorOrLabTechnician));
-                OnPropertyChanged(nameof(IsLabTechnician));
-            }
-        }
-    }
 
-    public Laboratory SelectedLaboratory
-    {
-        get => _selectedLaboratory;
-        set => SetProperty(ref _selectedLaboratory, value);
-    }
-
-    public bool IsDoctor => SelectedUserType?.Type == UserTypeEnum.Lekarz;
-    public bool IsLabTechnician => SelectedUserType?.Type == UserTypeEnum.Laborant || SelectedUserType?.Type == UserTypeEnum.KierownikLaboratorium;
-
-    public bool IsDoctorOrLabTechnician => IsDoctor || IsLabTechnician;
+    public bool IsDoctor 
+        => FormData.SelectedUserType?.IsDoctor == true;
+    public bool IsLabTechnician 
+        => FormData.SelectedUserType?.IsLabTechnician == true; 
+    public bool IsDoctorOrLabTechnician 
+        => FormData.SelectedUserType?.IsDoctorOrLabTechnician == true;
 
     public ICommand SaveUserCommand { get; }
     public AddUserViewModel(IUserService userService, IUserTypeService userTypeService, ILaboratoryService labService, IDialogService dialogService)
@@ -111,6 +55,16 @@ public class AddUserViewModel : ViewModelBase
         _labService = labService;
         _dialogService = dialogService;
 
+        FormData.PropertyChanged += (_, e) =>
+        {
+            if (e.PropertyName == nameof(FormData.SelectedUserType))
+            {
+                OnPropertyChanged(nameof(IsDoctor));
+                OnPropertyChanged(nameof(IsLabTechnician));
+                OnPropertyChanged(nameof(IsDoctorOrLabTechnician));
+            }
+        };
+
         SaveUserCommand = new AsyncRelayCommand(AddUserAsync);
     }
 
@@ -118,25 +72,13 @@ public class AddUserViewModel : ViewModelBase
     {
         try
         {
-            var newUser = new UserInputDTO
-            {
-                FirstName = FirstName,
-                LastName = LastName,
-                Login = Login,
-                PasswordHash = Password,
-                UserType = SelectedUserType,
-                LicenseNumber = LicenseNumber,
-                Laboratory = SelectedLaboratory,
-                IsActive = IsActive
-            };
-            await _userService.CreateUserAsync(newUser);
+            await _userService.CreateUserAsync(CreateUserInputDTOFromForm());
             ClearForm();
             _dialogService.Show("Sukces", "Pomyślnie dodano nowego użytkownika");
-
         }
         catch (Exception ex)
         {
-            MessageBox.Show($"{ex.Message}");
+            _dialogService.Show("Błąd", $"{ex.Message}");
         }
     }
 
@@ -147,12 +89,27 @@ public class AddUserViewModel : ViewModelBase
 
         var labs = await _labService.GetAllAsync();
         Laboratories = [.. labs];
-        Laboratories.Insert(0, new Laboratory { Name = "" });
     }
 
     private void ClearForm()
+    {   
+        FormData.FirstName = string.Empty; FormData.LastName = string.Empty; FormData.Login = string.Empty;
+        FormData.Password = string.Empty; FormData.LicenseNumber = string.Empty; FormData.IsActive = false;
+        FormData.SelectedUserType = null; FormData.SelectedLaboratory = null;
+    }
+
+    private UserInputDTO CreateUserInputDTOFromForm()
     {
-        FirstName = string.Empty; LastName = string.Empty; Login = string.Empty;
-        Password = string.Empty; LicenseNumber = string.Empty; IsActive = false;
+        return new UserInputDTO
+        {
+            FirstName = FormData.FirstName,
+            LastName = FormData.LastName,
+            Login = FormData.Login,
+            PasswordHash = FormData.Password,
+            UserType = FormData.SelectedUserType,
+            LicenseNumber = FormData.LicenseNumber,
+            Laboratory = FormData.SelectedLaboratory,
+            IsActive = FormData.IsActive
+        };
     }
 }

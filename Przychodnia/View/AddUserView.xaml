@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Przychodnia.View"
-        xmlns:viewmodel="clr-namespace:Przychodnia.ViewModel" 
+        xmlns:viewmodel="clr-namespace:Przychodnia.ViewModel.Admin" 
         d:DataContext="{d:DesignInstance Type=viewmodel:AddUserViewModel}"
         mc:Ignorable="d" 
         d:Width="600" d:Height="400">
@@ -28,32 +28,34 @@
         <TextBlock Grid.Row="1" Text="Dodaj nowego użytkownika" Margin="20" Grid.ColumnSpan="2" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="25" FontWeight="Bold"/>
         <StackPanel Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="250">
             <TextBlock Text="Imię" Margin="0,0,0,0"/>
-            <TextBox Text="{Binding FirstName}"/>
+            <TextBox Text="{Binding FormData.FirstName}"/>
             <TextBlock Text="Nazwisko" Margin="0,5,0,0"/>
-            <TextBox Text="{Binding LastName}"/>
+            <TextBox Text="{Binding FormData.LastName}"/>
             <TextBlock Text="Login" Margin="0,5,0,0"/>
-            <TextBox Text="{Binding Login}"/>
+            <TextBox Text="{Binding FormData.Login}"/>
             <TextBlock Text="Hasło" Margin="0,5,0,0"/>
-            <TextBox Text="{Binding Password}"/>
+            <TextBox Text="{Binding FormData.Password}"/>
         </StackPanel>
         <StackPanel Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Width="250">
             <TextBlock Text="Rola"/>
             <ComboBox 
                 ItemsSource="{Binding UserTypes}"
-                SelectedItem="{Binding SelectedUserType}"
+                SelectedItem="{Binding FormData.SelectedUserType}"
                 DisplayMemberPath="Name"
                 />
             <TextBlock Text="Numer licencji" Margin="0,5,0,0"
                        Visibility="{Binding IsDoctorOrLabTechnician, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <TextBox Text="{Binding LicenseNumber}" Visibility="{Binding IsDoctorOrLabTechnician, Converter={StaticResource BoolToVisibilityConverter}}"/>
+            <TextBox Text="{Binding FormData.LicenseNumber}" 
+                     Visibility="{Binding IsDoctorOrLabTechnician, Converter={StaticResource BoolToVisibilityConverter}}"/>
             <TextBlock Text="Nazwa laboratorium" Margin="0,5,0,0" 
                        Visibility="{Binding IsLabTechnician, Converter={StaticResource BoolToVisibilityConverter}}"/>
             <ComboBox 
                 ItemsSource="{Binding Laboratories}"
+                SelectedItem="{Binding FormData.SelectedLaboratory}"
                 Visibility="{Binding IsLabTechnician, Converter={StaticResource BoolToVisibilityConverter}}"
                 DisplayMemberPath="Name"/>
             <TextBlock Text="Użytkownik aktywny" Margin="0,5,0,0"/>
-            <CheckBox IsChecked="{Binding IsActive}"/>
+            <CheckBox IsChecked="{Binding FormData.IsActive}"/>
         </StackPanel>
         <Button
             Grid.Row="3" Grid.ColumnSpan="2" Content="Dodaj" 

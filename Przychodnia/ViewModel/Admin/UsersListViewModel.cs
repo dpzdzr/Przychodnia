@@ -26,7 +26,7 @@ public class UsersListViewModel : ViewModelBase
     private ObservableCollection<User> _users;
 
     public IAsyncRelayCommand DeleteUserCommand { get; }
-    public IRelayCommand EditUserCommand { get; }
+    public IAsyncRelayCommand EditUserCommand { get; }
     public ObservableCollection<User> Users
     {
         get => _users;
@@ -41,7 +41,7 @@ public class UsersListViewModel : ViewModelBase
             if (SetProperty(ref _selectedUser, value))
             {
                 (DeleteUserCommand as AsyncRelayCommand)?.NotifyCanExecuteChanged();
-                (EditUserCommand as RelayCommand)?.NotifyCanExecuteChanged();
+                (EditUserCommand as AsyncRelayCommand)?.NotifyCanExecuteChanged();
             }
         }
     }
@@ -54,7 +54,7 @@ public class UsersListViewModel : ViewModelBase
         _navigationService = navigationService;
         _serviceProvider = serviceProvider;
         DeleteUserCommand = new AsyncRelayCommand(RemoveUser, () => SelectedUser != null);
-        EditUserCommand = new RelayCommand(EditUser, () => SelectedUser != null);
+        EditUserCommand = new AsyncRelayCommand(EditUser, () => SelectedUser != null);
     }
 
     private async Task RemoveUser()
@@ -66,9 +66,10 @@ public class UsersListViewModel : ViewModelBase
         }
     }
 
-    private void EditUser()
+    private async Task EditUser()
     {
         var editVm = _serviceProvider.GetRequiredService<EditUserViewModel>();
+        await editVm.Initialize(SelectedUser.Id);
         _navigationService.NavigateTo(editVm);
     }
 

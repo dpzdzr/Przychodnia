@@ -13,4 +13,6 @@ public interface IUserService
     Task CreateUserAsync(UserInputDTO model);
     Task RemoveUserAsync(User user);
     Task<List<User>> GetAllWithUserTypeAsync();
+
+    Task<User?> GetByIdWithDetailsAsync(int id);
 }
