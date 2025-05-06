@@ -3,9 +3,10 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:viewmodels="clr-namespace:Przychodnia.ViewModel.Admin"
+        xmlns:adminViewmodels="clr-namespace:Przychodnia.ViewModel.Admin"
+        xmlns:sharedViewmodels="clr-namespace:Przychodnia.ViewModel.Shared"
         xmlns:views="clr-namespace:Przychodnia.View" 
-        d:DataContext="{d:DesignInstance Type=viewmodels:AdminPanelViewModel}"
+        d:DataContext="{d:DesignInstance Type=adminViewmodels:AdminPanelViewModel}"
         mc:Ignorable="d"
         Title="Przychodnia" Height="600" Width="900">
     <Window.Resources>
@@ -23,7 +24,6 @@
             <Button Content="← Wstecz" Command="{Binding NavigateBackCommand}" IsEnabled="{Binding CanNavigateBack}" Margin="5,5,5,20" Width="125"/>
             <Expander Header="Użytkownicy">
                 <StackPanel>
-                    <Button Content="Dodaj" Command="{Binding NavigateToAddUserCommand}" Margin="5" Width="125"/>
                     <Button Content="Przeglądaj" Command="{Binding NavigateToUsersListCommand}" Margin="5" Width="125"/>
                 </StackPanel>
             </Expander>
@@ -31,24 +31,32 @@
             <Expander Header="Pacjenci">
                 <StackPanel>
                     <Button Content="Dodaj" Command="{Binding NavigateToAddUserCommand}" Margin="5" Width="125"/>
-                    <Button Content="Przeglądaj" Command="{Binding NavigateToAddUserCommand}" Margin="5" Width="125"/>
+                </StackPanel>
+            </Expander>
+
+            <Expander Header="Kody pocztowe">
+                <StackPanel>
+                    <Button Content="Przeglądaj" Command="{Binding NavigateToPostalCodesAddCommand}" Margin="5" Width="125"/>
                 </StackPanel>
             </Expander>
         </StackPanel>
 
         <ContentControl Content="{Binding CurrentViewModel}">
             <ContentControl.Resources>
-                <DataTemplate DataType="{x:Type viewmodels:AddUserViewModel}">
+                <DataTemplate DataType="{x:Type adminViewmodels:AddUserViewModel}">
                     <views:UserFormView/>
                 </DataTemplate>
-                <DataTemplate DataType="{x:Type viewmodels:UsersListViewModel}">
+                <DataTemplate DataType="{x:Type adminViewmodels:UsersListViewModel}">
                     <views:UsersListView/>
                 </DataTemplate>
-                <DataTemplate DataType="{x:Type viewmodels:AdminPanelHomePageViewModel}">
+                <DataTemplate DataType="{x:Type adminViewmodels:AdminPanelHomePageViewModel}">
                     <views:AdminPanelHomePageView/>
                 </DataTemplate>
-                <DataTemplate DataType="{x:Type viewmodels:EditUserViewModel}">
+                <DataTemplate DataType="{x:Type adminViewmodels:EditUserViewModel}">
                     <views:UserFormView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type sharedViewmodels:AddPostalCodeViewModel}">
+                    <views:AddPostalCodeView/>
                 </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>

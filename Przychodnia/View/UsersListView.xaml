@@ -37,10 +37,12 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Button Content="Edytuj" Grid.Column="0" Width="120" Height="35" Margin="5" Command="{Binding EditUserCommand}"/>
-            <Button Content="Usuń" Grid.Column="1" Width="120" Height="35" Margin="5" Command="{Binding DeleteUserCommand}"/>
+            <Button Content="Dodaj" Grid.Column="0" Width="120" Height="35" Margin="5" Command="{Binding AddUserCommand}"/>
+            <Button Content="Edytuj" Grid.Column="1" Width="120" Height="35" Margin="5" Command="{Binding EditUserCommand}"/>
+            <Button Content="Usuń" Grid.Column="2" Width="120" Height="35" Margin="5" Command="{Binding DeleteUserCommand}"/>
         </Grid>
     </Grid>
 </UserControl>

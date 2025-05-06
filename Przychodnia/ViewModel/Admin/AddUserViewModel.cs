@@ -20,8 +20,8 @@ public class AddUserViewModel : BaseUserFormViewModel<UserAddFormData>
 {
     private readonly IUserService _userService;
 
-    public string HeaderText => "Dodaj użytkownika";
-    public string ActionButtonText => "Dodaj";
+    public static string HeaderText => "Dodaj użytkownika";
+    public static string ActionButtonText => "Dodaj";
     public ICommand SaveUserCommand { get; }
     public AddUserViewModel(IUserService userService, IUserTypeService userTypeService, ILaboratoryService labService, IDialogService dialogService)
         : base(userTypeService, labService, dialogService) 

@@ -27,6 +27,7 @@ public class UsersListViewModel : ViewModelBase
 
     public IAsyncRelayCommand DeleteUserCommand { get; }
     public IAsyncRelayCommand EditUserCommand { get; }
+    public IAsyncRelayCommand AddUserCommand { get; }
     public ObservableCollection<User> Users
     {
         get => _users;
@@ -46,7 +47,7 @@ public class UsersListViewModel : ViewModelBase
         }
     }
 
-    public UsersListViewModel(IDialogService dialogService, IUserService userService, 
+    public UsersListViewModel(IDialogService dialogService, IUserService userService,
         IAdminNavigationService navigationService, IServiceProvider serviceProvider)
     {
         _dialogService = dialogService;
@@ -55,6 +56,7 @@ public class UsersListViewModel : ViewModelBase
         _serviceProvider = serviceProvider;
         DeleteUserCommand = new AsyncRelayCommand(RemoveUser, () => SelectedUser != null);
         EditUserCommand = new AsyncRelayCommand(EditUser, () => SelectedUser != null);
+        AddUserCommand = new AsyncRelayCommand(AddUser);
     }
 
     private async Task RemoveUser()
@@ -73,9 +75,21 @@ public class UsersListViewModel : ViewModelBase
         _navigationService.NavigateTo(editVm);
     }
 
+    private async Task AddUser()
+    {
+        var addVm = _serviceProvider.GetRequiredService<AddUserViewModel>();
+        await addVm.InitializeAsync();
+        _navigationService.NavigateTo(addVm);
+    }
+
     public async Task InitializeAsync()
     {
         var users = await _userService.GetAllWithUserTypeAsync();
         Users = [.. users];
+    }
+
+    public override async Task OnNavigatedBack()
+    {
+       await InitializeAsync();
     }
 }

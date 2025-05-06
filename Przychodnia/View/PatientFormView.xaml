@@ -1,16 +1,17 @@
-﻿<UserControl x:Class="Przychodnia.View.UserFormView"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Przychodnia.View"
-        xmlns:viewmodel="clr-namespace:Przychodnia.ViewModel.Admin" 
-        d:DataContext="{d:DesignInstance Type=viewmodel:AddUserViewModel}"
-        mc:Ignorable="d" 
-        d:Width="600" d:Height="400">
+﻿<UserControl x:Class="Przychodnia.View.PatientFormView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Przychodnia.View"
+             xmlns:viewmodel="clr-namespace:Przychodnia.ViewModel.Shared"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800"
+             d:DataContext="{d:DesignInstance Type=viewmodel:AddPatientViewModel}">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </UserControl.Resources>
+    
     <Grid d:Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -25,8 +26,8 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock Grid.Row="1" Text="{Binding HeaderText}" d:Text="Dodaj nowego użytkownika" Margin="20" Grid.ColumnSpan="2" 
-                   VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="25" FontWeight="DemiBold"/>
+        <TextBlock Grid.Row="1" Text="{Binding HeaderText}" Margin="20" Grid.ColumnSpan="2" 
+                   VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="25" FontWeight="Bold"/>
         <StackPanel Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Width="250">
             <TextBlock Text="Imię" Margin="0,0,0,0"/>
             <TextBox Text="{Binding FormData.FirstName}"/>

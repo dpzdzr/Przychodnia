@@ -18,9 +18,9 @@ namespace Przychodnia.View
     /// <summary>
     /// Interaction logic for AddPatientView.xaml
     /// </summary>
-    public partial class AddPatientView : UserControl
+    public partial class PatientFormView : UserControl
     {
-        public AddPatientView()
+        public PatientFormView()
         {
             InitializeComponent();
         }

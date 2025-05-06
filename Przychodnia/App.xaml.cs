@@ -12,6 +12,7 @@ using Przychodnia.View;
 using Przychodnia.ViewModel.Admin;
 using Przychodnia.ViewModel.Interface;
 using Przychodnia.ViewModel.Login;
+using Przychodnia.ViewModel.Shared;
 
 namespace Przychodnia
 {
@@ -39,6 +40,7 @@ namespace Przychodnia
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IUserTypeRepository, UserTypeRepository>();
             services.AddScoped<ILaboratoryRepository, LaboratoryRepository>();
+            services.AddScoped<IPostalCodeRepository, PostalCodeRepository>();
 
             // Services
             services.AddSingleton<IUserSessionService, UserSessionService>();
@@ -47,6 +49,7 @@ namespace Przychodnia
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IUserTypeService, UserTypeService>();
             services.AddTransient<ILaboratoryService, LaboratoryService>();
+            services.AddTransient<IPostalCodeService, PostalCodeService>();
 
             // ViewModels
             services.AddTransient<LoginViewModel>();
@@ -55,6 +58,7 @@ namespace Przychodnia
             services.AddTransient<UsersListViewModel>();
             services.AddSingleton<AdminPanelHomePageViewModel>();
             services.AddTransient<EditUserViewModel>();
+            services.AddTransient<AddPostalCodeViewModel>();
 
             // ViewModelService
             services.AddSingleton<IAdminNavigationService>(provider 

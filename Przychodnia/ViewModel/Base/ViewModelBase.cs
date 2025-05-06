@@ -22,4 +22,6 @@ public abstract class ViewModelBase : INotifyPropertyChanged
     }
 
     protected void OnPropertyChanged(string propertyName) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+    public virtual Task OnNavigatedBack() => Task.CompletedTask;
 }

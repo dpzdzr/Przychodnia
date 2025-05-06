@@ -9,13 +9,14 @@ using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.DependencyInjection;
 using Przychodnia.ViewModel.Base;
 using Przychodnia.ViewModel.Interface;
+using Przychodnia.ViewModel.Shared;
 
 namespace Przychodnia.ViewModel.Admin;
 public class AdminPanelViewModel : NavigableViewModelBase, IAdminNavigationService
 {
     private readonly IServiceProvider _serviceProvider;
-    public IAsyncRelayCommand NavigateToAddUserCommand { get; }
     public IAsyncRelayCommand NavigateToUsersListCommand { get; }
+    public IAsyncRelayCommand NavigateToPostalCodesAddCommand { get; }
     public ICommand NavigateBackCommand { get; }
 
     public AdminPanelViewModel(IServiceProvider serviceProvider)
@@ -24,49 +25,39 @@ public class AdminPanelViewModel : NavigableViewModelBase, IAdminNavigationServi
 
         CurrentViewModel = _serviceProvider.GetRequiredService<AdminPanelHomePageViewModel>();
 
-        NavigateToAddUserCommand = new AsyncRelayCommand(async () =>
-        {
-            if (CurrentViewModel is AddUserViewModel)
-                return;
+        NavigateToUsersListCommand = new AsyncRelayCommand
+            (() => NavigateToAsync<UsersListViewModel>(vm => vm.InitializeAsync()));
 
-            IsBusy = true;
-            try
-            {
-                var vm = _serviceProvider.GetRequiredService<AddUserViewModel>();
-                if (vm != CurrentViewModel)
-                {
-                    await vm.InitializeAsync();
-                    NavigateTo(vm);
-                }
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        });
-
-        NavigateToUsersListCommand = new AsyncRelayCommand(async () =>
-        {
-            if (CurrentViewModel is UsersListViewModel)
-                return;
-
-            IsBusy = true;
-            try
-            {
-                var vm = _serviceProvider.GetRequiredService<UsersListViewModel>();
-                await vm.InitializeAsync();
-                NavigateTo(vm);
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        });
+        NavigateToPostalCodesAddCommand = new AsyncRelayCommand
+            (() => NavigateToAsync<AddPostalCodeViewModel>());
 
         NavigateBackCommand = new RelayCommand(NavigateBack);
     }
 
-    public new void NavigateTo(ViewModelBase viewModel) => base.NavigateTo(viewModel);
-    public new void NavigateBack() => base.NavigateBack();
+    private async Task NavigateToAsync<TViewModel>(Func<TViewModel, Task> initializer = null)
+        where TViewModel : ViewModelBase
+    {
+        if (CurrentViewModel is TViewModel)
+            return;
 
+        IsBusy = true;
+        try
+        {
+            var vm = _serviceProvider.GetRequiredService<TViewModel>();
+            if (initializer != null)
+                await initializer(vm);
+            NavigateTo(vm);
+        }
+        finally
+        {
+            IsBusy = false;
+        }
+    }
+
+    public void NavigateTo(ViewModelBase viewModel) => base.NavigateTo(viewModel);
+    public void NavigateBack()
+    {
+        base.NavigateBack();
+        _ = CurrentViewModel?.OnNavigatedBack();
+    }
 }
