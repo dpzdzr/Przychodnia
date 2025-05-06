@@ -11,4 +11,8 @@ namespace Przychodnia.Service.Interface;
 public interface IPostalCodeService
 {
     Task CreateAsync(PostalCodeInputDTO code);
+    Task<List<PostalCode>> GetAllAsync();
+    Task SaveChangesAsync();
+
+    Task RemoveAsync(PostalCode code);
 }

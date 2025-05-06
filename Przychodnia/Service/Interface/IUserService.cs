@@ -11,7 +11,7 @@ namespace Przychodnia.Service.Interface;
 public interface IUserService
 {
     Task CreateUserAsync(UserInputDTO model);
-    Task RemoveUserAsync(User user);
+    Task RemoveAsync(User user);
     Task<List<User>> GetAllWithUserTypeAsync();
 
     Task<User?> GetByIdWithDetailsAsync(int id);

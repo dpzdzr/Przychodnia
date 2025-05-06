@@ -9,8 +9,6 @@ using Przychodnia.Repository.Interface;
 
 namespace Przychodnia.Repository.Implementation;
 
-class PostalCodeRepository(DbContext context) 
+class PostalCodeRepository(DbContext context)
     : BaseRepository<PostalCode>(context), IPostalCodeRepository
-{
-
-}
+{ }

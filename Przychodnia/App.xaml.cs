@@ -58,7 +58,7 @@ namespace Przychodnia
             services.AddTransient<UsersListViewModel>();
             services.AddSingleton<AdminPanelHomePageViewModel>();
             services.AddTransient<EditUserViewModel>();
-            services.AddTransient<AddPostalCodeViewModel>();
+            services.AddTransient<PostalCodesListViewModel>();
 
             // ViewModelService
             services.AddSingleton<IAdminNavigationService>(provider 

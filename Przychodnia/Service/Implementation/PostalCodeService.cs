@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Documents;
 using Przychodnia.Model;
 using Przychodnia.Model.DTO;
 using Przychodnia.Repository.Interface;
@@ -21,5 +22,17 @@ public class PostalCodeService(IPostalCodeRepository repo) : IPostalCodeService
             City = dto.City
         });
         await _repo.SaveChangesAsync();
+    }
+
+    public async Task<List<PostalCode>> GetAllAsync()
+        => await _repo.GetAllAsync();
+
+    public async Task SaveChangesAsync()
+        => await _repo.SaveChangesAsync();
+
+    public async Task RemoveAsync(PostalCode postalCode)
+    {
+        _repo.Remove(postalCode);
+        await _repo.SaveChangesAsync();        
     }
 }

@@ -63,7 +63,7 @@ public class UsersListViewModel : ViewModelBase
     {
         if (_dialogService.Confirm("Potwierdzenie usunięcia", "Czy na pewno chcesz usunąć wybranego użytkownika?"))
         {
-            await _userService.RemoveUserAsync(SelectedUser);
+            await _userService.RemoveAsync(SelectedUser);
             Users.Remove(SelectedUser);
         }
     }

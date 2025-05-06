@@ -17,9 +17,9 @@ namespace Przychodnia.View
     /// <summary>
     /// Interaction logic for AddPostalCodeWindow.xaml
     /// </summary>
-    public partial class AddPostalCodeView : UserControl
+    public partial class PostalCodesListView : UserControl
     {
-        public AddPostalCodeView()
+        public PostalCodesListView()
         {
             InitializeComponent();
         }

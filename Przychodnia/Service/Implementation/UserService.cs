@@ -13,10 +13,10 @@ namespace Przychodnia.Service.Implementation;
 
 public class UserService(IUserRepository userRepository) : IUserService
 {
-    private readonly IUserRepository _userRepo = userRepository;
+    private readonly IUserRepository _repo = userRepository;
     public async Task CreateUserAsync(UserInputDTO model)
     {
-        await _userRepo.AddAsync(new User
+        await _repo.AddAsync(new User
         {
             FirstName = model.FirstName,
             LastName = model.LastName,
@@ -27,26 +27,26 @@ public class UserService(IUserRepository userRepository) : IUserService
             Laboratory = model.Laboratory,
             IsActive = model.IsActive
         });
-        await _userRepo.SaveChangesAsync();
+        await _repo.SaveChangesAsync();
     }
 
     public async Task<List<User>> GetAllWithUserTypeAsync()
-        => await _userRepo.GetAllWithUserTypeAsync();
+        => await _repo.GetAllWithUserTypeAsync();
 
 
-    public async Task RemoveUserAsync(User user)
+    public async Task RemoveAsync(User user)
     {
-        _userRepo.Remove(user);
-        await _userRepo.SaveChangesAsync();
+        _repo.Remove(user);
+        await _repo.SaveChangesAsync();
     }
 
     public async Task<User?> GetByIdWithDetailsAsync(int id)
     {
-        return await _userRepo.GetByIdAsync(id);
+        return await _repo.GetByIdAsync(id);
     }
 
     public async Task SaveChanges()
     {
-        await _userRepo.SaveChangesAsync();
+        await _repo.SaveChangesAsync();
     }
 }
