@@ -3,49 +3,77 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using Przychodnia.Model;
 using Przychodnia.Service.Interface;
 using Przychodnia.ViewModel.Base;
-using Przychodnia.ViewModel.Forms;
+using Przychodnia.ViewModel.Form;
 
 namespace Przychodnia.ViewModel.Admin;
 
-public class EditUserViewModel : ViewModelBase
+public class EditUserViewModel : BaseUserFormViewModel<UserEditFormData>
 {
     private readonly IUserService _userService;
 
-    private User _editebleUser;
+    private User _editableUser;
 
-    public UserFormData UserFormData = new();
+    public string HeaderText => "Edytuj użytkownika";
+    public string ActionButtonText => "Edytuj";
 
-    public User EditebleUser
+    public ICommand SaveUserCommand { get; }
+    public User EditableUser
     {
-        get => _editebleUser;
-        set => SetProperty(ref _editebleUser, value);
+        get => _editableUser;
+        set => SetProperty(ref _editableUser, value);
     }
 
-    public EditUserViewModel(IUserService userService)
+    public EditUserViewModel(IDialogService dialogService, ILaboratoryService labService, IUserTypeService userTypeService, IUserService userService) : base(userTypeService, labService, dialogService)
     {
         _userService = userService;
+        SaveUserCommand = new AsyncRelayCommand(EditUserAsync);
     }
 
-    public async Task Initialize(int id)
-    {   
+    public async Task InitializeAsync(int id)
+    {
         var user = await _userService.GetByIdWithDetailsAsync(id);
-        _editebleUser = user;
+        _editableUser = user;
+
+        await base.InitializeFormDataAsync();
+
         LoadFromUser();
     }
 
     public void LoadFromUser()
     {
-        UserFormData.FirstName = EditebleUser.FirstName;
-        UserFormData.LastName = EditebleUser.LastName;
-        UserFormData.Login = EditebleUser.Login;
-        UserFormData.Password = EditebleUser.PasswordHash;
-        UserFormData.LicenseNumber = EditebleUser.LicenseNumber;
-        UserFormData.SelectedLaboratory = EditebleUser.Laboratory;
-        UserFormData.SelectedUserType = EditebleUser.UserType;
-        UserFormData.IsActive = EditebleUser.IsActive;
+        FormData.Id = EditableUser.Id;
+        FormData.FirstName = EditableUser.FirstName;
+        FormData.LastName = EditableUser.LastName;
+        FormData.Login = EditableUser.Login;
+        FormData.Password = EditableUser.PasswordHash;
+        FormData.LicenseNumber = EditableUser.LicenseNumber;
+        FormData.SelectedLaboratory = EditableUser.Laboratory;
+        FormData.SelectedUserType = EditableUser.UserType;
+        FormData.IsActive = EditableUser.IsActive;
+    }
+
+    public void LoadToUser()
+    {
+        EditableUser.FirstName = FormData.FirstName;
+        EditableUser.LastName = FormData.LastName;
+        EditableUser.Login = FormData.Login;
+        EditableUser.PasswordHash = FormData.Password;
+        EditableUser.LicenseNumber = FormData.LicenseNumber;
+        EditableUser.Laboratory = FormData.SelectedLaboratory;
+        EditableUser.UserType = FormData.SelectedUserType;
+        EditableUser.IsActive = FormData.IsActive;
+    }
+
+    private async Task EditUserAsync()
+    {
+        LoadToUser();
+        await _userService.SaveChanges();
+        _dialogService.Show("Sukces", "Pomyślnie edytowano użytkownika");
     }
 }

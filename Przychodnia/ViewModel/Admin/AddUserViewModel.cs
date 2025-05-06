@@ -12,59 +12,21 @@ using Przychodnia.Model.DTO;
 using Przychodnia.Repository.Interface;
 using Przychodnia.Service.Interface;
 using Przychodnia.ViewModel.Base;
-using Przychodnia.ViewModel.Forms;
+using Przychodnia.ViewModel.Form;
 
 namespace Przychodnia.ViewModel.Admin;
 
-public class AddUserViewModel : ViewModelBase
+public class AddUserViewModel : BaseUserFormViewModel<UserAddFormData>
 {
-    private readonly IDialogService _dialogService;
-    private readonly ILaboratoryService _labService;
-    private readonly IUserTypeService _userTypeService;
     private readonly IUserService _userService;
 
-    private ObservableCollection<UserType> _userTypes;
-    private ObservableCollection<Laboratory> _laboratories;
-
-    public UserFormData FormData { get; } = new();
-
-    public ObservableCollection<UserType> UserTypes
-    {
-        get => _userTypes;
-        set => SetProperty(ref _userTypes, value);
-    }
-
-    public ObservableCollection<Laboratory> Laboratories
-    {
-        get => _laboratories;
-        set => SetProperty(ref _laboratories, value);
-    }
-
-    public bool IsDoctor 
-        => FormData.SelectedUserType?.IsDoctor == true;
-    public bool IsLabTechnician 
-        => FormData.SelectedUserType?.IsLabTechnician == true; 
-    public bool IsDoctorOrLabTechnician 
-        => FormData.SelectedUserType?.IsDoctorOrLabTechnician == true;
-
+    public string HeaderText => "Dodaj użytkownika";
+    public string ActionButtonText => "Dodaj";
     public ICommand SaveUserCommand { get; }
     public AddUserViewModel(IUserService userService, IUserTypeService userTypeService, ILaboratoryService labService, IDialogService dialogService)
+        : base(userTypeService, labService, dialogService) 
     {
         _userService = userService;
-        _userTypeService = userTypeService;
-        _labService = labService;
-        _dialogService = dialogService;
-
-        FormData.PropertyChanged += (_, e) =>
-        {
-            if (e.PropertyName == nameof(FormData.SelectedUserType))
-            {
-                OnPropertyChanged(nameof(IsDoctor));
-                OnPropertyChanged(nameof(IsLabTechnician));
-                OnPropertyChanged(nameof(IsDoctorOrLabTechnician));
-            }
-        };
-
         SaveUserCommand = new AsyncRelayCommand(AddUserAsync);
     }
 
@@ -84,11 +46,7 @@ public class AddUserViewModel : ViewModelBase
 
     public async Task InitializeAsync()
     {
-        var userTypes = await _userTypeService.GetAllAsync();
-        UserTypes = [.. userTypes];
-
-        var labs = await _labService.GetAllAsync();
-        Laboratories = [.. labs];
+        await base.InitializeFormDataAsync();
     }
 
     private void ClearForm()

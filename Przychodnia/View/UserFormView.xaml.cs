@@ -10,19 +10,18 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Przychodnia.ViewModel;
 
-namespace Przychodnia.View
+namespace Przychodnia.View;
+
+/// <summary>
+/// Interaction logic for AdminPanelView.xaml
+/// </summary>
+public partial class UserFormView : UserControl
 {
-    /// <summary>
-    /// Interaction logic for EditUserView.xaml
-    /// </summary>
-    public partial class EditUserView : UserControl
+    public UserFormView()
     {
-        public EditUserView()
-        {
-            InitializeComponent();
-        }
+        InitializeComponent();
     }
 }

@@ -11,7 +11,6 @@ using Przychodnia.ViewModel.Base;
 using Przychodnia.ViewModel.Interface;
 
 namespace Przychodnia.ViewModel.Admin;
-
 public class AdminPanelViewModel : NavigableViewModelBase, IAdminNavigationService
 {
     private readonly IServiceProvider _serviceProvider;

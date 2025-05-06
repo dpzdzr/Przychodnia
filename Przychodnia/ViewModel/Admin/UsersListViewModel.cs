@@ -69,7 +69,7 @@ public class UsersListViewModel : ViewModelBase
     private async Task EditUser()
     {
         var editVm = _serviceProvider.GetRequiredService<EditUserViewModel>();
-        await editVm.Initialize(SelectedUser.Id);
+        await editVm.InitializeAsync(SelectedUser.Id);
         _navigationService.NavigateTo(editVm);
     }
 

@@ -39,7 +39,7 @@
         <ContentControl Content="{Binding CurrentViewModel}">
             <ContentControl.Resources>
                 <DataTemplate DataType="{x:Type viewmodels:AddUserViewModel}">
-                    <views:AddUserView/>
+                    <views:UserFormView/>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:UsersListViewModel}">
                     <views:UsersListView/>
@@ -48,7 +48,7 @@
                     <views:AdminPanelHomePageView/>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type viewmodels:EditUserViewModel}">
-                    <views:EditUserView/>
+                    <views:UserFormView/>
                 </DataTemplate>
             </ContentControl.Resources>
         </ContentControl>

@@ -15,4 +15,6 @@ public interface IUserService
     Task<List<User>> GetAllWithUserTypeAsync();
 
     Task<User?> GetByIdWithDetailsAsync(int id);
+
+    Task SaveChanges();
 }

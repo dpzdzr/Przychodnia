@@ -18,7 +18,9 @@
             <RowDefinition Height="2*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <DataGrid ItemsSource="{Binding Users}" Grid.Row="0" AutoGenerateColumns="False" CanUserReorderColumns="False" CanUserDeleteRows="False" CanUserAddRows="False" ColumnWidth="*" Margin="10" IsReadOnly="True" SelectedItem="{Binding SelectedUser}">
+        <DataGrid ItemsSource="{Binding Users}" SelectedItem="{Binding SelectedUser}"
+                  Grid.Row="0" AutoGenerateColumns="False" CanUserReorderColumns="False" CanUserDeleteRows="False" 
+                  CanUserAddRows="False" ColumnWidth="*" Margin="10" IsReadOnly="True" >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
                 <DataGridTextColumn Header="Imię" Binding="{Binding FirstName}"/>
