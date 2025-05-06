@@ -16,14 +16,14 @@ using Przychodnia.ViewModel.Form;
 
 namespace Przychodnia.ViewModel.Admin;
 
-public class AddUserViewModel : BaseUserFormViewModel<UserAddFormData>
+public class UserAddViewModel : BaseUserFormViewModel<UserAddFormData>
 {
     private readonly IUserService _userService;
 
     public static string HeaderText => "Dodaj użytkownika";
     public static string ActionButtonText => "Dodaj";
     public ICommand SaveUserCommand { get; }
-    public AddUserViewModel(IUserService userService, IUserTypeService userTypeService, ILaboratoryService labService, IDialogService dialogService)
+    public UserAddViewModel(IUserService userService, IUserTypeService userTypeService, ILaboratoryService labService, IDialogService dialogService)
         : base(userTypeService, labService, dialogService) 
     {
         _userService = userService;

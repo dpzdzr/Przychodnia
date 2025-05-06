@@ -41,24 +41,29 @@ namespace Przychodnia
             services.AddScoped<IUserTypeRepository, UserTypeRepository>();
             services.AddScoped<ILaboratoryRepository, LaboratoryRepository>();
             services.AddScoped<IPostalCodeRepository, PostalCodeRepository>();
+            services.AddScoped<IPatientRepository, PatientRepository>();
 
             // Services
             services.AddSingleton<IUserSessionService, UserSessionService>();
             services.AddSingleton<IDialogService, DialogService>();
+
             // Entities services
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IUserTypeService, UserTypeService>();
             services.AddTransient<ILaboratoryService, LaboratoryService>();
             services.AddTransient<IPostalCodeService, PostalCodeService>();
+            services.AddTransient<IPatientService, PatientService>();
 
             // ViewModels
             services.AddTransient<LoginViewModel>();
-            services.AddTransient<AddUserViewModel>();
+            services.AddTransient<UserAddViewModel>();
             services.AddSingleton<AdminPanelViewModel>();
             services.AddTransient<UsersListViewModel>();
             services.AddSingleton<AdminPanelHomePageViewModel>();
-            services.AddTransient<EditUserViewModel>();
+            services.AddTransient<UserEditViewModel>();
             services.AddTransient<PostalCodesListViewModel>();
+            services.AddTransient<PatientAddViewModel>();
+            services.AddTransient<PatientsListViewModel>();
 
             // ViewModelService
             services.AddSingleton<IAdminNavigationService>(provider 

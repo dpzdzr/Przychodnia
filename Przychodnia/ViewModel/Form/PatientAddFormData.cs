@@ -4,8 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Przychodnia.ViewModel.Shared;
+namespace Przychodnia.ViewModel.Form;
 
-public class AddPatientViewModel
+public class PatientAddFormData : PatientFormDataBase
 {
 }

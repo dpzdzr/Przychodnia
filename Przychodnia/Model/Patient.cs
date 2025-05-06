@@ -20,7 +20,7 @@ public class Patient
     public string? Street { get; set; }
     public string? HouseNumber { get; set; }
     public string? ApartmentNumber { get; set; }
-    public Sex? sex { get; set; }
+    public Sex? Sex { get; set; }
 }
 
 public enum Sex

@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Przychodnia.View"
         xmlns:viewmodel="clr-namespace:Przychodnia.ViewModel.Admin" 
-        d:DataContext="{d:DesignInstance Type=viewmodel:AddUserViewModel}"
+        d:DataContext="{d:DesignInstance Type=viewmodel:UserAddViewModel}"
         mc:Ignorable="d" 
         d:Width="600" d:Height="400">
     <UserControl.Resources>

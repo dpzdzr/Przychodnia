@@ -20,13 +20,13 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Grid Grid.Column="0" Margin="0,25,0,25">
+        <Grid Grid.Column="0" Margin="0,15,0,15">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             
-            <DataGrid ItemsSource="{Binding PostalCodes}" SelectedItem="{Binding SelectedPostalCode}" AutoGenerateColumns="False" Margin="5" IsReadOnly="True" CanUserAddRows="False" CanUserReorderColumns="False" HeadersVisibility="Column">
+            <DataGrid ItemsSource="{Binding PostalCodes}" SelectedItem="{Binding SelectedPostalCode}" AutoGenerateColumns="False" Margin="5" IsReadOnly="True" CanUserAddRows="False" CanUserReorderColumns="False" HeadersVisibility="Column" FontSize="15">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Kod pocztowy"  Binding="{Binding Code}" Width="*"/>
                     <DataGridTextColumn Header="Miasto" Binding="{Binding City}" Width="2*"/>

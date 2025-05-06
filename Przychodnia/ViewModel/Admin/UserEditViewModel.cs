@@ -13,7 +13,7 @@ using Przychodnia.ViewModel.Form;
 
 namespace Przychodnia.ViewModel.Admin;
 
-public class EditUserViewModel : BaseUserFormViewModel<UserEditFormData>
+public class UserEditViewModel : BaseUserFormViewModel<UserEditFormData>
 {
     private readonly IUserService _userService;
 
@@ -29,7 +29,7 @@ public class EditUserViewModel : BaseUserFormViewModel<UserEditFormData>
         set => SetProperty(ref _editableUser, value);
     }
 
-    public EditUserViewModel(IDialogService dialogService, ILaboratoryService labService, IUserTypeService userTypeService, IUserService userService) : base(userTypeService, labService, dialogService)
+    public UserEditViewModel(IDialogService dialogService, ILaboratoryService labService, IUserTypeService userTypeService, IUserService userService) : base(userTypeService, labService, dialogService)
     {
         _userService = userService;
         SaveUserCommand = new AsyncRelayCommand(EditUserAsync);

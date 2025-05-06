@@ -17,6 +17,7 @@ public class AdminPanelViewModel : NavigableViewModelBase, IAdminNavigationServi
     private readonly IServiceProvider _serviceProvider;
     public IAsyncRelayCommand NavigateToUsersListCommand { get; }
     public IAsyncRelayCommand NavigateToPostalCodesListCommand { get; }
+    public IAsyncRelayCommand NavigateToPatientsListCommand { get; }
     public ICommand NavigateBackCommand { get; }
 
     public AdminPanelViewModel(IServiceProvider serviceProvider)
@@ -30,6 +31,9 @@ public class AdminPanelViewModel : NavigableViewModelBase, IAdminNavigationServi
 
         NavigateToPostalCodesListCommand = new AsyncRelayCommand
             (() => NavigateToAsync<PostalCodesListViewModel>(vm => vm.InitializeAsync()));
+
+        NavigateToPatientsListCommand = new AsyncRelayCommand
+            (() => NavigateToAsync<PatientsListViewModel>(vm => vm.InitializeAsync()));
 
         NavigateBackCommand = new RelayCommand(NavigateBack);
     }
