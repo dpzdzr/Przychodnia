@@ -12,9 +12,9 @@ using Przychodnia.ViewModel.Admin;
 
 namespace Przychodnia
 {
-    public partial class MainWindow : Window
+    public partial class AdminPanelWindow : Window
     {
-        public MainWindow(AdminPanelViewModel viewModel)
+        public AdminPanelWindow(AdminPanelViewModel viewModel)
         {
             InitializeComponent();
             DataContext = viewModel;

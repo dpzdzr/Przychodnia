@@ -8,4 +8,15 @@ namespace Przychodnia.ViewModel.Form;
 
 public class UserAddFormData : UserFormDataBase
 {
+    public void ClearForm()
+    {
+        FirstName = string.Empty;
+        LastName = string.Empty;
+        Login = string.Empty;
+        Password = string.Empty;
+        LicenseNumber = string.Empty;
+        IsActive = false;
+        SelectedUserType = null;
+        SelectedLaboratory = null;
+    }
 }

@@ -33,6 +33,10 @@ public class PostalCodeService(IPostalCodeRepository repo) : IPostalCodeService
     public async Task RemoveAsync(PostalCode postalCode)
     {
         _repo.Remove(postalCode);
-        await _repo.SaveChangesAsync();        
+        await _repo.SaveChangesAsync();
     }
+
+    public async Task<List<PostalCode>> Filter(string fragment)
+        => await _repo.Filter(fragment);
+
 }

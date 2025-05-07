@@ -8,7 +8,7 @@ using Przychodnia.ViewModel.Base;
 
 namespace Przychodnia.ViewModel.Login;
 
-internal class LoginViewModel : ViewModelBase
+internal class LoginViewModel : BaseViewModel
 {
     //private readonly IUserSessionService _userSessionService;
 

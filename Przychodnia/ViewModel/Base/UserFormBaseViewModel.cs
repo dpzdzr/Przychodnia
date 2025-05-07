@@ -12,7 +12,7 @@ using Przychodnia.ViewModel.Form;
 
 namespace Przychodnia.ViewModel.Base;
 
-public abstract class BaseUserFormViewModel<TForm> : ViewModelBase
+public abstract class UserFormBaseViewModel<TForm> : BaseViewModel
     where TForm : UserFormDataBase, new()
 {
     private readonly ILaboratoryService _labService;
@@ -41,7 +41,7 @@ public abstract class BaseUserFormViewModel<TForm> : ViewModelBase
     public bool IsDoctorOrLabTechnician
         => FormData.SelectedUserType?.IsDoctorOrLabTechnician == true;
 
-    protected BaseUserFormViewModel(IUserTypeService userTypeService, ILaboratoryService laboratoryService, IDialogService dialogService)
+    protected UserFormBaseViewModel(IUserTypeService userTypeService, ILaboratoryService laboratoryService, IDialogService dialogService)
     {
         _userTypeService = userTypeService;
         _labService = laboratoryService;    
@@ -63,5 +63,8 @@ public abstract class BaseUserFormViewModel<TForm> : ViewModelBase
     {
         UserTypes = [.. await _userTypeService.GetAllAsync()];
         Laboratories = [.. await _labService.GetAllAsync()];
+
+        if(UserTypes.Any())
+            FormData.SelectedUserType = UserTypes.First();
     }
 }

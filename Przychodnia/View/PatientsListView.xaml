@@ -40,9 +40,9 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
-            <Button Content="Dodaj" Grid.Column="0" Width="120" Height="35" Margin="5" Command="{Binding }"/>
-            <Button Content="Edytuj" Grid.Column="1" Width="120" Height="35" Margin="5" Command="{Binding }"/>
-            <Button Content="Usuń" Grid.Column="2" Width="120" Height="35" Margin="5" Command="{Binding }"/>
+            <Button Content="Dodaj" Grid.Column="0" Width="120" Height="35" Margin="5" Command="{Binding AddPatientCommand}"/>
+            <Button Content="Edytuj" Grid.Column="1" Width="120" Height="35" Margin="5" Command="{Binding EditPatientCommand}"/>
+            <Button Content="Usuń" Grid.Column="2" Width="120" Height="35" Margin="5" Command="{Binding RemovePatientCommand}"/>
         </Grid>
     </Grid>
 </UserControl>

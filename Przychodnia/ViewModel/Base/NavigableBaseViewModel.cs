@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Przychodnia.ViewModel.Base;
 
-namespace Przychodnia.ViewModel.Base;
+namespace Przychodnia.ViewModel.Navigation;
 
-public abstract class NavigableViewModelBase : ViewModelBase
+public abstract class NavigableBaseViewModel : BaseViewModel
 {
-    private readonly Stack<ViewModelBase> _navigationStack = new();
-    private ViewModelBase? _currentViewModel;
+    private readonly Stack<BaseViewModel> _navigationStack = new();
+    private BaseViewModel? _currentViewModel;
     private bool _canNavigateBack;
     private bool _isBusy;
 
@@ -24,12 +25,12 @@ public abstract class NavigableViewModelBase : ViewModelBase
         set => SetProperty(ref _canNavigateBack, value);
     }
 
-    public ViewModelBase? CurrentViewModel
+    public BaseViewModel? CurrentViewModel
     {
         get => _currentViewModel;
         set => SetProperty(ref _currentViewModel, value);
     }
-    protected void NavigateTo(ViewModelBase viewModel)
+    protected void NavigateTo(BaseViewModel viewModel)
     {
         if (CurrentViewModel != null)
             _navigationStack.Push(CurrentViewModel);

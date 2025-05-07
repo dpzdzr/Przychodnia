@@ -13,7 +13,7 @@ using Przychodnia.ViewModel.Base;
 
 namespace Przychodnia.ViewModel.Shared;
 
-public class PostalCodesListViewModel : ViewModelBase
+public class PostalCodesListViewModel : BaseViewModel
 {
     private readonly IPostalCodeService _postalCodeService;
     private readonly IDialogService _dialogService;

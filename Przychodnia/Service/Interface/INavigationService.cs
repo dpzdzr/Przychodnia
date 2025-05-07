@@ -5,12 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using Przychodnia.ViewModel.Base;
 
-namespace Przychodnia.ViewModel.Interface;
+namespace Przychodnia.Service.Interface;
 
 public interface INavigationService
 {
-    void NavigateTo(ViewModelBase viewModel);
+    void NavigateTo(BaseViewModel viewModel);
     void NavigateBack();
 }
-
-public interface IAdminNavigationService : INavigationService { }

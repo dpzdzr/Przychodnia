@@ -5,11 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Przychodnia.View"
              xmlns:viewmodel="clr-namespace:Przychodnia.ViewModel.Shared"
+             xmlns:converter="clr-namespace:Przychodnia.Converter"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
-             d:DataContext="{d:DesignInstance Type=viewmodel:AddPatientViewModel}">
+             d:DataContext="{d:DesignInstance Type=viewmodel:PatientAddViewModel}">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converter:SexToStringConverter x:Key="SexToStringConverter"/>
     </UserControl.Resources>
     
     <Grid d:Background="White">
@@ -33,34 +35,32 @@
             <TextBox Text="{Binding FormData.FirstName}"/>
             <TextBlock Text="Nazwisko" Margin="0,5,0,0"/>
             <TextBox Text="{Binding FormData.LastName}"/>
-            <TextBlock Text="Login" Margin="0,5,0,0"/>
-            <TextBox Text="{Binding FormData.Login}"/>
-            <TextBlock Text="Hasło" Margin="0,5,0,0"/>
-            <TextBox Text="{Binding FormData.Password}"/>
+            <TextBlock Text="PESEL" Margin="0,5,0,0"/>
+            <TextBox Text="{Binding FormData.Pesel}"/>
+            <TextBlock Text="Płeć" Margin="0,5,0,0"/>
+            <ComboBox ItemsSource="{Binding SexDispDict}"
+                      DisplayMemberPath="Value"
+                      SelectedValuePath="Key"
+                      SelectedValue="{Binding FormData.Sex}"/>
         </StackPanel>
         <StackPanel Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Width="250">
-            <TextBlock Text="Rola"/>
+            <TextBlock Text="Ulica" Margin="0,5,0,0"/>
+            <TextBox Text="{Binding FormData.Street}"/>
+            <TextBlock Text="Nr domu" Margin="0,5,0,0"/>
+            <TextBox Text="{Binding FormData.HouseNumber}"/>
+            <TextBlock Text="Nr mieszkania" Margin="0,5,0,0"/>
+            <TextBox Text="{Binding FormData.ApartmentNumber}"/>
+            <TextBlock Text="Kod pocztowy" Margin="0,5,0,0"/>
             <ComboBox 
-                ItemsSource="{Binding UserTypes}"
-                SelectedItem="{Binding FormData.SelectedUserType}"
-                DisplayMemberPath="Name"
-                />
-            <TextBlock Text="Numer licencji" Margin="0,5,0,0"
-                       Visibility="{Binding IsDoctorOrLabTechnician, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <TextBox Text="{Binding FormData.LicenseNumber}" 
-                     Visibility="{Binding IsDoctorOrLabTechnician, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <TextBlock Text="Nazwa laboratorium" Margin="0,5,0,0" 
-                       Visibility="{Binding IsLabTechnician, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <ComboBox 
-                ItemsSource="{Binding Laboratories}"
-                SelectedItem="{Binding FormData.SelectedLaboratory}"
-                Visibility="{Binding IsLabTechnician, Converter={StaticResource BoolToVisibilityConverter}}"
-                DisplayMemberPath="Name"/>
-            <TextBlock Text="Użytkownik aktywny" Margin="0,5,0,0"/>
-            <CheckBox IsChecked="{Binding FormData.IsActive}"/>
+                ItemsSource="{Binding PostalCodes}"
+                IsEditable="True"
+                IsTextSearchEnabled="False"
+                SelectedItem="{Binding FormData.PostalCode}"
+                DisplayMemberPath="Code"
+                Text="{Binding EnteredCode, UpdateSourceTrigger=PropertyChanged}"/>
         </StackPanel>
         <Button
             Grid.Row="3" Grid.ColumnSpan="2" Content="{Binding ActionButtonText}" 
-            Width="150" Height="25" Margin="0,30,0,0" Command="{Binding SaveUserCommand}"/>
+            Width="150" Height="25" Margin="0,30,0,0" Command="{Binding ActionButtonCommand}"/>
     </Grid>
 </UserControl>

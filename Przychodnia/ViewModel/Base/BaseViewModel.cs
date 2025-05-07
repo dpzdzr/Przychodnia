@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Przychodnia.ViewModel.Base;
 
-public abstract class ViewModelBase : INotifyPropertyChanged
+public abstract class BaseViewModel : INotifyPropertyChanged
 {
     public event PropertyChangedEventHandler? PropertyChanged;
 

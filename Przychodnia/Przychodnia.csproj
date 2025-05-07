@@ -23,4 +23,9 @@
     <Page Include="App.xaml" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ViewModel\Interface\" />
+    <Folder Include="ViewModel\Navigation\" />
+  </ItemGroup>
+
 </Project>

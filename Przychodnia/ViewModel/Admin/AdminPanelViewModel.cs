@@ -7,12 +7,13 @@ using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.EntityFrameworkCore.Query;
 using Microsoft.Extensions.DependencyInjection;
+using Przychodnia.Service.Interface;
 using Przychodnia.ViewModel.Base;
-using Przychodnia.ViewModel.Interface;
+using Przychodnia.ViewModel.Navigation;
 using Przychodnia.ViewModel.Shared;
 
 namespace Przychodnia.ViewModel.Admin;
-public class AdminPanelViewModel : NavigableViewModelBase, IAdminNavigationService
+public class AdminPanelViewModel : NavigableBaseViewModel, INavigationService
 {
     private readonly IServiceProvider _serviceProvider;
     public IAsyncRelayCommand NavigateToUsersListCommand { get; }
@@ -39,7 +40,7 @@ public class AdminPanelViewModel : NavigableViewModelBase, IAdminNavigationServi
     }
 
     private async Task NavigateToAsync<TViewModel>(Func<TViewModel, Task> initializer = null)
-        where TViewModel : ViewModelBase
+        where TViewModel : BaseViewModel
     {
         if (CurrentViewModel is TViewModel)
             return;
@@ -58,7 +59,7 @@ public class AdminPanelViewModel : NavigableViewModelBase, IAdminNavigationServi
         }
     }
 
-    public void NavigateTo(ViewModelBase viewModel) => base.NavigateTo(viewModel);
+    public void NavigateTo(BaseViewModel viewModel) => base.NavigateTo(viewModel);
     public void NavigateBack()
     {
         base.NavigateBack();

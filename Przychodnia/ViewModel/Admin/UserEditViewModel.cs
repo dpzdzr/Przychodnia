@@ -13,14 +13,14 @@ using Przychodnia.ViewModel.Form;
 
 namespace Przychodnia.ViewModel.Admin;
 
-public class UserEditViewModel : BaseUserFormViewModel<UserEditFormData>
+public class UserEditViewModel : UserFormBaseViewModel<UserEditFormData>
 {
     private readonly IUserService _userService;
 
     private User _editableUser;
 
-    public string HeaderText => "Edytuj użytkownika";
-    public string ActionButtonText => "Edytuj";
+    public static string HeaderText => "Edytuj użytkownika";
+    public static string ActionButtonText => "Edytuj";
 
     public ICommand SaveUserCommand { get; }
     public User EditableUser

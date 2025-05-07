@@ -15,4 +15,6 @@ public interface IPostalCodeService
     Task SaveChangesAsync();
 
     Task RemoveAsync(PostalCode code);
+
+    Task<List<PostalCode>> Filter(string fragment);
 }

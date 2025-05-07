@@ -16,7 +16,7 @@ using Przychodnia.ViewModel.Form;
 
 namespace Przychodnia.ViewModel.Admin;
 
-public class UserAddViewModel : BaseUserFormViewModel<UserAddFormData>
+public class UserAddViewModel : UserFormBaseViewModel<UserAddFormData>
 {
     private readonly IUserService _userService;
 
@@ -49,12 +49,7 @@ public class UserAddViewModel : BaseUserFormViewModel<UserAddFormData>
         await base.InitializeFormDataAsync();
     }
 
-    private void ClearForm()
-    {   
-        FormData.FirstName = string.Empty; FormData.LastName = string.Empty; FormData.Login = string.Empty;
-        FormData.Password = string.Empty; FormData.LicenseNumber = string.Empty; FormData.IsActive = false;
-        FormData.SelectedUserType = null; FormData.SelectedLaboratory = null;
-    }
+    private void ClearForm() => FormData.ClearForm();
 
     private UserInputDTO CreateUserInputDTOFromForm()
     {

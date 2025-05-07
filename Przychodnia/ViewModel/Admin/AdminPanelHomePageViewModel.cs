@@ -7,6 +7,6 @@ using Przychodnia.ViewModel.Base;
 
 namespace Przychodnia.ViewModel.Admin;
 
-public class AdminPanelHomePageViewModel : ViewModelBase
+public class AdminPanelHomePageViewModel : BaseViewModel
 {
 }

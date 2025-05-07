@@ -10,7 +10,6 @@ using Przychodnia.Service.Implementation;
 using Przychodnia.Service.Interface;
 using Przychodnia.View;
 using Przychodnia.ViewModel.Admin;
-using Przychodnia.ViewModel.Interface;
 using Przychodnia.ViewModel.Login;
 using Przychodnia.ViewModel.Shared;
 
@@ -46,6 +45,8 @@ namespace Przychodnia
             // Services
             services.AddSingleton<IUserSessionService, UserSessionService>();
             services.AddSingleton<IDialogService, DialogService>();
+            services.AddSingleton<NavigationServiceProxy>();
+            services.AddSingleton<INavigationService>(provider => provider.GetRequiredService<NavigationServiceProxy>());
 
             // Entities services
             services.AddTransient<IUserService, UserService>();
@@ -64,18 +65,15 @@ namespace Przychodnia
             services.AddTransient<PostalCodesListViewModel>();
             services.AddTransient<PatientAddViewModel>();
             services.AddTransient<PatientsListViewModel>();
-
-            // ViewModelService
-            services.AddSingleton<IAdminNavigationService>(provider 
-                => { return provider.GetRequiredService<AdminPanelViewModel>(); });
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-
+            var proxy = _serviceProvider.GetRequiredService<NavigationServiceProxy>();
             var mainViewModel = _serviceProvider.GetService<AdminPanelViewModel>();
-            var mainView = new MainWindow(mainViewModel);
+            proxy.Current = mainViewModel;
+            var mainView = new AdminPanelWindow(mainViewModel);
             mainView.ShowDialog();
         }
     }

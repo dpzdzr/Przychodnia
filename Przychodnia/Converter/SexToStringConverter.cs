@@ -21,6 +21,9 @@ public class SexToStringConverter : IValueConverter
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        throw new NotImplementedException();
+        if (value is string sexString)
+            return sexString == "Kobieta" ? Sex.Female : Sex.Male;
+
+        return "";
     }
 }

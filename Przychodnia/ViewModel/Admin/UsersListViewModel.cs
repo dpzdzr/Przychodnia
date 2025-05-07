@@ -11,19 +11,18 @@ using Przychodnia.Model;
 using Przychodnia.Repository.Interface;
 using Przychodnia.Service.Interface;
 using Przychodnia.ViewModel.Base;
-using Przychodnia.ViewModel.Interface;
 
 namespace Przychodnia.ViewModel.Admin;
 
-public class UsersListViewModel : ViewModelBase
+public class UsersListViewModel : BaseViewModel
 {
     private readonly IDialogService _dialogService;
     private readonly IUserService _userService;
-    private readonly IAdminNavigationService _navigationService;
+    private readonly INavigationService _navigationService;
     private readonly IServiceProvider _serviceProvider;
 
     private User _selectedUser;
-    private ObservableCollection<User> _users;
+    private ObservableCollection<User> _users;  
 
     public IAsyncRelayCommand DeleteUserCommand { get; }
     public IAsyncRelayCommand EditUserCommand { get; }
@@ -48,12 +47,13 @@ public class UsersListViewModel : ViewModelBase
     }
 
     public UsersListViewModel(IDialogService dialogService, IUserService userService,
-        IAdminNavigationService navigationService, IServiceProvider serviceProvider)
+        INavigationService navigationService, IServiceProvider serviceProvider)
     {
         _dialogService = dialogService;
         _userService = userService;
         _navigationService = navigationService;
         _serviceProvider = serviceProvider;
+
         DeleteUserCommand = new AsyncRelayCommand(RemoveUser, () => SelectedUser != null);
         EditUserCommand = new AsyncRelayCommand(EditUser, () => SelectedUser != null);
         AddUserCommand = new AsyncRelayCommand(AddUser);
@@ -84,8 +84,7 @@ public class UsersListViewModel : ViewModelBase
 
     public async Task InitializeAsync()
     {
-        var users = await _userService.GetAllWithUserTypeAsync();
-        Users = [.. users];
+        Users = [.. await _userService.GetAllWithUserTypeAsync()];
     }
 
     public override async Task OnNavigatedBack()
