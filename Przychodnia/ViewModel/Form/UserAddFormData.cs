@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Przychodnia.Model.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,4 +20,16 @@ public class UserAddFormData : UserFormDataBase
         SelectedUserType = null;
         SelectedLaboratory = null;
     }
+
+    public UserDTO ToDTO() => new()
+    {
+        FirstName = FirstName,
+        LastName = LastName,
+        Login = Login,
+        PasswordHash = Password,
+        LicenseNumber = LicenseNumber,
+        IsActive = IsActive,
+        UserType = SelectedUserType,
+        Laboratory = SelectedLaboratory
+    };
 }

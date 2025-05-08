@@ -14,6 +14,7 @@ using Przychodnia.Service.Interface;
 using Przychodnia.Service.Interface.Entity;
 using Przychodnia.ViewModel.Base;
 using Przychodnia.ViewModel.Form;
+using Przychodnia.ViewModel.Wrapper;
 
 namespace Przychodnia.ViewModel.Admin;
 
@@ -21,21 +22,40 @@ public class UserAddViewModel : UserFormBaseViewModel<UserAddFormData>
 {
     private readonly IUserService _userService;
 
-    public static string HeaderText => "Dodaj użytkownika";
-    public static string ActionButtonText => "Dodaj";
-    public ICommand SaveUserCommand { get; }
-    public UserAddViewModel(IUserService userService, IUserTypeService userTypeService, ILaboratoryService labService, IDialogService dialogService)
-        : base(userTypeService, labService, dialogService) 
+    private UserWrapper _addUserWrapper;
+
+    public UserAddViewModel(IUserService userService, IUserTypeService userTypeService,
+        ILaboratoryService labService, IDialogService dialogService)
+        : base(userTypeService, labService, dialogService)
     {
         _userService = userService;
         SaveUserCommand = new AsyncRelayCommand(AddUserAsync);
     }
 
+    public static string HeaderText => "Dodaj użytkownika";
+    public static string ActionButtonText => "Dodaj";
+    public UserWrapper AddUserWrapper
+    {
+        get => _addUserWrapper;
+        set => SetProperty(ref _addUserWrapper, value);
+    }
+
+    public ICommand SaveUserCommand { get; }
+
+    public async Task InitializeAsync(UserWrapper wrapper)
+    {
+        AddUserWrapper = wrapper;
+        await base.InitializeFormDataAsync();
+    }
+
+    private void ClearForm() => FormData.ClearForm();
     private async Task AddUserAsync()
     {
         try
         {
-            await _userService.CreateUserAsync(CreateUserInputDTOFromForm());
+            var entity = await _userService.CreateUserAsync(FormData.ToDTO());
+            AddUserWrapper.LoadFromEntity(entity);
+
             ClearForm();
             _dialogService.Show("Sukces", "Pomyślnie dodano nowego użytkownika");
         }
@@ -43,27 +63,5 @@ public class UserAddViewModel : UserFormBaseViewModel<UserAddFormData>
         {
             _dialogService.Show("Błąd", $"{ex.Message}");
         }
-    }
-
-    public async Task InitializeAsync()
-    {
-        await base.InitializeFormDataAsync();
-    }
-
-    private void ClearForm() => FormData.ClearForm();
-
-    private UserInputDTO CreateUserInputDTOFromForm()
-    {
-        return new UserInputDTO
-        {
-            FirstName = FormData.FirstName,
-            LastName = FormData.LastName,
-            Login = FormData.Login,
-            PasswordHash = FormData.Password,
-            UserType = FormData.SelectedUserType,
-            LicenseNumber = FormData.LicenseNumber,
-            Laboratory = FormData.SelectedLaboratory,
-            IsActive = FormData.IsActive
-        };
     }
 }

@@ -8,7 +8,7 @@ using Przychodnia.Service.Interface;
 
 namespace Przychodnia.Model.DTO;
 
-public record UserInputDTO
+public record UserDTO
 {
     public string? FirstName { get; set; }
     public string? LastName { get; set; }

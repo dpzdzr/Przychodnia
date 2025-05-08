@@ -11,6 +11,7 @@ using Przychodnia.Service.Interface;
 using Przychodnia.Service.Interface.Entity;
 using Przychodnia.ViewModel.Base;
 using Przychodnia.ViewModel.Form;
+using Przychodnia.ViewModel.Wrapper;
 
 namespace Przychodnia.ViewModel.Admin;
 
@@ -18,17 +19,7 @@ public class UserEditViewModel : UserFormBaseViewModel<UserEditFormData>
 {
     private readonly IUserService _userService;
 
-    private User _editableUser;
-
-    public static string HeaderText => "Edytuj użytkownika";
-    public static string ActionButtonText => "Edytuj";
-        
-    public ICommand SaveUserCommand { get; }
-    public User EditableUser
-    {
-        get => _editableUser;
-        set => SetProperty(ref _editableUser, value);
-    }
+    private UserWrapper _editUserWrapper;
 
     public UserEditViewModel(IDialogService dialogService, ILaboratoryService labService, IUserTypeService userTypeService, IUserService userService) : base(userTypeService, labService, dialogService)
     {
@@ -36,20 +27,27 @@ public class UserEditViewModel : UserFormBaseViewModel<UserEditFormData>
         SaveUserCommand = new AsyncRelayCommand(EditUserAsync);
     }
 
-    public async Task InitializeAsync(int id)
+    public UserWrapper EditUserWrapper
     {
-        var user = await _userService.GetByIdWithDetailsAsync(id);
-        EditableUser = user;
+        get => _editUserWrapper;
+        set => SetProperty(ref _editUserWrapper, value);
+    }
+    public static string HeaderText => "Edytuj użytkownika";
+    public static string ActionButtonText => "Edytuj";
 
+    public IAsyncRelayCommand SaveUserCommand { get; }
+
+    public async Task InitializeAsync(UserWrapper wrapper)
+    {
+        EditUserWrapper = wrapper;
         await base.InitializeFormDataAsync();
-
-        FormData.LoadFromUser(user);
+        FormData.LoadFromUserWrapper(wrapper);
     }
 
     private async Task EditUserAsync()
     {
-        FormData.LoadToUser(EditableUser);
-        await _userService.SaveChangesAsync();
+        EditUserWrapper.LoadFromForm(FormData);
+        await _userService.UpdateAsync(EditUserWrapper.Id, EditUserWrapper.ToDTO());
         _dialogService.Show("Sukces", "Pomyślnie edytowano użytkownika");
     }
 }

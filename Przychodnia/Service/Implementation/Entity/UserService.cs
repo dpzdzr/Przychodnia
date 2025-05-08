@@ -14,39 +14,50 @@ namespace Przychodnia.Service.Implementation.Entity;
 public class UserService(IUserRepository userRepository) : IUserService
 {
     private readonly IUserRepository _repo = userRepository;
-    public async Task CreateUserAsync(UserInputDTO model)
+    public async Task<User> CreateUserAsync(UserDTO dto)
     {
-        await _repo.AddAsync(new User
+        var entity = await _repo.AddAsync(new User
         {
-            FirstName = model.FirstName,
-            LastName = model.LastName,
-            Login = model.Login,
-            PasswordHash = model.PasswordHash,
-            UserType = model.UserType,
-            LicenseNumber = model.LicenseNumber,
-            Laboratory = model.Laboratory,
-            IsActive = model.IsActive
+            FirstName = dto.FirstName,
+            LastName = dto.LastName,
+            Login = dto.Login,
+            PasswordHash = dto.PasswordHash,
+            UserType = dto.UserType,
+            LicenseNumber = dto.LicenseNumber,
+            Laboratory = dto.Laboratory,
+            IsActive = dto.IsActive
         });
         await _repo.SaveChangesAsync();
+        return entity;
     }
 
     public async Task<List<User>> GetAllWithUserTypeAsync()
         => await _repo.GetAllWithUserTypeAsync();
 
-
-    public async Task RemoveAsync(User user)
-    {
-        _repo.Remove(user);
+    public async Task RemoveAsync(int id)
+    {   
+        var entity = await _repo.GetByIdAsync(id) ?? throw new ArgumentNullException(nameof(id));
+        _repo.Remove(entity);
         await _repo.SaveChangesAsync();
     }
 
-    public async Task<User?> GetByIdWithDetailsAsync(int id)
-    {
-        return await _repo.GetByIdAsync(id);
-    }
+    public async Task<User?> GetByIdWithDetailsAsync(int id) 
+        => await _repo.GetByIdAsync(id);
 
-    public async Task SaveChangesAsync()
+    public async Task UpdateAsync(int id, UserDTO dto)
     {
+        var existing = await _repo.GetByIdAsync(id)
+            ?? throw new KeyNotFoundException("Nie znaleziono użytkownika");
+
+        existing.FirstName = dto.FirstName;
+        existing.LastName = dto.LastName;
+        existing.Login = dto.Login;
+        existing.PasswordHash = dto.PasswordHash;
+        existing.LicenseNumber = dto.LicenseNumber;
+        existing.IsActive = dto.IsActive;
+        existing.Laboratory = dto.Laboratory;
+        existing.UserType = dto.UserType;
+
         await _repo.SaveChangesAsync();
     }
 }

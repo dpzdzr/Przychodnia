@@ -29,10 +29,9 @@ public class PostalCodeService(IPostalCodeRepository repo) : IPostalCodeService
         => await _repo.GetAllAsync();
 
     public async Task RemoveAsync(int id)
-    {   
-        var entity = await _repo.GetByIdAsync(id);
-        if (entity == null)
-            throw new KeyNotFoundException("Nie znaleziono obektu");
+    {
+        var entity = await _repo.GetByIdAsync(id)
+            ?? throw new ArgumentNullException("Nie znaleziono obektu");
 
         _repo.Remove(entity);
         await _repo.SaveChangesAsync();
@@ -49,7 +48,8 @@ public class PostalCodeService(IPostalCodeRepository repo) : IPostalCodeService
 
     public async Task UpdateAsync(int id, PostalCodeDTO dto)
     {
-        var existing = await _repo.GetByIdAsync(id) ?? throw new InvalidOperationException("Nie znaleziono kodu pocztowego");
+        var existing = await _repo.GetByIdAsync(id) 
+            ?? throw new KeyNotFoundException("Nie znaleziono kodu pocztowego");
 
         existing.Code = dto.Code;
         existing.City = dto.City;

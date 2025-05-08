@@ -79,7 +79,16 @@ public class PostalCodeListViewModel : BaseViewModel
         var items = await _postalCodeService.GetAllAsync();
         PostalCodes = [.. items.Select(p => new PostalCodeWrapper(p))];
     }
-    public async Task SubmitPostalCodeAsync()
+
+    private async Task DeletePostalCode()
+    {
+        if (_dialogService.Confirm("Potwierdzenie usunięcia", "Czy na pewno chcesz usunąć wybrany kod pocztowy?"))
+        {
+            await _postalCodeService.RemoveAsync(SelectedPostalCode.Id);
+            PostalCodes.Remove(SelectedPostalCode);
+        }
+    }
+    private async Task SubmitPostalCodeAsync()
     {
         if (IsEditMode)
         {
@@ -96,15 +105,6 @@ public class PostalCodeListViewModel : BaseViewModel
             ClearForm();
         }
     }
-    public async Task DeletePostalCode()
-    {
-        if (_dialogService.Confirm("Potwierdzenie usunięcia", "Czy na pewno chcesz usunąć wybrany kod pocztowy?"))
-        {
-            await _postalCodeService.RemoveAsync(SelectedPostalCode.Id);
-            PostalCodes.Remove(SelectedPostalCode);
-        }
-    }
-
     private void ClearForm()
     {
         SelectedPostalCode = new PostalCodeWrapper(new PostalCode());

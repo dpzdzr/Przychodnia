@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Przychodnia.Model;
+using Przychodnia.Model.DTO;
 
 namespace Przychodnia.Repository.Interface;
 

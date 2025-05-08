@@ -10,11 +10,11 @@ namespace Przychodnia.Service.Interface.Entity;
 
 public interface IUserService
 {
-    Task CreateUserAsync(UserInputDTO model);
-    Task RemoveAsync(User user);
+    Task<User> CreateUserAsync(UserDTO dto);
+    Task RemoveAsync(int id);
     Task<List<User>> GetAllWithUserTypeAsync();
 
     Task<User?> GetByIdWithDetailsAsync(int id);
 
-    Task SaveChangesAsync();
+    Task UpdateAsync(int id, UserDTO dto);
 }

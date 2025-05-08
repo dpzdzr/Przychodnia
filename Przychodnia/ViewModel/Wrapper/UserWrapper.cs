@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Przychodnia.Model;
+using Przychodnia.Model.DTO;
+using Przychodnia.ViewModel.Form;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,13 +12,13 @@ namespace Przychodnia.ViewModel.Wrapper;
 
 public partial class UserWrapper : ObservableObject
 {
-    public int Id { get; }
-
+    [ObservableProperty] private int id;
     [ObservableProperty] private string? firstName;
     [ObservableProperty] private string? lastName;
     [ObservableProperty] private string login;
     [ObservableProperty] private string? password;
-    [ObservableProperty] private bool isActive;
+    [ObservableProperty] private string? licenseNumber;
+    [ObservableProperty] private bool? isActive;
     [ObservableProperty] private UserType? userType;
     [ObservableProperty] private Laboratory? laboratory;
 
@@ -29,25 +31,27 @@ public partial class UserWrapper : ObservableObject
         Password = user.PasswordHash;
         FirstName = user.FirstName;
         LastName = user.LastName;
-        IsActive = (bool)user.IsActive;
+        LicenseNumber = user.LicenseNumber;
+        IsActive = user.IsActive;
         UserType = user.UserType;
         Laboratory = user.Laboratory;
     }
 
-    public void UpdateFrom(User user)
+    public void LoadFromForm(UserEditFormData form)
     {
-        Login = user.Login;
-        Password = user.PasswordHash;
-        FirstName = user.FirstName;
-        LastName = user.LastName;
-        IsActive = (bool)user.IsActive;
-        UserType = user.UserType;
-        Laboratory = user.Laboratory;
+        Login = form.Login;
+        Password = form.Password;
+        FirstName = form.FirstName;
+        LastName = form.LastName;
+        LicenseNumber = form.LicenseNumber;
+        IsActive = (bool)form.IsActive;
+        UserType = form.SelectedUserType;
+        Laboratory = form.SelectedLaboratory;
     }
 
     public User ToEntity() => new()
     {
-        Id = Id,
+        Id = (int)Id,
         Login = Login,
         PasswordHash = Password,
         FirstName = FirstName,
@@ -56,4 +60,42 @@ public partial class UserWrapper : ObservableObject
         UserType = UserType,
         Laboratory = Laboratory
     };
+
+    public UserDTO ToDTO() => new()
+    {
+        FirstName = FirstName,
+        LastName = LastName,
+        Login = Login,
+        PasswordHash = Password,
+        LicenseNumber = LicenseNumber,
+        IsActive = IsActive,
+        UserType = UserType,
+        Laboratory = Laboratory
+    };
+
+    public void LoadFromDTO(UserDTO dto)
+    {
+        FirstName = dto.FirstName;
+        LastName = dto.LastName;
+        Login = dto.Login;
+        Password = dto.PasswordHash;
+        LicenseNumber = dto.LicenseNumber;
+        IsActive = dto.IsActive;
+        UserType = dto.UserType;
+        Laboratory = dto.Laboratory;
+    }
+
+    public void LoadFromEntity(User user)
+    {
+        Id = user.Id;
+        FirstName = user.FirstName;
+        LastName = user.LastName;
+        Login = user.Login;
+        Password = user.PasswordHash;
+        LicenseNumber = user.LicenseNumber;
+        IsActive = user.IsActive ?? false;
+        UserType = user.UserType;
+        Laboratory = user.Laboratory;
+    }
+
 }
