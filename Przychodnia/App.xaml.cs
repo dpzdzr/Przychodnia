@@ -7,7 +7,9 @@ using Przychodnia.Data;
 using Przychodnia.Repository.Implementation;
 using Przychodnia.Repository.Interface;
 using Przychodnia.Service.Implementation;
+using Przychodnia.Service.Implementation.Entity;
 using Przychodnia.Service.Interface;
+using Przychodnia.Service.Interface.Entity;
 using Przychodnia.View;
 using Przychodnia.ViewModel.Admin;
 using Przychodnia.ViewModel.Login;
@@ -43,7 +45,6 @@ namespace Przychodnia
             services.AddScoped<IPatientRepository, PatientRepository>();
 
             // Services
-            services.AddSingleton<IUserSessionService, UserSessionService>();
             services.AddSingleton<IDialogService, DialogService>();
             services.AddSingleton<NavigationServiceProxy>();
             services.AddSingleton<INavigationService>(provider => provider.GetRequiredService<NavigationServiceProxy>());

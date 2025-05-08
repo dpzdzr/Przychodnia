@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Przychodnia.Model;
 using Przychodnia.Service.Interface;
+using Przychodnia.Service.Interface.Entity;
 using Przychodnia.ViewModel.Form;
 
 namespace Przychodnia.ViewModel.Base;

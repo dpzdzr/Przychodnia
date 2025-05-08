@@ -9,6 +9,7 @@ using CommunityToolkit.Mvvm.Input;
 using Przychodnia.Model;
 using Przychodnia.Model.DTO;
 using Przychodnia.Service.Interface;
+using Przychodnia.Service.Interface.Entity;
 using Przychodnia.ViewModel.Base;
 
 namespace Przychodnia.ViewModel.Shared;

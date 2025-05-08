@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using Przychodnia.Model;
 using Przychodnia.Model.DTO;
 using Przychodnia.Repository.Interface;
-using Przychodnia.Service.Interface;
+using Przychodnia.Service.Interface.Entity;
 
-namespace Przychodnia.Service.Implementation;
+namespace Przychodnia.Service.Implementation.Entity;
 
 public class PatientService(IPatientRepository repo) : IPatientService
 {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Przychodnia.Model;
 using Przychodnia.Model.DTO;
 
-namespace Przychodnia.Service.Interface;
+namespace Przychodnia.Service.Interface.Entity;
 
 public interface IUserService
 {

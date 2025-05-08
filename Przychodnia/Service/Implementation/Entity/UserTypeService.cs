@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Przychodnia.Model;
 using Przychodnia.Repository.Interface;
-using Przychodnia.Service.Interface;
+using Przychodnia.Service.Interface.Entity;
 
-namespace Przychodnia.Service.Implementation;
+namespace Przychodnia.Service.Implementation.Entity;
 
 public class UserTypeService(IUserTypeRepository repo) : IUserTypeService
 {

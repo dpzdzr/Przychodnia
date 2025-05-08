@@ -7,9 +7,9 @@ using System.Windows;
 using Przychodnia.Model;
 using Przychodnia.Model.DTO;
 using Przychodnia.Repository.Interface;
-using Przychodnia.Service.Interface;
+using Przychodnia.Service.Interface.Entity;
 
-namespace Przychodnia.Service.Implementation;
+namespace Przychodnia.Service.Implementation.Entity;
 
 public class UserService(IUserRepository userRepository) : IUserService
 {

@@ -8,6 +8,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Przychodnia.Model;
 using Przychodnia.Service.Interface;
+using Przychodnia.Service.Interface.Entity;
 using Przychodnia.ViewModel.Base;
 using Przychodnia.ViewModel.Form;
 

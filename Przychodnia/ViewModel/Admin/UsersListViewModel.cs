@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Przychodnia.Model;
 using Przychodnia.Repository.Interface;
 using Przychodnia.Service.Interface;
+using Przychodnia.Service.Interface.Entity;
 using Przychodnia.ViewModel.Base;
 
 namespace Przychodnia.ViewModel.Admin;

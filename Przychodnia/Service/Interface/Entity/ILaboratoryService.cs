@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Przychodnia.Model;
 
-namespace Przychodnia.Service.Interface;
+namespace Przychodnia.Service.Interface.Entity;
 
 public interface ILaboratoryService
 {
