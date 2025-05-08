@@ -9,6 +9,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="ViewModel\Interface\**" />
+    <Compile Remove="ViewModel\Navigation\**" />
+    <EmbeddedResource Remove="ViewModel\Interface\**" />
+    <EmbeddedResource Remove="ViewModel\Navigation\**" />
+    <None Remove="ViewModel\Interface\**" />
+    <None Remove="ViewModel\Navigation\**" />
+    <Page Remove="ViewModel\Interface\**" />
+    <Page Remove="ViewModel\Navigation\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.0" />
     <PackageReference Include="Extended.Wpf.Toolkit" Version="4.7.25104.5739" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="9.0.3" />
@@ -21,11 +32,6 @@
 
   <ItemGroup>
     <Page Include="App.xaml" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ViewModel\Interface\" />
-    <Folder Include="ViewModel\Navigation\" />
   </ItemGroup>
 
 </Project>

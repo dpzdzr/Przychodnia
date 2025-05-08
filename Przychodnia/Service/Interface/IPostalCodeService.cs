@@ -16,5 +16,9 @@ public interface IPostalCodeService
 
     Task RemoveAsync(PostalCode code);
 
-    Task<List<PostalCode>> Filter(string fragment);
+    Task<List<PostalCode>> GetAllMatchingByCode(string fragment);
+
+    Task<List<PostalCode>> GetDistinctCodes(string fragment);
+
+
 }

@@ -56,6 +56,10 @@ public class PatientAddViewModel : PatientFormBaseViewModel<PatientAddFormData>
         };
     }
 
-    private void ClearForm() => FormData.ClearForm();
+    private void ClearForm()
+    {
+        EnteredCode = string.Empty;
+        FormData.ClearForm();
+    }
 
 }

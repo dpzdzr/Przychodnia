@@ -55,9 +55,12 @@
                 ItemsSource="{Binding PostalCodes}"
                 IsEditable="True"
                 IsTextSearchEnabled="False"
-                SelectedItem="{Binding FormData.PostalCode}"
                 DisplayMemberPath="Code"
-                Text="{Binding EnteredCode, UpdateSourceTrigger=PropertyChanged}"/>
+                Text="{Binding EnteredCode, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+            <TextBlock Text="Miasto" Margin="0,5,0,0"/>
+            <ComboBox ItemsSource="{Binding Cities}"
+                      SelectedItem="{Binding FormData.PostalCode}"
+                      DisplayMemberPath="City"/>
         </StackPanel>
         <Button
             Grid.Row="3" Grid.ColumnSpan="2" Content="{Binding ActionButtonText}" 

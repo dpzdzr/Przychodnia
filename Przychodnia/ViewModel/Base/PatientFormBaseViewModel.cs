@@ -19,7 +19,8 @@ public class PatientFormBaseViewModel<TForm> : BaseViewModel
     public TForm FormData { get; set; } = new();
 
     private ObservableCollection<PostalCode> _postalCodes;
-    
+    private ObservableCollection<PostalCode> _cities;
+
     private string _enteredCode;
 
     public Dictionary<Sex, string> SexDispDict { get; } = new()
@@ -36,7 +37,7 @@ public class PatientFormBaseViewModel<TForm> : BaseViewModel
             if (_enteredCode != value)
             {
                 _enteredCode = value;
-                OnPropertyChanged(EnteredCode);
+                OnPropertyChanged(nameof(EnteredCode));
                 _ = FilterCodes();
             }
         }
@@ -47,6 +48,12 @@ public class PatientFormBaseViewModel<TForm> : BaseViewModel
         set => SetProperty(ref _postalCodes, value);
     }
 
+    public ObservableCollection<PostalCode> Cities
+    {
+        get => _cities;
+        set => SetProperty(ref _cities, value);
+    }
+
     public PatientFormBaseViewModel(IPostalCodeService postalCodeService, IDialogService dialogService)
     {
         _postalCodeService = postalCodeService;
@@ -55,11 +62,19 @@ public class PatientFormBaseViewModel<TForm> : BaseViewModel
 
     public async Task FilterCodes()
     {
-        PostalCodes = [.. await _postalCodeService.Filter(EnteredCode)];
+        PostalCodes = [.. await _postalCodeService.GetDistinctCodes(EnteredCode)];
+        Cities = [.. await _postalCodeService.GetAllMatchingByCode(EnteredCode)];
     }
 
     public async Task InitializeAsync()
     {
-        PostalCodes = [.. await _postalCodeService.GetAllAsync()];
+        PostalCodes = [.. await _postalCodeService.GetDistinctCodes(EnteredCode)];
+        Cities = [.. await _postalCodeService.GetAllAsync()];
+    }
+
+    public async override Task OnNavigatedBack()
+    {
+        await InitializeAsync();
+        await FilterCodes();
     }
 }
