@@ -21,7 +21,7 @@ public class UserEditViewModel : UserFormBaseViewModel<UserEditFormData>
 
     public static string HeaderText => "Edytuj użytkownika";
     public static string ActionButtonText => "Edytuj";
-
+        
     public ICommand SaveUserCommand { get; }
     public User EditableUser
     {
@@ -38,42 +38,17 @@ public class UserEditViewModel : UserFormBaseViewModel<UserEditFormData>
     public async Task InitializeAsync(int id)
     {
         var user = await _userService.GetByIdWithDetailsAsync(id);
-        _editableUser = user;
+        EditableUser = user;
 
         await base.InitializeFormDataAsync();
 
-        LoadFromUser();
-    }
-
-    public void LoadFromUser()
-    {
-        FormData.Id = EditableUser.Id;
-        FormData.FirstName = EditableUser.FirstName;
-        FormData.LastName = EditableUser.LastName;
-        FormData.Login = EditableUser.Login;
-        FormData.Password = EditableUser.PasswordHash;
-        FormData.LicenseNumber = EditableUser.LicenseNumber;
-        FormData.SelectedLaboratory = EditableUser.Laboratory;
-        FormData.SelectedUserType = EditableUser.UserType;
-        FormData.IsActive = EditableUser.IsActive;
-    }
-
-    public void LoadToUser()
-    {
-        EditableUser.FirstName = FormData.FirstName;
-        EditableUser.LastName = FormData.LastName;
-        EditableUser.Login = FormData.Login;
-        EditableUser.PasswordHash = FormData.Password;
-        EditableUser.LicenseNumber = FormData.LicenseNumber;
-        EditableUser.Laboratory = FormData.SelectedLaboratory;
-        EditableUser.UserType = FormData.SelectedUserType;
-        EditableUser.IsActive = FormData.IsActive;
+        FormData.LoadFromUser(user);
     }
 
     private async Task EditUserAsync()
     {
-        LoadToUser();
-        await _userService.SaveChanges();
+        FormData.LoadToUser(EditableUser);
+        await _userService.SaveChangesAsync();
         _dialogService.Show("Sukces", "Pomyślnie edytowano użytkownika");
     }
 }

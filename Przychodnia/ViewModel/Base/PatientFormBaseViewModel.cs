@@ -66,7 +66,7 @@ public class PatientFormBaseViewModel<TForm> : BaseViewModel
         Cities = [.. await _postalCodeService.GetAllMatchingByCode(EnteredCode)];
     }
 
-    public async Task InitializeAsync()
+    public async Task InitializeFormDataAsync()
     {
         PostalCodes = [.. await _postalCodeService.GetDistinctCodes(EnteredCode)];
         Cities = [.. await _postalCodeService.GetAllAsync()];
@@ -74,7 +74,7 @@ public class PatientFormBaseViewModel<TForm> : BaseViewModel
 
     public async override Task OnNavigatedBack()
     {
-        await InitializeAsync();
+        await InitializeFormDataAsync();
         await FilterCodes();
     }
 }

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 namespace Przychodnia.Model;
 public class Patient
 {
+    
     public int Id { get; set; }
     [StringLength(11)]
     public string? Pesel { get; set; }

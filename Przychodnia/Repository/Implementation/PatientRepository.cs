@@ -11,4 +11,6 @@ namespace Przychodnia.Repository.Implementation;
 
 public class PatientRepository(DbContext context) : BaseRepository<Patient>(context), IPatientRepository
 {
+    public async Task<IEnumerable<Patient>> GetAllWithDetailsAsync()
+        => await _dbSet.Include(p=>p.PostalCode).ToListAsync();
 }

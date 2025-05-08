@@ -45,7 +45,7 @@ public class UserService(IUserRepository userRepository) : IUserService
         return await _repo.GetByIdAsync(id);
     }
 
-    public async Task SaveChanges()
+    public async Task SaveChangesAsync()
     {
         await _repo.SaveChangesAsync();
     }

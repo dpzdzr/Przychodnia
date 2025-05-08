@@ -64,7 +64,9 @@ namespace Przychodnia
             services.AddTransient<UserEditViewModel>();
             services.AddTransient<PostalCodesListViewModel>();
             services.AddTransient<PatientAddViewModel>();
+            services.AddTransient<PatientEditViewModel>();
             services.AddTransient<PatientsListViewModel>();
+
         }
 
         protected override void OnStartup(StartupEventArgs e)

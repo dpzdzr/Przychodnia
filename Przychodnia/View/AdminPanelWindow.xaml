@@ -64,6 +64,11 @@
                 <DataTemplate DataType="{x:Type sharedViewmodels:PatientAddViewModel}">
                     <views:PatientFormView/>
                 </DataTemplate>
+                
+                <DataTemplate DataType="{x:Type sharedViewmodels:PatientEditViewModel}">
+                    <views:PatientFormView/>
+                </DataTemplate>
+
             </ContentControl.Resources>
         </ContentControl>
     </DockPanel>

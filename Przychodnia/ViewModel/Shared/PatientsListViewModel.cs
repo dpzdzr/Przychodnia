@@ -60,19 +60,21 @@ public class PatientsListViewModel : BaseViewModel
 
     public async Task InitializeAsync()
     {
-        Patients = [.. await _patientService.GetAllAsync()];
+        Patients = [.. await _patientService.GetAllWithDetailsAsync()];
     }
 
     private async Task AddPatient()
     {
         var addVm = _serviceProvider.GetRequiredService<PatientAddViewModel>();
-        await addVm.InitializeAsync();
+        await addVm.InitializeFormDataAsync();
         _navigationService.NavigateTo(addVm);
     }
 
     private async Task EditPatient()
     {
-
+        var editVm = _serviceProvider.GetRequiredService<PatientEditViewModel>();
+        await editVm.InitializeAsync(SelectedPatient.Id);
+        _navigationService.NavigateTo(editVm);
     }
 
     private async Task RemovePatient()

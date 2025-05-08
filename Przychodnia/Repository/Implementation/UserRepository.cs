@@ -16,11 +16,4 @@ public class UserRepository(DbContext context) : BaseRepository<User>(context), 
 
     public async Task<List<User>> GetAllWithUserTypeAsync()
         => await _dbSet.Include(u => u.UserType).ToListAsync();
-
-    public override async Task<User?> GetByIdAsync(int id)
-    {
-        return await _dbSet.Include(u => u.UserType)
-            .Include(u => u.Laboratory)
-            .FirstOrDefaultAsync(u => u.Id == id);
-    }
 }
