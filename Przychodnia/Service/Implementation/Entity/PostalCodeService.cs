@@ -14,11 +14,11 @@ namespace Przychodnia.Service.Implementation.Entity;
 public class PostalCodeService(IPostalCodeRepository repo) : IPostalCodeService
 {
     private readonly IPostalCodeRepository _repo = repo;
-    public async Task<PostalCode> CreateAsync(PostalCodeInputDTO dto)
+    public async Task<PostalCode> CreateAsync(PostalCodeDTO dto)
     {
         var entity = await _repo.AddAsync(new PostalCode
         {
-            Code = dto.PostalCode,
+            Code = dto.Code,
             City = dto.City
         });
         await _repo.SaveChangesAsync();
@@ -28,9 +28,13 @@ public class PostalCodeService(IPostalCodeRepository repo) : IPostalCodeService
     public async Task<List<PostalCode>> GetAllAsync()
         => await _repo.GetAllAsync();
 
-    public async Task RemoveAsync(PostalCode postalCode)
-    {
-        _repo.Remove(postalCode);
+    public async Task RemoveAsync(int id)
+    {   
+        var entity = await _repo.GetByIdAsync(id);
+        if (entity == null)
+            throw new KeyNotFoundException("Nie znaleziono obektu");
+
+        _repo.Remove(entity);
         await _repo.SaveChangesAsync();
     }
 
@@ -43,12 +47,12 @@ public class PostalCodeService(IPostalCodeRepository repo) : IPostalCodeService
         return [.. filtered.GroupBy(x => x.Code).Select(x => x.First())];
     }
 
-    public async Task UpdateAsync(PostalCode entity)
+    public async Task UpdateAsync(int id, PostalCodeDTO dto)
     {
-        var existing = await _repo.GetByIdAsync(entity.Id) ?? throw new InvalidOperationException("Nie znaleziono kodu pocztowego");
+        var existing = await _repo.GetByIdAsync(id) ?? throw new InvalidOperationException("Nie znaleziono kodu pocztowego");
 
-        existing.Code = entity.Code;
-        existing.City = entity.City;
+        existing.Code = dto.Code;
+        existing.City = dto.City;
 
         await _repo.SaveChangesAsync();
     }

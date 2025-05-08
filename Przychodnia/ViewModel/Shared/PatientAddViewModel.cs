@@ -42,9 +42,9 @@ public class PatientAddViewModel : PatientFormBaseViewModel<PatientAddFormData>
         ClearForm();
     }
 
-    private PatientInputDto CreatePatientInputDTO()
+    private PatientInputDTO CreatePatientInputDTO()
     {
-        return new PatientInputDto
+        return new PatientInputDTO
         {
             FirstName = FormData.FirstName,
             LastName = FormData.LastName,

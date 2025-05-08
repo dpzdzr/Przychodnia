@@ -6,8 +6,4 @@ using System.Threading.Tasks;
 
 namespace Przychodnia.Model.DTO;
 
-public class PostalCodeInputDTO
-{
-    public string? City;
-    public string? PostalCode;
-}
+public record PostalCodeDTO(string? City, string? Code);

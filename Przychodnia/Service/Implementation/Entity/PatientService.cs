@@ -25,7 +25,7 @@ public class PatientService(IPatientRepository repo) : IPatientService
         await _repo.SaveChangesAsync();
     }
 
-    public async Task AddAsync(PatientInputDto patientDTO)
+    public async Task AddAsync(PatientInputDTO patientDTO)
     {
         await _repo.AddAsync(new Patient
         {

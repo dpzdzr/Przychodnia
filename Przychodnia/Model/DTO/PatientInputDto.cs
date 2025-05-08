@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Przychodnia.Model.DTO;
 
-public class PatientInputDto
+public class PatientInputDTO
 {
     public string? FirstName { get; set; }
     public string? LastName { get; set; }

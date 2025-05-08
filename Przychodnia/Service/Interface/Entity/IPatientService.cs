@@ -13,7 +13,7 @@ public interface IPatientService
     Task<List<Patient>> GetAllAsync();
     Task<IEnumerable<Patient>> GetAllWithDetailsAsync();
     Task RemoveAsync(Patient patient);
-    Task AddAsync(PatientInputDto patientDTO);
+    Task AddAsync(PatientInputDTO patientDTO);
 
     Task<Patient?> GetByIdAsync(int id);
     Task SaveChangesAsync();
