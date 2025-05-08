@@ -60,13 +60,13 @@ namespace Przychodnia
             services.AddTransient<LoginViewModel>();
             services.AddTransient<UserAddViewModel>();
             services.AddSingleton<AdminPanelViewModel>();
-            services.AddTransient<UsersListViewModel>();
+            services.AddTransient<UserListViewModel>();
             services.AddSingleton<AdminPanelHomePageViewModel>();
             services.AddTransient<UserEditViewModel>();
-            services.AddTransient<PostalCodesListViewModel>();
+            services.AddTransient<PostalCodeListViewModel>();
             services.AddTransient<PatientAddViewModel>();
             services.AddTransient<PatientEditViewModel>();
-            services.AddTransient<PatientsListViewModel>();
+            services.AddTransient<PatientListViewModel>();
 
         }
 

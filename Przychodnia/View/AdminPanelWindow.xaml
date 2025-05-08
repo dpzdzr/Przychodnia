@@ -46,7 +46,7 @@
                 <DataTemplate DataType="{x:Type adminViewmodels:UserAddViewModel}">
                     <views:UserFormView/>
                 </DataTemplate>
-                <DataTemplate DataType="{x:Type adminViewmodels:UsersListViewModel}">
+                <DataTemplate DataType="{x:Type adminViewmodels:UserListViewModel}">
                     <views:UsersListView/>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type adminViewmodels:AdminPanelHomePageViewModel}">
@@ -55,10 +55,10 @@
                 <DataTemplate DataType="{x:Type adminViewmodels:UserEditViewModel}">
                     <views:UserFormView/>
                 </DataTemplate>
-                <DataTemplate DataType="{x:Type sharedViewmodels:PostalCodesListViewModel}">
+                <DataTemplate DataType="{x:Type sharedViewmodels:PostalCodeListViewModel}">
                     <views:PostalCodesListView/>
                 </DataTemplate>
-                <DataTemplate DataType="{x:Type sharedViewmodels:PatientsListViewModel}">
+                <DataTemplate DataType="{x:Type sharedViewmodels:PatientListViewModel}">
                     <views:PatientsListView/>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type sharedViewmodels:PatientAddViewModel}">

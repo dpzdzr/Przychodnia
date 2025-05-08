@@ -7,7 +7,7 @@
              mc:Ignorable="d"
              xmlns:viewmodel="clr-namespace:Przychodnia.ViewModel.Admin"
              xmlns:converter="clr-namespace:Przychodnia.Converter"
-             d:DataContext="{d:DesignInstance Type=viewmodel:UsersListViewModel}"
+             d:DataContext="{d:DesignInstance Type=viewmodel:UserListViewModel}"
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <converter:BoolToYesNoConverter x:Key="BoolToYesNoConverter"/>

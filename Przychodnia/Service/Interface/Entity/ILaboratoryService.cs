@@ -9,5 +9,7 @@ namespace Przychodnia.Service.Interface.Entity;
 
 public interface ILaboratoryService
 {
+    Task AddAsync(Laboratory lab);
+    Task RemoveAsync(Laboratory lab);
     Task<List<Laboratory>> GetAllAsync();
 }

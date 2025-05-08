@@ -6,7 +6,7 @@
         xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:Przychodnia.View" 
         xmlns:shared="clr-namespace:Przychodnia.ViewModel.Shared"
-        d:DataContext="{d:DesignInstance Type=shared:PostalCodesListViewModel}"
+        d:DataContext="{d:DesignInstance Type=shared:PostalCodeListViewModel}"
              mc:Ignorable="d"
        d:Width="600" d:Height="400">
     <UserControl.Resources>

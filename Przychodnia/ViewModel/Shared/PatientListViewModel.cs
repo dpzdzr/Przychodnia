@@ -15,7 +15,7 @@ using Przychodnia.ViewModel.Form;
 
 namespace Przychodnia.ViewModel.Shared;
 
-public class PatientsListViewModel : BaseViewModel
+public class PatientListViewModel : BaseViewModel
 {
     private readonly IPatientService _patientService;
     private readonly INavigationService _navigationService;
@@ -47,7 +47,7 @@ public class PatientsListViewModel : BaseViewModel
     public ICommand EditPatientCommand { get; }
     public ICommand RemovePatientCommand { get; }
 
-    public PatientsListViewModel(IPatientService patientService, INavigationService navigationService, IServiceProvider serviceProvider, IDialogService dialogService)
+    public PatientListViewModel(IPatientService patientService, INavigationService navigationService, IServiceProvider serviceProvider, IDialogService dialogService)
     {
         _patientService = patientService;
         _navigationService = navigationService;

@@ -10,9 +10,8 @@ namespace Przychodnia.Service.Interface.Entity;
 
 public interface IPostalCodeService
 {
-    Task CreateAsync(PostalCodeInputDTO code);
+    Task<PostalCode> CreateAsync(PostalCodeInputDTO code);
     Task<List<PostalCode>> GetAllAsync();
-    Task SaveChangesAsync();
 
     Task RemoveAsync(PostalCode code);
 
@@ -20,5 +19,6 @@ public interface IPostalCodeService
 
     Task<List<PostalCode>> GetDistinctCodes(string fragment);
 
+    Task UpdateAsync(PostalCode entity);
 
 }

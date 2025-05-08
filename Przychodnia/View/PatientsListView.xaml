@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Przychodnia.View"
              xmlns:converter="clr-namespace:Przychodnia.Converter"
              xmlns:viewmodels="clr-namespace:Przychodnia.ViewModel.Shared"
-             d:DataContext="{d:DesignInstance Type=viewmodels:PatientsListViewModel}"
+             d:DataContext="{d:DesignInstance Type=viewmodels:PatientListViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>

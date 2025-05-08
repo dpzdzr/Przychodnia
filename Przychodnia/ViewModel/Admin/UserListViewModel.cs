@@ -15,7 +15,7 @@ using Przychodnia.ViewModel.Base;
 
 namespace Przychodnia.ViewModel.Admin;
 
-public class UsersListViewModel : BaseViewModel
+public class UserListViewModel : BaseViewModel
 {
     private readonly IDialogService _dialogService;
     private readonly IUserService _userService;
@@ -47,7 +47,7 @@ public class UsersListViewModel : BaseViewModel
         }
     }
 
-    public UsersListViewModel(IDialogService dialogService, IUserService userService,
+    public UserListViewModel(IDialogService dialogService, IUserService userService,
         INavigationService navigationService, IServiceProvider serviceProvider)
     {
         _dialogService = dialogService;

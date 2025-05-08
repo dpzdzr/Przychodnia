@@ -28,13 +28,13 @@ public class AdminPanelViewModel : NavigableBaseViewModel, INavigationService
         CurrentViewModel = _serviceProvider.GetRequiredService<AdminPanelHomePageViewModel>();
 
         NavigateToUsersListCommand = new AsyncRelayCommand
-            (() => NavigateToAsync<UsersListViewModel>(vm => vm.InitializeAsync()));
+            (() => NavigateToAsync<UserListViewModel>(vm => vm.InitializeAsync()));
 
         NavigateToPostalCodesListCommand = new AsyncRelayCommand
-            (() => NavigateToAsync<PostalCodesListViewModel>(vm => vm.InitializeAsync()));
+            (() => NavigateToAsync<PostalCodeListViewModel>(vm => vm.InitializeAsync()));
 
         NavigateToPatientsListCommand = new AsyncRelayCommand
-            (() => NavigateToAsync<PatientsListViewModel>(vm => vm.InitializeAsync()));
+            (() => NavigateToAsync<PatientListViewModel>(vm => vm.InitializeAsync()));
 
         NavigateBackCommand = new RelayCommand(NavigateBack);
     }
