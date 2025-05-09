@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using AutoMapper;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using Przychodnia.Message;
 using Przychodnia.Model;
 using Przychodnia.Model.DTO;
 using Przychodnia.Service.Interface;
@@ -21,17 +23,19 @@ public class PostalCodeListViewModel : BaseViewModel
     private readonly IPostalCodeService _postalCodeService;
     private readonly IDialogService _dialogService;
     private readonly IMapper _mapper;
+    private readonly IMessenger _messenger;
 
     private PostalCodeWrapper? _selectedPostalCode;
     private PostalCodeWrapper _editPostalCode;
     private ObservableCollection<PostalCodeWrapper> _postalCodes;
     private bool _isEditMode;
 
-    public PostalCodeListViewModel(IPostalCodeService postalCodeService, IDialogService dialogService, IMapper mapper)
+    public PostalCodeListViewModel(IPostalCodeService postalCodeService, IDialogService dialogService, IMapper mapper, IMessenger messenger)
     {
         _postalCodeService = postalCodeService;
         _dialogService = dialogService;
         _mapper = mapper;
+        _messenger = messenger;
 
         SaveCommand = new AsyncRelayCommand(SubmitPostalCodeAsync);
         CancelCommand = new RelayCommand(ClearForm);
@@ -99,6 +103,7 @@ public class PostalCodeListViewModel : BaseViewModel
             await _postalCodeService.UpdateAsync(EditPostalCode.Id, dto);
             SelectedPostalCode.Code = EditPostalCode.Code;
             SelectedPostalCode.City = EditPostalCode.City;
+            _messenger.Send(new PostalCodeAddedOrEditedMessage(SelectedPostalCode));
             _dialogService.Show("Sukces", "Pomyślnie zaktualizowano kod pocztowy");
         }
         else
@@ -106,13 +111,14 @@ public class PostalCodeListViewModel : BaseViewModel
             var dto = _mapper.Map<PostalCodeDTO>(EditPostalCode);
             var entity = await _postalCodeService.CreateAsync(dto);
             PostalCodes.Add(new PostalCodeWrapper(entity));
+            _messenger.Send(new PostalCodeAddedOrEditedMessage(new(entity)));
             _dialogService.Show("Sukces", "Pomyślnie dodano kod pocztowy");
             ClearForm();
         }
     }
     private void ClearForm()
     {
-        SelectedPostalCode = new PostalCodeWrapper(new PostalCode());
+        SelectedPostalCode = null;
         EditPostalCode = new PostalCodeWrapper(new PostalCode());
     }
 }

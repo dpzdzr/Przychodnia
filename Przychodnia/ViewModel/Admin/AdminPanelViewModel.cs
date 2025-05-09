@@ -35,12 +35,10 @@ public class AdminPanelViewModel : NavigableBaseViewModel, INavigationService
         NavigateBackCommand = new RelayCommand(NavigateBack);
     }
 
-    public void NavigateTo(BaseViewModel viewModel) => base.NavigateTo(viewModel);
-    public void NavigateBack()
-    {
-        base.NavigateBack();
-        _ = CurrentViewModel?.OnNavigatedBack();
-    }
+    public new void NavigateTo(BaseViewModel viewModel) 
+        => base.NavigateTo(viewModel);
+    public new void NavigateBack() 
+        => base.NavigateBack();
 
     public IAsyncRelayCommand NavigateToUsersListCommand { get; }
     public IAsyncRelayCommand NavigateToPostalCodesListCommand { get; }
