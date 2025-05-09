@@ -17,18 +17,18 @@ public class User
     
     [Required]
     public string Login { get; set; }
-    public string? PasswordHash { get; set; }
+    [Required]
+    public string PasswordHash { get; set; }
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
     public string? LicenseNumber { get; set; }
-
-    public bool? IsActive { get; set; }
-
+    [Required]
+    public bool IsActive { get; set; }
     public int? LaboratoryId { get; set; }
     public virtual Laboratory Laboratory { get; set; }
 
     [InverseProperty("AttendingDoctor")]
-    public virtual ICollection<Appointment> AttendedAppointments { get; set; }
+    public virtual ICollection<Appointment>? AttendedAppointments { get; set; }
     [InverseProperty("ScheduledBy")]
-    public virtual ICollection<Appointment> ScheduledAppointments { get; set; }
+    public virtual ICollection<Appointment>? ScheduledAppointments { get; set; }
 }

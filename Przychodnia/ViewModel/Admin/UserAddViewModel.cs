@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using AutoMapper;
 using CommunityToolkit.Mvvm.Input;
 using Przychodnia.Model;
 using Przychodnia.Model.DTO;
@@ -25,8 +26,8 @@ public class UserAddViewModel : UserFormBaseViewModel<UserAddFormData>
     private UserWrapper _addUserWrapper;
 
     public UserAddViewModel(IUserService userService, IUserTypeService userTypeService,
-        ILaboratoryService labService, IDialogService dialogService)
-        : base(userTypeService, labService, dialogService)
+        ILaboratoryService labService, IDialogService dialogService, IMapper mapper)
+        : base(userTypeService, labService, dialogService, mapper)
     {
         _userService = userService;
         SaveUserCommand = new AsyncRelayCommand(AddUserAsync);
@@ -53,15 +54,14 @@ public class UserAddViewModel : UserFormBaseViewModel<UserAddFormData>
     {
         try
         {
-            var entity = await _userService.CreateUserAsync(FormData.ToDTO());
-            AddUserWrapper.LoadFromEntity(entity);
-
+            var detailsDto = await _userService.CreateUserAsync(_mapper.Map<UserDTO>(FormData));
+            _mapper.Map(detailsDto, AddUserWrapper);
             ClearForm();
             _dialogService.Show("Sukces", "Pomyślnie dodano nowego użytkownika");
         }
         catch (Exception ex)
         {
-            _dialogService.Show("Błąd", $"{ex.Message}");
+            _dialogService.Show("Błąd", $"{ex.Message}\n{ex.InnerException}");
         }
     }
 }

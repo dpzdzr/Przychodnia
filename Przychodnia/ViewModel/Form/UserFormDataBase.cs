@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,12 +9,13 @@ using Przychodnia.Model;
 
 namespace Przychodnia.ViewModel.Form;
 
-public abstract partial class UserFormDataBase : ObservableObject
+public abstract partial class UserFormDataBase : ObservableValidator
 {
+
     [ObservableProperty] protected string firstName;
     [ObservableProperty] protected string lastName;
     [ObservableProperty] protected string login;
-    [ObservableProperty] protected string password;
+    [ObservableProperty] protected string passwordHash;
     [ObservableProperty] protected string licenseNumber;
     [ObservableProperty] protected bool? isActive = false;
     [ObservableProperty] protected UserType? selectedUserType;

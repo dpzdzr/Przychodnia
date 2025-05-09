@@ -14,22 +14,10 @@ public class UserAddFormData : UserFormDataBase
         FirstName = string.Empty;
         LastName = string.Empty;
         Login = string.Empty;
-        Password = string.Empty;
+        PasswordHash = string.Empty;
         LicenseNumber = string.Empty;
         IsActive = false;
         SelectedUserType = null;
         SelectedLaboratory = null;
     }
-
-    public UserDTO ToDTO() => new()
-    {
-        FirstName = FirstName,
-        LastName = LastName,
-        Login = Login,
-        PasswordHash = Password,
-        LicenseNumber = LicenseNumber,
-        IsActive = IsActive,
-        UserType = SelectedUserType,
-        Laboratory = SelectedLaboratory
-    };
 }

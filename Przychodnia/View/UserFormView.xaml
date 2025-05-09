@@ -35,7 +35,7 @@
             <TextBlock Text="Login" Margin="0,5,0,0"/>
             <TextBox Text="{Binding FormData.Login}"/>
             <TextBlock Text="Hasło" Margin="0,5,0,0"/>
-            <TextBox Text="{Binding FormData.Password}"/>
+            <TextBox Text="{Binding FormData.PasswordHash}"/>
         </StackPanel>
         <StackPanel Grid.Row="2" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top" Width="250">
             <TextBlock Text="Rola"/>

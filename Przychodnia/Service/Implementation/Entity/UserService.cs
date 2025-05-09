@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using AutoMapper;
 using Przychodnia.Model;
 using Przychodnia.Model.DTO;
 using Przychodnia.Repository.Interface;
@@ -11,53 +12,60 @@ using Przychodnia.Service.Interface.Entity;
 
 namespace Przychodnia.Service.Implementation.Entity;
 
-public class UserService(IUserRepository userRepository) : IUserService
+public class UserService(IUserRepository userRepo, ILaboratoryRepository labRepo,
+    IUserTypeRepository userTypeRepo, IMapper mapper) : IUserService
 {
-    private readonly IUserRepository _repo = userRepository;
-    public async Task<User> CreateUserAsync(UserDTO dto)
-    {
-        var entity = await _repo.AddAsync(new User
-        {
-            FirstName = dto.FirstName,
-            LastName = dto.LastName,
-            Login = dto.Login,
-            PasswordHash = dto.PasswordHash,
-            UserType = dto.UserType,
-            LicenseNumber = dto.LicenseNumber,
-            Laboratory = dto.Laboratory,
-            IsActive = dto.IsActive
-        });
-        await _repo.SaveChangesAsync();
-        return entity;
-    }
+    private readonly IUserRepository _userRepo = userRepo;
+    private readonly ILaboratoryRepository _labRepo = labRepo;
+    private readonly IUserTypeRepository _userTypeRepo = userTypeRepo;
+    private readonly IMapper _mapper = mapper;
+
 
     public async Task<List<User>> GetAllWithUserTypeAsync()
-        => await _repo.GetAllWithUserTypeAsync();
+        => await _userRepo.GetAllWithUserTypeAsync();
 
     public async Task RemoveAsync(int id)
-    {   
-        var entity = await _repo.GetByIdAsync(id) ?? throw new ArgumentNullException(nameof(id));
-        _repo.Remove(entity);
-        await _repo.SaveChangesAsync();
+    {
+        var entity = await _userRepo.GetByIdAsync(id) ?? throw new ArgumentNullException(nameof(id));
+        _userRepo.Remove(entity);
+        await _userRepo.SaveChangesAsync();
     }
 
-    public async Task<User?> GetByIdWithDetailsAsync(int id) 
-        => await _repo.GetByIdAsync(id);
+    public async Task<User?> GetByIdWithDetailsAsync(int id)
+        => await _userRepo.GetByIdAsync(id);
 
     public async Task UpdateAsync(int id, UserDTO dto)
     {
-        var existing = await _repo.GetByIdAsync(id)
+        var user = await _userRepo.GetByIdAsync(id)
             ?? throw new KeyNotFoundException("Nie znaleziono użytkownika");
+        await MapDtoAndResolveRelationsAsync(dto, user);
+        await _userRepo.SaveChangesAsync();
+    }
 
-        existing.FirstName = dto.FirstName;
-        existing.LastName = dto.LastName;
-        existing.Login = dto.Login;
-        existing.PasswordHash = dto.PasswordHash;
-        existing.LicenseNumber = dto.LicenseNumber;
-        existing.IsActive = dto.IsActive;
-        existing.Laboratory = dto.Laboratory;
-        existing.UserType = dto.UserType;
+    public async Task<UserDetailsDTO> CreateUserAsync(UserDTO dto)
+    {
+        var user = new User();
+        await MapDtoAndResolveRelationsAsync(dto, user);
+        await _userRepo.AddAsync(user);
+        await _userRepo.SaveChangesAsync();
+        return _mapper.Map<UserDetailsDTO>(user);
+    }
 
-        await _repo.SaveChangesAsync();
+    private async Task MapDtoAndResolveRelationsAsync(UserDTO dto, User targetUser)
+    {
+        _mapper.Map(dto, targetUser);
+
+        var userType = await _userTypeRepo.GetByIdAsync(dto.UserTypeId) ?? 
+            throw new ArgumentException("Nieprawidłowy typ użytkownika");
+
+        Laboratory? lab = null;
+        if (dto.LaboratoryId is not null)
+        {
+            lab = await _labRepo.GetByIdAsync(dto.LaboratoryId.Value) ??
+                throw new ArgumentException("Nieprawidłowe laboratorium");
+        }
+
+        targetUser.Laboratory = lab;
+        targetUser.UserType = userType;
     }
 }

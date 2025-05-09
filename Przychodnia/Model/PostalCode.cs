@@ -12,5 +12,6 @@ public class PostalCode
     public int Id { get; set; }
     [Required]
     public string Code { get; set; }
-    public string? City { get; set; }
+    [Required]
+    public string City { get; set; }
 }

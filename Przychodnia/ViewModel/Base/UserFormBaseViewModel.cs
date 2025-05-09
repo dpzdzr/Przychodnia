@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using AutoMapper;
 using Przychodnia.Model;
 using Przychodnia.Service.Interface;
 using Przychodnia.Service.Interface.Entity;
@@ -19,6 +20,7 @@ public abstract class UserFormBaseViewModel<TForm> : BaseViewModel
     private readonly ILaboratoryService _labService;
     private readonly IUserTypeService _userTypeService;
     protected readonly IDialogService _dialogService;
+    protected readonly IMapper _mapper;
     public TForm FormData { get; } = new();
 
     private ObservableCollection<UserType> _userTypes;
@@ -42,8 +44,9 @@ public abstract class UserFormBaseViewModel<TForm> : BaseViewModel
     public bool IsDoctorOrLabTechnician
         => FormData.SelectedUserType?.IsDoctorOrLabTechnician == true;
 
-    protected UserFormBaseViewModel(IUserTypeService userTypeService, ILaboratoryService laboratoryService, IDialogService dialogService)
+    protected UserFormBaseViewModel(IUserTypeService userTypeService, ILaboratoryService laboratoryService, IDialogService dialogService, IMapper mapper)
     {
+        _mapper = mapper;
         _userTypeService = userTypeService;
         _labService = laboratoryService;    
         _dialogService = dialogService;

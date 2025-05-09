@@ -25,7 +25,5 @@ public partial class PostalCodeWrapper : ObservableObject
         code = entity.Code;
         city = entity.City;
     }
-    public PostalCode ToEntity() => new() { Id = Id, Code = code, City = city };
-    public PostalCodeDTO ToDTO() => new(City, Code);
     public PostalCodeWrapper Clone() => new(new PostalCode { Id = Id, Code = code, City = city });
 }

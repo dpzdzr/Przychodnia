@@ -4,6 +4,7 @@ using System.Windows;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Przychodnia.Data;
+using Przychodnia.Mapping;
 using Przychodnia.Repository.Implementation;
 using Przychodnia.Repository.Interface;
 using Przychodnia.Service.Implementation;
@@ -36,6 +37,10 @@ namespace Przychodnia
         {
             // DbContext
             services.AddDbContext<DbContext, AppDbContext>();
+
+            // Mappers
+            services.AddAutoMapper(typeof(UserMappingProfile));
+            services.AddAutoMapper(typeof(PostalCodeMappingProfile));
 
             // Repositories
             services.AddScoped<IUserRepository, UserRepository>();

@@ -19,7 +19,7 @@ public partial class UserEditFormData : UserFormDataBase
         this.FirstName = user.FirstName;
         this.LastName = user.LastName;
         this.Login = user.Login;
-        this.Password = user.Password;
+        this.PasswordHash = user.PasswordHash;
         this.LicenseNumber = user.LicenseNumber;
         this.SelectedLaboratory = user.Laboratory;
         this.SelectedUserType = user.UserType;

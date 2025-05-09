@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using AutoMapper;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Przychodnia.Model;
+using Przychodnia.Model.DTO;
 using Przychodnia.Service.Interface;
 using Przychodnia.Service.Interface.Entity;
 using Przychodnia.ViewModel.Base;
@@ -21,7 +23,8 @@ public class UserEditViewModel : UserFormBaseViewModel<UserEditFormData>
 
     private UserWrapper _editUserWrapper;
 
-    public UserEditViewModel(IDialogService dialogService, ILaboratoryService labService, IUserTypeService userTypeService, IUserService userService) : base(userTypeService, labService, dialogService)
+    public UserEditViewModel(IDialogService dialogService, ILaboratoryService labService, IUserTypeService userTypeService, IUserService userService, IMapper mapper) 
+        : base(userTypeService, labService, dialogService, mapper)
     {
         _userService = userService;
         SaveUserCommand = new AsyncRelayCommand(EditUserAsync);
@@ -41,13 +44,13 @@ public class UserEditViewModel : UserFormBaseViewModel<UserEditFormData>
     {
         EditUserWrapper = wrapper;
         await base.InitializeFormDataAsync();
-        FormData.LoadFromUserWrapper(wrapper);
+        _mapper.Map(EditUserWrapper, FormData);
     }
 
     private async Task EditUserAsync()
     {
-        EditUserWrapper.LoadFromForm(FormData);
-        await _userService.UpdateAsync(EditUserWrapper.Id, EditUserWrapper.ToDTO());
+        _mapper.Map(FormData, EditUserWrapper);
+        await _userService.UpdateAsync(EditUserWrapper.Id, _mapper.Map<UserDTO>(EditUserWrapper));
         _dialogService.Show("Sukces", "Pomyślnie edytowano użytkownika");
     }
 }
