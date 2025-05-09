@@ -14,6 +14,7 @@ public class Laboratory
     public string Type { get; set; }
 
     [Required]
-    public User Manager { get; set; }
-
+    public int ManagerId { get; set; }
+    public virtual User Manager { get; set; }
+    public virtual ICollection<User> Workers { get; set; } = [];
 }

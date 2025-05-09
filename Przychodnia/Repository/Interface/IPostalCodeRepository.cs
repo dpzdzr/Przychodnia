@@ -9,5 +9,4 @@ namespace Przychodnia.Repository.Interface;
 
 public interface IPostalCodeRepository : IBaseRepository<PostalCode>
 {
-    Task<List<PostalCode>> Filter(string fragment);
 }

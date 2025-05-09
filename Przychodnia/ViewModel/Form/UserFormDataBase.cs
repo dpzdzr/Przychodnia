@@ -20,4 +20,5 @@ public abstract partial class UserFormDataBase : ObservableValidator
     [ObservableProperty] protected bool? isActive = false;
     [ObservableProperty] protected UserType? selectedUserType;
     [ObservableProperty] protected Laboratory? selectedLaboratory;
+    [ObservableProperty] protected Laboratory? managedLaboratory;
 }

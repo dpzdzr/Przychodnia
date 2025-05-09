@@ -21,5 +21,6 @@ public partial class UserWrapper(User user) : ObservableObject
     [ObservableProperty] private bool isActive = user.IsActive;
     [ObservableProperty] private UserType userType = user.UserType;
     [ObservableProperty] private Laboratory? laboratory = user.Laboratory;
+    [ObservableProperty] private Laboratory? managedLaboratory = user.ManagedLaboratory;
     public string FullName => $"{FirstName} {LastName}".Trim();
 }

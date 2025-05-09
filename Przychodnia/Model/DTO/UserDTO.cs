@@ -18,5 +18,6 @@ public record UserDTO
     public string? LicenseNumber { get; set; }
     public int UserTypeId { get; set; }
     public int? LaboratoryId { get; set; }
+    public int? ManagedLaboratoryId { get; set; }
     public bool IsActive { get; set; }
 }

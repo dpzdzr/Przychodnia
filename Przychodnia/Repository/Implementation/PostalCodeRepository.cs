@@ -12,11 +12,4 @@ namespace Przychodnia.Repository.Implementation;
 class PostalCodeRepository(DbContext context)
     : BaseRepository<PostalCode>(context), IPostalCodeRepository
 {
-    public async Task<List<PostalCode>> Filter(string fragment)
-    {
-        return await _dbSet
-            .Where(pc => string.IsNullOrEmpty(fragment) || pc.Code.StartsWith(fragment))
-            .OrderBy(k => k.Code)
-            .ToListAsync();
-    }
 }

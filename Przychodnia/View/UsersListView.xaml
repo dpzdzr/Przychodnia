@@ -29,7 +29,8 @@
                 <DataGridTextColumn Header="Login" Binding="{Binding Login}"/>
                 <DataGridTextColumn Header="Hash hasła" Binding="{Binding PasswordHash}"/>
                 <DataGridTextColumn Header="Numer licencji" Binding="{Binding LicenseNumber}"/>
-                <DataGridTextColumn Header="Identyfikator laboratorium" Binding="{Binding LaboratoryId}"/>
+                <DataGridTextColumn Header="Laboratorium" Binding="{Binding Laboratory.Name}"/>
+                <DataGridTextColumn Header="Zarządzane laboratorium" Binding="{Binding ManagedLaboratory.Name}"/>
                 <DataGridTextColumn Header="Aktywny" Binding="{Binding IsActive, Converter={StaticResource BoolToYesNoConverter}}"/>
             </DataGrid.Columns>
         </DataGrid>

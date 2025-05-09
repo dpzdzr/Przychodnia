@@ -13,9 +13,13 @@ public class UserType
 
     public UserTypeEnum Type => (UserTypeEnum)Id;
 
-    public bool IsDoctor => this.Type == UserTypeEnum.Lekarz;
-    public bool IsLabTechnician => this.Type == UserTypeEnum.KierownikLaboratorium || this.Type == UserTypeEnum.Laborant;
-    public bool IsDoctorOrLabTechnician => IsDoctor || IsLabTechnician;
+    public bool IsDoctor 
+        => this.Type == UserTypeEnum.Lekarz;
+    public bool IsLabTechnician 
+        =>  this.Type == UserTypeEnum.Laborant;
+    public bool IsLabManager 
+        => this.Type == UserTypeEnum.KierownikLaboratorium;
+    public bool HasLicenseNumber => IsDoctor || IsLabTechnician || IsLabManager;
 }
 
 public enum UserTypeEnum

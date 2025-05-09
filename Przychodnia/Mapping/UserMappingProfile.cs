@@ -33,6 +33,7 @@ public class UserMappingProfile : Profile
         // formData <-> dto
         CreateMap<UserAddFormData, UserDTO>()
             .ForMember(dest => dest.UserTypeId, opt => opt.MapFrom(src => src.SelectedUserType.Id))
-            .ForMember(dest => dest.LaboratoryId, opt => opt.MapFrom(src => src.SelectedLaboratory.Id));
+            .ForMember(dest => dest.LaboratoryId, opt => opt.MapFrom(src => src.SelectedLaboratory.Id))
+            .ForMember(dest => dest.ManagedLaboratoryId, opt => opt.MapFrom(src => src.ManagedLaboratory.Id));
     }
 }

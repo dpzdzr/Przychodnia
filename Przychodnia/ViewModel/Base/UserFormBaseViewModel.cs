@@ -38,11 +38,13 @@ public abstract class UserFormBaseViewModel<TForm> : BaseViewModel
     }
 
     public bool IsDoctor
-    => FormData.SelectedUserType?.IsDoctor == true;
+         => FormData.SelectedUserType?.IsDoctor == true;
     public bool IsLabTechnician
         => FormData.SelectedUserType?.IsLabTechnician == true;
-    public bool IsDoctorOrLabTechnician
-        => FormData.SelectedUserType?.IsDoctorOrLabTechnician == true;
+    public bool IsLabManager
+        => FormData.SelectedUserType?.IsLabManager == true;
+    public bool HasLicenseNumber
+        => FormData.SelectedUserType?.HasLicenseNumber == true;
 
     protected UserFormBaseViewModel(IUserTypeService userTypeService, ILaboratoryService laboratoryService, IDialogService dialogService, IMapper mapper)
     {
@@ -59,7 +61,8 @@ public abstract class UserFormBaseViewModel<TForm> : BaseViewModel
         {
             OnPropertyChanged(nameof(IsDoctor));
             OnPropertyChanged(nameof(IsLabTechnician));
-            OnPropertyChanged(nameof(IsDoctorOrLabTechnician));
+            OnPropertyChanged(nameof(IsLabManager));
+            OnPropertyChanged(nameof(HasLicenseNumber));
         }
     }
 
@@ -68,7 +71,6 @@ public abstract class UserFormBaseViewModel<TForm> : BaseViewModel
         UserTypes = [.. await _userTypeService.GetAllAsync()];
         Laboratories = [.. await _labService.GetAllAsync()];
 
-        if(UserTypes.Any())
-            FormData.SelectedUserType = UserTypes.First();
+        FormData.SelectedUserType = UserTypes.First();
     }
 }

@@ -37,15 +37,6 @@ public class PostalCodeService(IPostalCodeRepository repo) : IPostalCodeService
         await _repo.SaveChangesAsync();
     }
 
-    public async Task<List<PostalCode>> GetAllMatchingByCode(string fragment)
-        => await _repo.Filter(fragment);
-
-    public async Task<List<PostalCode>> GetDistinctCodes(string fragment)
-    {
-        var filtered = await _repo.Filter(fragment);
-        return [.. filtered.GroupBy(x => x.Code).Select(x => x.First())];
-    }
-
     public async Task UpdateAsync(int id, PostalCodeDTO dto)
     {
         var existing = await _repo.GetByIdAsync(id) 

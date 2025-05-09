@@ -12,13 +12,6 @@ public interface IPostalCodeService
 {
     Task<PostalCode> CreateAsync(PostalCodeDTO code);
     Task<List<PostalCode>> GetAllAsync();
-
     Task RemoveAsync(int id);
-
-    Task<List<PostalCode>> GetAllMatchingByCode(string fragment);
-
-    Task<List<PostalCode>> GetDistinctCodes(string fragment);
-
     Task UpdateAsync(int id, PostalCodeDTO dto);
-
 }

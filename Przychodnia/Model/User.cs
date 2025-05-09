@@ -26,9 +26,10 @@ public class User
     public bool IsActive { get; set; }
     public int? LaboratoryId { get; set; }
     public virtual Laboratory Laboratory { get; set; }
+    public virtual Laboratory ManagedLaboratory { get; set; }
 
     [InverseProperty("AttendingDoctor")]
-    public virtual ICollection<Appointment>? AttendedAppointments { get; set; }
+    public virtual ICollection<Appointment>? AttendedAppointments { get; set; } = [];
     [InverseProperty("ScheduledBy")]
-    public virtual ICollection<Appointment>? ScheduledAppointments { get; set; }
+    public virtual ICollection<Appointment>? ScheduledAppointments { get; set; } = [];
 }

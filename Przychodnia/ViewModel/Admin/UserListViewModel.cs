@@ -75,10 +75,7 @@ public class UserListViewModel : BaseViewModel
     }
 
     private async Task AddUser()
-    {   
-        UserWrapper newUserWrapper = new(new User());
-        Users.Add(newUserWrapper);
-
+    {  
         var addVm = _serviceProvider.GetRequiredService<UserAddViewModel>();
         await addVm.InitializeAsync();
         _navigationService.NavigateTo(addVm);
