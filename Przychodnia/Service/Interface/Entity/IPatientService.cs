@@ -12,9 +12,9 @@ public interface IPatientService
 {
     Task<List<Patient>> GetAllAsync();
     Task<IEnumerable<Patient>> GetAllWithDetailsAsync();
-    Task RemoveAsync(Patient patient);
-    Task AddAsync(PatientInputDTO patientDTO);
-
+    Task RemoveAsync(int id);
+    Task <PatientDTO> CreateAsync(PatientDTO dto);
+    Task UpdateAsync(int id, PatientDTO dto);
     Task<Patient?> GetByIdAsync(int id);
     Task SaveChangesAsync();
 }

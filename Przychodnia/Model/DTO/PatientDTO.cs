@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace Przychodnia.Model.DTO;
 
-public class PatientInputDTO
+public class PatientDTO
 {
-    public string? FirstName { get; set; }
-    public string? LastName { get; set; }
-    public string? Pesel { get; set; }
+    public string FirstName { get; set; }
+    public string LastName { get; set; }
+    public string Pesel { get; set; }
+    public int? PostalCodeId { get; set; }
     public PostalCode? PostalCode { get; set; }
     public string? Street { get; set; }
     public string? HouseNumber { get; set; }

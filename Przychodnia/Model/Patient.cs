@@ -10,13 +10,14 @@ public class Patient
 {
     
     public int Id { get; set; }
+    [Required]
     [StringLength(11)]
-    public string? Pesel { get; set; }
+    public string Pesel { get; set; }
     [Required]
-    public required string FirstName { get; set; }
+    public string FirstName { get; set; }
     [Required]
-    public required string LastName { get; set; }
-    public int PostalCodeId { get; set; }
+    public string LastName { get; set; }
+    public int? PostalCodeId { get; set; }
     public PostalCode? PostalCode {  get; set; }
     public string? Street { get; set; }
     public string? HouseNumber { get; set; }

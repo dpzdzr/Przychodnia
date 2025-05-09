@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using AutoMapper;
 using Przychodnia.Model;
 using Przychodnia.Service.Interface;
 using Przychodnia.Service.Interface.Entity;
@@ -12,11 +13,12 @@ using Przychodnia.ViewModel.Form;
 
 namespace Przychodnia.ViewModel.Base;
 
-public class PatientFormBaseViewModel<TForm> : BaseViewModel
+public class PatientFormBaseViewModel<TForm>(IPostalCodeService postalCodeService, IDialogService dialogService, IMapper mapper) : BaseViewModel
     where TForm : PatientFormDataBase, new()
 {
-    private readonly IPostalCodeService _postalCodeService;
-    protected readonly IDialogService _dialogService;
+    private readonly IPostalCodeService _postalCodeService = postalCodeService;
+    protected readonly IDialogService _dialogService = dialogService;
+    protected readonly IMapper _mapper = mapper;
     public TForm FormData { get; set; } = new();
 
     private ObservableCollection<PostalCode> _postalCodes;
@@ -55,19 +57,13 @@ public class PatientFormBaseViewModel<TForm> : BaseViewModel
         set => SetProperty(ref _cities, value);
     }
 
-    public PatientFormBaseViewModel(IPostalCodeService postalCodeService, IDialogService dialogService)
-    {
-        _postalCodeService = postalCodeService;
-        _dialogService = dialogService;
-    }
-
     public async Task FilterCodes()
     {
         PostalCodes = [.. await _postalCodeService.GetDistinctCodes(EnteredCode)];
         Cities = [.. await _postalCodeService.GetAllMatchingByCode(EnteredCode)];
     }
 
-    public async Task InitializeFormDataAsync()
+    protected async Task InitializeFormDataAsync()
     {
         PostalCodes = [.. await _postalCodeService.GetDistinctCodes(EnteredCode)];
         Cities = [.. await _postalCodeService.GetAllAsync()];

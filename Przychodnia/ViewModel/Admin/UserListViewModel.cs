@@ -67,20 +67,6 @@ public class UserListViewModel : BaseViewModel
         Users = [.. items.Select(u => new UserWrapper(u))];
     }
 
-    private async Task RemoveUser()
-    {
-        if (_dialogService.Confirm("Potwierdzenie usunięcia", "Czy na pewno chcesz usunąć wybranego użytkownika?"))
-        {
-            await _userService.RemoveAsync(SelectedUser.Id);
-            Users.Remove(SelectedUser);
-        }
-    }
-    private async Task EditUser()
-    {
-        var editVm = _serviceProvider.GetRequiredService<UserEditViewModel>();
-        await editVm.InitializeAsync(SelectedUser);
-        _navigationService.NavigateTo(editVm);
-    }
     private async Task AddUser()
     {   
         UserWrapper newUserWrapper = new(new User());
@@ -89,5 +75,19 @@ public class UserListViewModel : BaseViewModel
         var addVm = _serviceProvider.GetRequiredService<UserAddViewModel>();
         await addVm.InitializeAsync(newUserWrapper);
         _navigationService.NavigateTo(addVm);
+    }
+    private async Task EditUser()
+    {
+        var editVm = _serviceProvider.GetRequiredService<UserEditViewModel>();
+        await editVm.InitializeAsync(SelectedUser);
+        _navigationService.NavigateTo(editVm);
+    }
+    private async Task RemoveUser()
+    {
+        if (_dialogService.Confirm("Potwierdzenie usunięcia", "Czy na pewno chcesz usunąć wybranego użytkownika?"))
+        {
+            await _userService.RemoveAsync(SelectedUser.Id);
+            Users.Remove(SelectedUser);
+        }
     }
 }

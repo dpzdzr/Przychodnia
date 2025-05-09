@@ -28,6 +28,7 @@
                 <DataGridTextColumn Header="PESEL" Binding="{Binding Pesel}"/>
                 <DataGridTextColumn Header="Miasto" Binding="{Binding PostalCode.City}"/>
                 <DataGridTextColumn Header="Kod pocztowy" Binding="{Binding PostalCode.Code}"/>
+                <DataGridTextColumn Header="Ulica" Binding="{Binding Street}"/>
                 <DataGridTextColumn Header="Numer domu" Binding="{Binding HouseNumber}"/>
                 <DataGridTextColumn Header="Numer mieszkania" Binding="{Binding ApartmentNumber}"/>
                 <DataGridTextColumn Header="Płeć" Binding="{Binding Sex, Converter={StaticResource SexToStringConverter}}"/>

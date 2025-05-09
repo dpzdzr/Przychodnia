@@ -16,10 +16,6 @@ namespace Przychodnia.ViewModel.Admin;
 public class AdminPanelViewModel : NavigableBaseViewModel, INavigationService
 {
     private readonly IServiceProvider _serviceProvider;
-    public IAsyncRelayCommand NavigateToUsersListCommand { get; }
-    public IAsyncRelayCommand NavigateToPostalCodesListCommand { get; }
-    public IAsyncRelayCommand NavigateToPatientsListCommand { get; }
-    public ICommand NavigateBackCommand { get; }
 
     public AdminPanelViewModel(IServiceProvider serviceProvider)
     {
@@ -39,6 +35,18 @@ public class AdminPanelViewModel : NavigableBaseViewModel, INavigationService
         NavigateBackCommand = new RelayCommand(NavigateBack);
     }
 
+    public void NavigateTo(BaseViewModel viewModel) => base.NavigateTo(viewModel);
+    public void NavigateBack()
+    {
+        base.NavigateBack();
+        _ = CurrentViewModel?.OnNavigatedBack();
+    }
+
+    public IAsyncRelayCommand NavigateToUsersListCommand { get; }
+    public IAsyncRelayCommand NavigateToPostalCodesListCommand { get; }
+    public IAsyncRelayCommand NavigateToPatientsListCommand { get; }
+    public ICommand NavigateBackCommand { get; }
+
     private async Task NavigateToAsync<TViewModel>(Func<TViewModel, Task> initializer = null)
         where TViewModel : BaseViewModel
     {
@@ -57,12 +65,5 @@ public class AdminPanelViewModel : NavigableBaseViewModel, INavigationService
         {
             IsBusy = false;
         }
-    }
-
-    public void NavigateTo(BaseViewModel viewModel) => base.NavigateTo(viewModel);
-    public void NavigateBack()
-    {
-        base.NavigateBack();
-        _ = CurrentViewModel?.OnNavigatedBack();
     }
 }

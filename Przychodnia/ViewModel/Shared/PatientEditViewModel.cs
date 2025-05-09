@@ -4,51 +4,53 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using AutoMapper;
 using CommunityToolkit.Mvvm.Input;
 using Przychodnia.Model;
+using Przychodnia.Model.DTO;
 using Przychodnia.Service.Interface;
 using Przychodnia.Service.Interface.Entity;
 using Przychodnia.ViewModel.Base;
 using Przychodnia.ViewModel.Form;
+using Przychodnia.ViewModel.Wrapper;
 
 namespace Przychodnia.ViewModel.Shared;
 
 public class PatientEditViewModel : PatientFormBaseViewModel<PatientEditFormData>
 {
     private readonly IPatientService _patientService;
-    private Patient _editablePatient;
+    
+    private PatientWrapper _editPatientWrapper;
 
-    public Patient EditablePatient
-    {
-        get => _editablePatient;
-        set => SetProperty(ref _editablePatient, value);
-    }
-
-    public static string HeaderText => "Edytuj wybranego pacjenta";
-    public static string ActionButtonText => "Edytuj";
-
-    public ICommand ActionButtonCommand { get; }
-    public PatientEditViewModel(IPatientService patientService, IDialogService dialogService, IPostalCodeService postalCodeService)
-        : base(postalCodeService, dialogService)
+    public PatientEditViewModel(IPatientService patientService, IDialogService dialogService, IPostalCodeService postalCodeService, IMapper mapper)
+    : base(postalCodeService, dialogService, mapper)
     {
         _patientService = patientService;
         ActionButtonCommand = new AsyncRelayCommand(EditPatient);
     }
 
-    private async Task EditPatient()
+    public static string HeaderText => "Edytuj wybranego pacjenta";
+    public static string ActionButtonText => "Edytuj";
+    public PatientWrapper EditPatientWrapper
     {
-        FormData.LoadToPatient(EditablePatient);
-        await _patientService.SaveChangesAsync();
-        _dialogService.Show("Sukces", "Pomyślnie edytowano pacjenta");
+        get => _editPatientWrapper;
+        set => SetProperty(ref _editPatientWrapper, value);
     }
 
-    public async Task InitializeAsync(int id)
-    {
-        var patient = await _patientService.GetByIdAsync(id);
-        EditablePatient = patient;
+    public ICommand ActionButtonCommand { get; }
 
+    public async Task InitializeAsync(PatientWrapper wrapper)
+    {
+        EditPatientWrapper = wrapper;
         await base.InitializeFormDataAsync();
-        FormData.LoadFromPatient(patient);
+        _mapper.Map(EditPatientWrapper, FormData);
         EnteredCode = FormData.PostalCode.Code ?? string.Empty;
+    }
+
+    private async Task EditPatient()
+    {
+        _mapper.Map(FormData, EditPatientWrapper);
+        await _patientService.UpdateAsync(EditPatientWrapper.Id, _mapper.Map<PatientDTO>(EditPatientWrapper));
+        _dialogService.Show("Sukces", "Pomyślnie edytowano pacjenta");
     }
 }

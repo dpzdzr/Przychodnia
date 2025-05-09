@@ -54,7 +54,7 @@ public class UserAddViewModel : UserFormBaseViewModel<UserAddFormData>
     {
         try
         {
-            var detailsDto = await _userService.CreateUserAsync(_mapper.Map<UserDTO>(FormData));
+            var detailsDto = await _userService.CreateAsync(_mapper.Map<UserDTO>(FormData));
             _mapper.Map(detailsDto, AddUserWrapper);
             ClearForm();
             _dialogService.Show("Sukces", "Pomyślnie dodano nowego użytkownika");

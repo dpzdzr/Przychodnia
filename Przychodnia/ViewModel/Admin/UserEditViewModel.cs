@@ -30,13 +30,13 @@ public class UserEditViewModel : UserFormBaseViewModel<UserEditFormData>
         SaveUserCommand = new AsyncRelayCommand(EditUserAsync);
     }
 
+    public static string HeaderText => "Edytuj użytkownika";
+    public static string ActionButtonText => "Edytuj";
     public UserWrapper EditUserWrapper
     {
         get => _editUserWrapper;
         set => SetProperty(ref _editUserWrapper, value);
     }
-    public static string HeaderText => "Edytuj użytkownika";
-    public static string ActionButtonText => "Edytuj";
 
     public IAsyncRelayCommand SaveUserCommand { get; }
 

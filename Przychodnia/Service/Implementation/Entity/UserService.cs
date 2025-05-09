@@ -20,13 +20,13 @@ public class UserService(IUserRepository userRepo, ILaboratoryRepository labRepo
     private readonly IUserTypeRepository _userTypeRepo = userTypeRepo;
     private readonly IMapper _mapper = mapper;
 
-
     public async Task<List<User>> GetAllWithUserTypeAsync()
         => await _userRepo.GetAllWithUserTypeAsync();
 
     public async Task RemoveAsync(int id)
     {
-        var entity = await _userRepo.GetByIdAsync(id) ?? throw new ArgumentNullException(nameof(id));
+        var entity = await _userRepo.GetByIdAsync(id) 
+            ?? throw new KeyNotFoundException("Nie znaleziono użytkownika");
         _userRepo.Remove(entity);
         await _userRepo.SaveChangesAsync();
     }
@@ -42,7 +42,7 @@ public class UserService(IUserRepository userRepo, ILaboratoryRepository labRepo
         await _userRepo.SaveChangesAsync();
     }
 
-    public async Task<UserDetailsDTO> CreateUserAsync(UserDTO dto)
+    public async Task<UserDetailsDTO> CreateAsync(UserDTO dto)
     {
         var user = new User();
         await MapDtoAndResolveRelationsAsync(dto, user);
@@ -56,13 +56,13 @@ public class UserService(IUserRepository userRepo, ILaboratoryRepository labRepo
         _mapper.Map(dto, targetUser);
 
         var userType = await _userTypeRepo.GetByIdAsync(dto.UserTypeId) ?? 
-            throw new ArgumentException("Nieprawidłowy typ użytkownika");
+            throw new KeyNotFoundException("Nieprawidłowy typ użytkownika");
 
         Laboratory? lab = null;
         if (dto.LaboratoryId is not null)
         {
             lab = await _labRepo.GetByIdAsync(dto.LaboratoryId.Value) ??
-                throw new ArgumentException("Nieprawidłowe laboratorium");
+                throw new KeyNotFoundException("Nieprawidłowe laboratorium");
         }
 
         targetUser.Laboratory = lab;
