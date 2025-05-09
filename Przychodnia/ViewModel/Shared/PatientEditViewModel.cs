@@ -23,8 +23,8 @@ public class PatientEditViewModel : PatientFormBaseViewModel<PatientEditFormData
 
     private PatientWrapper _editPatientWrapper;
 
-    public PatientEditViewModel(IPatientService patientService, IDialogService dialogService, IPostalCodeService postalCodeService, IMapper mapper, IMessenger messenger)
-    : base(postalCodeService, dialogService, mapper, messenger)
+    public PatientEditViewModel(IPatientService patientService, IDialogService dialogService, IPostalCodeService postalCodeService, IMapper mapper)
+    : base(postalCodeService, dialogService, mapper)
     {
         _patientService = patientService;
         ActionButtonCommand = new AsyncRelayCommand(EditPatient);

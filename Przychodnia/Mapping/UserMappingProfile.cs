@@ -16,12 +16,10 @@ public class UserMappingProfile : Profile
     public UserMappingProfile()
     {
         // user <-> dto
-        CreateMap<User, UserDetailsDTO>();
         CreateMap<UserDTO, User>();
 
         // wrapper <-> dto
         CreateMap<UserWrapper, UserDTO>();
-        CreateMap<UserDetailsDTO, UserWrapper>();
 
         // wrapper <-> formData
         CreateMap<UserWrapper, UserEditFormData>()

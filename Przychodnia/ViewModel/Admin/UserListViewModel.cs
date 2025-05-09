@@ -6,7 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.DependencyInjection;
+using Przychodnia.Message;
 using Przychodnia.Model;
 using Przychodnia.Repository.Interface;
 using Przychodnia.Service.Interface;
@@ -37,6 +39,11 @@ public class UserListViewModel : BaseViewModel
         DeleteUserCommand = new AsyncRelayCommand(RemoveUser, () => SelectedUser != null);
         EditUserCommand = new AsyncRelayCommand(EditUser, () => SelectedUser != null);
         AddUserCommand = new AsyncRelayCommand(AddUser);
+
+        WeakReferenceMessenger.Default.Register<UserAddedMessage>(this, (r, m) =>
+        {
+            Users.Add(new UserWrapper(m.Value));
+        });
     }
 
     public ObservableCollection<UserWrapper> Users
@@ -73,7 +80,7 @@ public class UserListViewModel : BaseViewModel
         Users.Add(newUserWrapper);
 
         var addVm = _serviceProvider.GetRequiredService<UserAddViewModel>();
-        await addVm.InitializeAsync(newUserWrapper);
+        await addVm.InitializeAsync();
         _navigationService.NavigateTo(addVm);
     }
     private async Task EditUser()

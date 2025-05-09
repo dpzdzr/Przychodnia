@@ -42,13 +42,13 @@ public class UserService(IUserRepository userRepo, ILaboratoryRepository labRepo
         await _userRepo.SaveChangesAsync();
     }
 
-    public async Task<UserDetailsDTO> CreateAsync(UserDTO dto)
+    public async Task<User> CreateAsync(UserDTO dto)
     {
         var user = new User();
         await MapDtoAndResolveRelationsAsync(dto, user);
         await _userRepo.AddAsync(user);
         await _userRepo.SaveChangesAsync();
-        return _mapper.Map<UserDetailsDTO>(user);
+        return user;
     }
 
     private async Task MapDtoAndResolveRelationsAsync(UserDTO dto, User targetUser)
