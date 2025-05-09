@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using AutoMapper;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Przychodnia.Model;
 using Przychodnia.Model.DTO;
 using Przychodnia.Service.Interface;
@@ -19,11 +20,11 @@ namespace Przychodnia.ViewModel.Shared;
 public class PatientEditViewModel : PatientFormBaseViewModel<PatientEditFormData>
 {
     private readonly IPatientService _patientService;
-    
+
     private PatientWrapper _editPatientWrapper;
 
-    public PatientEditViewModel(IPatientService patientService, IDialogService dialogService, IPostalCodeService postalCodeService, IMapper mapper)
-    : base(postalCodeService, dialogService, mapper)
+    public PatientEditViewModel(IPatientService patientService, IDialogService dialogService, IPostalCodeService postalCodeService, IMapper mapper, IMessenger messenger)
+    : base(postalCodeService, dialogService, mapper, messenger)
     {
         _patientService = patientService;
         ActionButtonCommand = new AsyncRelayCommand(EditPatient);
@@ -44,13 +45,21 @@ public class PatientEditViewModel : PatientFormBaseViewModel<PatientEditFormData
         EditPatientWrapper = wrapper;
         await base.InitializeFormDataAsync();
         _mapper.Map(EditPatientWrapper, FormData);
-        EnteredCode = FormData.PostalCode.Code ?? string.Empty;
+        EnteredCode = FormData.PostalCode?.Code ?? string.Empty;
     }
 
     private async Task EditPatient()
     {
-        _mapper.Map(FormData, EditPatientWrapper);
-        await _patientService.UpdateAsync(EditPatientWrapper.Id, _mapper.Map<PatientDTO>(EditPatientWrapper));
-        _dialogService.Show("Sukces", "Pomyślnie edytowano pacjenta");
+        try
+        {
+            _mapper.Map(FormData, EditPatientWrapper);
+            var dto = _mapper.Map<PatientDTO>(EditPatientWrapper);
+            await _patientService.UpdateAsync(EditPatientWrapper.Id, dto);
+            _dialogService.Show("Sukces", "Pomyślnie edytowano pacjenta");
+        }
+        catch (Exception ex)
+        {
+            _dialogService.Show("Błąd", $"{ex.Message}\n{ex.InnerException?.Message ?? string.Empty}");
+        }
     }
 }

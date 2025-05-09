@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using AutoMapper;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using Przychodnia.Message;
+using Przychodnia.Model;
 using Przychodnia.Model.DTO;
 using Przychodnia.Repository.Interface;
 using Przychodnia.Service.Interface;
@@ -19,47 +22,42 @@ namespace Przychodnia.ViewModel.Shared;
 public class PatientAddViewModel : PatientFormBaseViewModel<PatientAddFormData>
 {
     private readonly IPatientService _patientService;
-
-    private PatientWrapper _addPatientWrapper;
-
+    private readonly IMessenger _messenger;
     public PatientAddViewModel(IPostalCodeService postalCodeService, IDialogService dialogService,
-        IPatientService patientService, IMapper mapper)
+        IPatientService patientService, IMapper mapper, IMessenger messenger)
         : base(postalCodeService, dialogService, mapper)
     {
         _patientService = patientService;
+        _messenger = messenger;
         ActionButtonCommand = new AsyncRelayCommand(AddPatient);
     }
 
     public static string HeaderText => "Dodaj pacjenta";
     public static string ActionButtonText => "Dodaj";
-    public PatientWrapper AddPatientWrapper
-    {
-        get => _addPatientWrapper;
-        set => SetProperty(ref _addPatientWrapper, value);
-    }
 
     public ICommand ActionButtonCommand { get; }
 
-    public async Task InitializeAsync(PatientWrapper wrapper)
-    {
-        AddPatientWrapper = wrapper;
-        await base.InitializeFormDataAsync();
-    }
+    public async Task InitializeAsync() => await base.InitializeFormDataAsync();
 
     private async Task AddPatient()
     {
         try
         {
             var dto = _mapper.Map<PatientDTO>(FormData);
-            await _patientService.CreateAsync(dto);
+            var entity = await _patientService.CreateAsync(dto);
+            NotifyPatientAdded(entity);
             _dialogService.Show("Sukces", "Pomyślnie dodano nowego pacjenta");
         }
         catch (Exception ex)
         {
-            _dialogService.Show("Błąd", $"{ex.InnerException.Message}");
+            _dialogService.Show("Błąd", $"{ex.Message}\n{ex.InnerException?.Message ?? string.Empty}");
         }
         ClearForm();
     }
+
+    private void NotifyPatientAdded(Patient entity)
+        => _messenger.Send(new PatientAddedMessage(entity));
+
     private void ClearForm()
     {
         EnteredCode = string.Empty;

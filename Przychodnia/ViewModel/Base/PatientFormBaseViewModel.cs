@@ -6,10 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using AutoMapper;
+using CommunityToolkit.Mvvm.Messaging;
 using Przychodnia.Model;
 using Przychodnia.Service.Interface;
 using Przychodnia.Service.Interface.Entity;
 using Przychodnia.ViewModel.Form;
+using Przychodnia.ViewModel.Wrapper;
 
 namespace Przychodnia.ViewModel.Base;
 
@@ -21,8 +23,8 @@ public class PatientFormBaseViewModel<TForm>(IPostalCodeService postalCodeServic
     protected readonly IMapper _mapper = mapper;
     public TForm FormData { get; set; } = new();
 
-    private ObservableCollection<PostalCode> _postalCodes;
-    private ObservableCollection<PostalCode> _cities;
+    private ObservableCollection<PostalCodeWrapper> _postalCodes;
+    private ObservableCollection<PostalCodeWrapper> _cities;
 
     private string _enteredCode;
 
@@ -45,13 +47,13 @@ public class PatientFormBaseViewModel<TForm>(IPostalCodeService postalCodeServic
             }
         }
     }
-    public ObservableCollection<PostalCode> PostalCodes
+    public ObservableCollection<PostalCodeWrapper> PostalCodes
     {
         get => _postalCodes;
         set => SetProperty(ref _postalCodes, value);
     }
 
-    public ObservableCollection<PostalCode> Cities
+    public ObservableCollection<PostalCodeWrapper> Cities
     {
         get => _cities;
         set => SetProperty(ref _cities, value);
@@ -59,14 +61,20 @@ public class PatientFormBaseViewModel<TForm>(IPostalCodeService postalCodeServic
 
     public async Task FilterCodes()
     {
-        PostalCodes = [.. await _postalCodeService.GetDistinctCodes(EnteredCode)];
-        Cities = [.. await _postalCodeService.GetAllMatchingByCode(EnteredCode)];
+        var distinctCodes = await _postalCodeService.GetDistinctCodes(EnteredCode);
+        PostalCodes = [.. distinctCodes.Select(pc => new PostalCodeWrapper(pc))];
+
+        var citiesMatchingByCode = await _postalCodeService.GetAllMatchingByCode(EnteredCode);
+        Cities = [.. citiesMatchingByCode.Select(pc => new PostalCodeWrapper(pc))];
     }
 
     protected async Task InitializeFormDataAsync()
     {
-        PostalCodes = [.. await _postalCodeService.GetDistinctCodes(EnteredCode)];
-        Cities = [.. await _postalCodeService.GetAllAsync()];
+        var distinctCodes = await _postalCodeService.GetDistinctCodes(EnteredCode);
+        PostalCodes = [.. distinctCodes.Select(pc => new PostalCodeWrapper(pc))];
+
+        var allCities = await _postalCodeService.GetAllAsync();
+        Cities = [.. allCities.Select(pc => new PostalCodeWrapper(pc))];
     }
 
     public async override Task OnNavigatedBack()

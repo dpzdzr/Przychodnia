@@ -13,4 +13,14 @@ public class PatientRepository(DbContext context) : BaseRepository<Patient>(cont
 {
     public async Task<IEnumerable<Patient>> GetAllWithDetailsAsync()
         => await _dbSet.Include(p=>p.PostalCode).ToListAsync();
+
+    public void DetachAllAddedEntities()
+    {
+        var entries = _context.ChangeTracker.Entries()
+            .Where(e => e.State == EntityState.Added)
+            .ToList();
+
+        foreach (var entry in entries)
+            entry.State = EntityState.Detached;
+    }
 }

@@ -30,13 +30,13 @@ public class PatientService(IPatientRepository patientRepo, IPostalCodeRepositor
         await _patientRepo.SaveChangesAsync();
     }
 
-    public async Task<PatientDTO> CreateAsync(PatientDTO dto)
+    public async Task<Patient> CreateAsync(PatientDTO dto)
     {
         var patient = new Patient();
         await MapDtoAndResolveRelationsAsync(dto, patient);   
         await _patientRepo.AddAsync(patient);
         await _patientRepo.SaveChangesAsync();
-        return _mapper.Map<PatientDTO>(patient);
+        return patient;
     }
 
     public async Task<Patient?> GetByIdAsync(int id)
@@ -51,7 +51,6 @@ public class PatientService(IPatientRepository patientRepo, IPostalCodeRepositor
             ?? throw new KeyNotFoundException("Nie znaleziono pacjenta");
         await MapDtoAndResolveRelationsAsync(dto, patient);
         await _patientRepo.SaveChangesAsync();
-
     }
 
     private async Task MapDtoAndResolveRelationsAsync(PatientDTO dto, Patient targetPatient)
@@ -59,7 +58,7 @@ public class PatientService(IPatientRepository patientRepo, IPostalCodeRepositor
         _mapper.Map(dto, targetPatient);
 
         PostalCode? postalCode = null;
-        if (dto.PostalCode is not null)
+        if (dto.PostalCodeId is not null)
         {
             postalCode = await _postalCodeRepo.GetByIdAsync(dto.PostalCodeId.Value)
                 ?? throw new KeyNotFoundException("Nie znaleziono kodu pocztowego");

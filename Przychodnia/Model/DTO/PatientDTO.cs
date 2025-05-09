@@ -12,7 +12,6 @@ public class PatientDTO
     public string LastName { get; set; }
     public string Pesel { get; set; }
     public int? PostalCodeId { get; set; }
-    public PostalCode? PostalCode { get; set; }
     public string? Street { get; set; }
     public string? HouseNumber { get; set; }
     public string? ApartmentNumber { get; set; }

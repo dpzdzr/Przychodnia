@@ -14,7 +14,7 @@ public partial class PatientWrapper(Patient entity) : ObservableObject
     [ObservableProperty] private string pesel = entity.Pesel;
     [ObservableProperty] private string firstName = entity.FirstName;
     [ObservableProperty] private string lastName = entity.LastName;
-    [ObservableProperty] private PostalCode? postalCode = entity.PostalCode;
+    [ObservableProperty] private PostalCodeWrapper? postalCode = entity.PostalCode == null ? null : new(entity.PostalCode);
     [ObservableProperty] private string? street = entity.Street;
     [ObservableProperty] private string? houseNumber = entity.HouseNumber;
     [ObservableProperty] private string? apartmentNumber = entity.ApartmentNumber;

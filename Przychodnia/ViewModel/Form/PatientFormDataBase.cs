@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Przychodnia.Model;
+using Przychodnia.ViewModel.Wrapper;
 
 namespace Przychodnia.ViewModel.Form;
 
@@ -16,6 +17,6 @@ public abstract partial class PatientFormDataBase : ObservableObject
     [ObservableProperty] private string street;
     [ObservableProperty] private string houseNumber;
     [ObservableProperty] private string apartmentNumber;
-    [ObservableProperty] private PostalCode postalCode;
+    [ObservableProperty] private PostalCodeWrapper postalCode;
     [ObservableProperty] private Sex sex;
 }

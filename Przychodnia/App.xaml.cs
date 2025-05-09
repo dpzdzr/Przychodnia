@@ -1,6 +1,7 @@
 ﻿using System.Configuration;
 using System.Data;
 using System.Windows;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Przychodnia.Data;
@@ -37,6 +38,10 @@ namespace Przychodnia
         {
             // DbContext
             services.AddDbContext<DbContext, AppDbContext>();
+
+            //Messenger
+            services.AddSingleton<IMessenger>(WeakReferenceMessenger.Default);
+
 
             // Mappers
             services.AddAutoMapper(typeof(UserMappingProfile));

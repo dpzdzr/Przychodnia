@@ -6,7 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.DependencyInjection;
+using Przychodnia.Message;
 using Przychodnia.Model;
 using Przychodnia.Service.Interface;
 using Przychodnia.Service.Interface.Entity;
@@ -36,6 +38,11 @@ public class PatientListViewModel : BaseViewModel
         AddPatientCommand = new AsyncRelayCommand(AddPatient);
         EditPatientCommand = new AsyncRelayCommand(EditPatient, () => SelectedPatient != null);
         RemovePatientCommand = new AsyncRelayCommand(RemovePatient, () => SelectedPatient != null);
+
+        WeakReferenceMessenger.Default.Register<PatientAddedMessage>(this, (r, m) =>
+        {
+            Patients.Add(new PatientWrapper(m.Value));
+        });
     }
 
     public PatientWrapper SelectedPatient
@@ -65,18 +72,11 @@ public class PatientListViewModel : BaseViewModel
         var items = await _patientService.GetAllWithDetailsAsync();
         Patients = [.. items.Select(p => new PatientWrapper(p))];
     }
-    public override async Task OnNavigatedBack()
-    {
-        await InitializeAsync();
-    }
 
     private async Task AddPatient()
     {
-        PatientWrapper newPatientWrapper = new(new Patient());
-        Patients.Add(newPatientWrapper);
-
         var addVm = _serviceProvider.GetRequiredService<PatientAddViewModel>();
-        await addVm.InitializeAsync(newPatientWrapper);
+        await addVm.InitializeAsync();
         _navigationService.NavigateTo(addVm);
     }
 
