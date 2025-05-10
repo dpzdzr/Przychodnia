@@ -17,11 +17,11 @@ using Przychodnia.ViewModel.Wrapper;
 
 namespace Przychodnia.ViewModel.Admin;
 
-public class UserEditViewModel : UserFormBaseViewModel<UserEditFormData>
+public partial class UserEditViewModel : UserFormBaseViewModel<UserEditFormData>
 {
     private readonly IUserService _userService;
 
-    private UserWrapper _editUserWrapper;
+    [ObservableProperty] private UserWrapper editUserWrapper;
 
     public UserEditViewModel(IDialogService dialogService, ILaboratoryService labService, IUserTypeService userTypeService, IUserService userService, IMapper mapper) 
         : base(userTypeService, labService, dialogService, mapper)
@@ -32,11 +32,6 @@ public class UserEditViewModel : UserFormBaseViewModel<UserEditFormData>
 
     public static string HeaderText => "Edytuj użytkownika";
     public static string ActionButtonText => "Edytuj";
-    public UserWrapper EditUserWrapper
-    {
-        get => _editUserWrapper;
-        set => SetProperty(ref _editUserWrapper, value);
-    }
 
     public IAsyncRelayCommand SaveUserCommand { get; }
 

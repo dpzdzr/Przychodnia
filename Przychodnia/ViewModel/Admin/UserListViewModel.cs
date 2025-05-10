@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.DependencyInjection;
@@ -18,15 +19,15 @@ using Przychodnia.ViewModel.Wrapper;
 
 namespace Przychodnia.ViewModel.Admin;
 
-public class UserListViewModel : BaseViewModel
+public partial class UserListViewModel : BaseViewModel
 {
     private readonly IDialogService _dialogService;
     private readonly IUserService _userService;
     private readonly INavigationService _navigationService;
     private readonly IServiceProvider _serviceProvider;
-    
-    private UserWrapper _selectedUser;
-    private ObservableCollection<UserWrapper> _users;
+
+    [ObservableProperty] private UserWrapper selectedUser;
+    [ObservableProperty] private ObservableCollection<UserWrapper> users;
 
     public UserListViewModel(IDialogService dialogService, IUserService userService,
     INavigationService navigationService, IServiceProvider serviceProvider)
@@ -44,24 +45,6 @@ public class UserListViewModel : BaseViewModel
         {
             Users.Add(new UserWrapper(m.Value));
         });
-    }
-
-    public ObservableCollection<UserWrapper> Users
-    {
-        get => _users;
-        set => SetProperty(ref _users, value);
-    }
-    public UserWrapper SelectedUser
-    {
-        get => _selectedUser;
-        set
-        {
-            if (SetProperty(ref _selectedUser, value))
-            {
-                (DeleteUserCommand as AsyncRelayCommand)?.NotifyCanExecuteChanged();
-                (EditUserCommand as AsyncRelayCommand)?.NotifyCanExecuteChanged();
-            }
-        }
     }
 
     public IAsyncRelayCommand DeleteUserCommand { get; }
@@ -94,5 +77,10 @@ public class UserListViewModel : BaseViewModel
             await _userService.RemoveAsync(userId);
             Users.Remove(SelectedUser);
         }
+    }
+    partial void OnSelectedUserChanged(UserWrapper value)
+    {
+        (DeleteUserCommand as AsyncRelayCommand)?.NotifyCanExecuteChanged();
+        (EditUserCommand as AsyncRelayCommand)?.NotifyCanExecuteChanged();
     }
 }
