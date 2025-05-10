@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Przychodnia.Model;
@@ -16,19 +17,19 @@ using System.Threading.Tasks;
 
 namespace Przychodnia.ViewModel.Shared;
 
-public class LaboratoryListViewModel : BaseViewModel
+public partial class LaboratoryListViewModel : BaseViewModel
 {
     private readonly IDialogService _dialogService;
     private readonly ILaboratoryService _labService;
     private readonly IUserService _userService;
     private readonly IMapper _mapper;
     private readonly IMessenger _messenger;
-
-    private ObservableCollection<LaboratoryWrapper> _labs;
-    private LaboratoryWrapper? _selectedLab;
-    private LaboratoryWrapper _editLab;
-    private ObservableCollection<UserWrapper> _managers;
-    private bool _isEditMode;
+    
+    [ObservableProperty] private ObservableCollection<LaboratoryWrapper> labs;
+    [ObservableProperty] private LaboratoryWrapper? selectedLab;
+    [ObservableProperty] private LaboratoryWrapper editLab;
+    [ObservableProperty] private ObservableCollection<UserWrapper> managers;
+    [ObservableProperty] private bool isEditMode;
 
     public LaboratoryListViewModel(IDialogService dialogService, ILaboratoryService labService,
         IUserService userService, IMapper mapper, IMessenger messenger)
@@ -46,48 +47,6 @@ public class LaboratoryListViewModel : BaseViewModel
         EditLab = new(new Laboratory());
     }
 
-    public bool IsEditMode
-    {
-        get => _isEditMode;
-        set => SetProperty(ref _isEditMode, value);
-    }
-    public LaboratoryWrapper? SelectedLab
-    {
-        get => _selectedLab;
-        set
-        {
-            if (SetProperty(ref _selectedLab, value))
-            {
-                IsEditMode = value != null;
-                if (value is not null)
-                {
-                    _mapper.Map(value, EditLab);
-                    EditLab.Manager = FindMatchingManager(value.Manager?.Id);
-                }
-                else
-                    EditLab = new(new Laboratory());
-
-                OnPropertyChanged(nameof(ActionButtonText));
-                OnPropertyChanged(nameof(FormHeaderText));
-                (RemoveButtonCommand as AsyncRelayCommand)?.NotifyCanExecuteChanged();
-            }
-        }
-    }
-    public LaboratoryWrapper EditLab
-    {
-        get => _editLab;
-        set => SetProperty(ref _editLab, value);
-    }
-    public ObservableCollection<UserWrapper> Managers
-    {
-        get => _managers;
-        set => SetProperty(ref _managers, value);
-    }
-    public ObservableCollection<LaboratoryWrapper> Labs
-    {
-        get => _labs;
-        set => SetProperty(ref _labs, value);
-    }
     public string ActionButtonText => IsEditMode ? "Edytuj" : "Dodaj";
     public string FormHeaderText => IsEditMode ? "Edytuj wybrane laboratorium" : "Dodaj nowe laboratorium";
 
@@ -108,7 +67,8 @@ public class LaboratoryListViewModel : BaseViewModel
     {
         try
         {
-            var confirmation = _dialogService.Confirm("Potwierdzenie usunięcia", "Czy na pewno chcesz usunąć wybrane laboratorium?");
+            var confirmation = _dialogService.Confirm("Potwierdzenie usunięcia", 
+                "Czy na pewno chcesz usunąć wybrane laboratorium?");
             if (SelectedLab?.Id is int labId && confirmation is true)
             {
                 await _labService.RemoveAsync(labId);
@@ -171,4 +131,20 @@ public class LaboratoryListViewModel : BaseViewModel
     }
     private UserWrapper? FindMatchingManager(int? id)
         => Managers.FirstOrDefault(m => m.Id == id);
+
+    partial void OnSelectedLabChanged(LaboratoryWrapper? value)
+    {
+        IsEditMode = value != null;
+        if (value is not null)
+        {
+            _mapper.Map(value, EditLab);
+            EditLab.Manager = FindMatchingManager(value.Manager?.Id);
+        }
+        else
+            EditLab = new(new Laboratory());
+
+        OnPropertyChanged(nameof(ActionButtonText));
+        OnPropertyChanged(nameof(FormHeaderText));
+        (RemoveButtonCommand as AsyncRelayCommand)?.NotifyCanExecuteChanged();
+    }
 }

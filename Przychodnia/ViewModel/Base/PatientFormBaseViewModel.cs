@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using AutoMapper;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using Przychodnia.Message;
 using Przychodnia.Model;
@@ -16,17 +17,17 @@ using Przychodnia.ViewModel.Wrapper;
 
 namespace Przychodnia.ViewModel.Base;
 
-public class PatientFormBaseViewModel<TForm> : BaseViewModel
+public abstract partial class PatientFormBaseViewModel<TForm> : BaseViewModel
     where TForm : PatientFormDataBase, new()
 {
     protected readonly IMapper _mapper;
     protected readonly IDialogService _dialogService;
     private readonly IPostalCodeService _postalCodeService;
 
-    private string _enteredCode;
     private List<PostalCodeWrapper> _allPostalCodes = [];
-    private ObservableCollection<PostalCodeWrapper> _cities;
-    private ObservableCollection<PostalCodeWrapper> _postalCodes;
+    [ObservableProperty] private string enteredCode;
+    [ObservableProperty] private ObservableCollection<PostalCodeWrapper> cities;
+    [ObservableProperty] private ObservableCollection<PostalCodeWrapper> postalCodes;
 
     public PatientFormBaseViewModel(IPostalCodeService postalCodeService, IDialogService dialogService, IMapper mapper)
     {
@@ -59,29 +60,6 @@ public class PatientFormBaseViewModel<TForm> : BaseViewModel
         {Model.Sex.Male, "Mężczyzna" },
         {Model.Sex.Female, "Kobieta" }
     };
-    public string EnteredCode
-    {
-        get => _enteredCode;
-        set
-        {
-            if (_enteredCode != value)
-            {
-                _enteredCode = value;
-                OnPropertyChanged(nameof(EnteredCode));
-                FilterCodes();
-            }
-        }
-    }
-    public ObservableCollection<PostalCodeWrapper> PostalCodes
-    {
-        get => _postalCodes;
-        set => SetProperty(ref _postalCodes, value);
-    }
-    public ObservableCollection<PostalCodeWrapper> Cities
-    {
-        get => _cities;
-        set => SetProperty(ref _cities, value);
-    }
 
     private void FilterCodes()
     {
@@ -93,10 +71,10 @@ public class PatientFormBaseViewModel<TForm> : BaseViewModel
         var distinctCodes = filteredCities.GroupBy(x => x.Code).Select(x => x.First());
         PostalCodes = [.. distinctCodes];
     }
-
     protected async Task InitializeFormDataAsync()
     {
         _allPostalCodes = [.. (await _postalCodeService.GetAllAsync()).Select(pc => new PostalCodeWrapper(pc))];
         FilterCodes();
     }
+    partial void OnEnteredCodeChanged(string value) => FilterCodes();
 }

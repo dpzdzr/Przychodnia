@@ -43,7 +43,7 @@ namespace Przychodnia
             services.AddSingleton<IMessenger>(WeakReferenceMessenger.Default);
 
             // Mappers
-            services.AddAutoMapper(typeof(UserMappingProfile).Assembly);
+            services.AddAutoMapper(typeof(UserMappingProfile));
 
             // Repositories
             services.AddScoped<IUserRepository, UserRepository>();

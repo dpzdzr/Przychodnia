@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using AutoMapper;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Przychodnia.Model;
 using Przychodnia.Service.Interface;
 using Przychodnia.Service.Interface.Entity;
@@ -14,29 +15,27 @@ using Przychodnia.ViewModel.Form;
 
 namespace Przychodnia.ViewModel.Base;
 
-public abstract class UserFormBaseViewModel<TForm> : BaseViewModel
+public abstract partial class UserFormBaseViewModel<TForm> : BaseViewModel
     where TForm : UserFormDataBase, new()
 {
     private readonly ILaboratoryService _labService;
     private readonly IUserTypeService _userTypeService;
     protected readonly IDialogService _dialogService;
     protected readonly IMapper _mapper;
+
+    [ObservableProperty] private ObservableCollection<UserType> userTypes;
+    [ObservableProperty] private ObservableCollection<Laboratory> laboratories;
+
+    public UserFormBaseViewModel(IUserTypeService userTypeService, ILaboratoryService laboratoryService, IDialogService dialogService, IMapper mapper)
+    {
+        _mapper = mapper;
+        _userTypeService = userTypeService;
+        _labService = laboratoryService;    
+        _dialogService = dialogService;
+        FormData.PropertyChanged += OnFormDataPropertyChanged;
+    }
+
     public TForm FormData { get; } = new();
-
-    private ObservableCollection<UserType> _userTypes;
-    private ObservableCollection<Laboratory> _laboratories;
-
-    public ObservableCollection<UserType> UserTypes
-    {
-        get => _userTypes;
-        set => SetProperty(ref _userTypes, value);
-    }
-    public ObservableCollection<Laboratory> Laboratories
-    {
-        get => _laboratories;
-        set => SetProperty(ref _laboratories, value);
-    }
-
     public bool IsDoctor
          => FormData.SelectedUserType?.IsDoctor == true;
     public bool IsLabTechnician
@@ -44,13 +43,12 @@ public abstract class UserFormBaseViewModel<TForm> : BaseViewModel
     public bool HasLicenseNumber
         => FormData.SelectedUserType?.HasLicenseNumber == true;
 
-    protected UserFormBaseViewModel(IUserTypeService userTypeService, ILaboratoryService laboratoryService, IDialogService dialogService, IMapper mapper)
+    public async Task InitializeFormDataAsync()
     {
-        _mapper = mapper;
-        _userTypeService = userTypeService;
-        _labService = laboratoryService;    
-        _dialogService = dialogService;
-        FormData.PropertyChanged += OnFormDataPropertyChanged;
+        UserTypes = [.. await _userTypeService.GetAllAsync()];
+        Laboratories = [.. await _labService.GetAllAsync()];
+
+        FormData.SelectedUserType = UserTypes.First();
     }
 
     private void OnFormDataPropertyChanged(object? sender, PropertyChangedEventArgs e)
@@ -61,13 +59,5 @@ public abstract class UserFormBaseViewModel<TForm> : BaseViewModel
             OnPropertyChanged(nameof(IsLabTechnician));
             OnPropertyChanged(nameof(HasLicenseNumber));
         }
-    }
-
-    public async Task InitializeFormDataAsync()
-    {
-        UserTypes = [.. await _userTypeService.GetAllAsync()];
-        Laboratories = [.. await _labService.GetAllAsync()];
-
-        FormData.SelectedUserType = UserTypes.First();
     }
 }
