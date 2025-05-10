@@ -49,8 +49,11 @@ public class UserEditViewModel : UserFormBaseViewModel<UserEditFormData>
 
     private async Task EditUserAsync()
     {
-        _mapper.Map(FormData, EditUserWrapper);
-        await _userService.UpdateAsync(EditUserWrapper.Id, _mapper.Map<UserDTO>(EditUserWrapper));
-        _dialogService.Show("Sukces", "Pomyślnie edytowano użytkownika");
+        if(EditUserWrapper?.Id is int userId)
+        {
+            _mapper.Map(FormData, EditUserWrapper);
+            await _userService.UpdateAsync(userId, _mapper.Map<UserDTO>(EditUserWrapper));
+            _dialogService.Show("Sukces", "Pomyślnie edytowano użytkownika");
+        }
     }
 }

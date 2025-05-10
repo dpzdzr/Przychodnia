@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Documents;
+using AutoMapper;
 using Przychodnia.Model;
 using Przychodnia.Model.DTO;
 using Przychodnia.Repository.Interface;
@@ -11,16 +12,14 @@ using Przychodnia.Service.Interface.Entity;
 
 namespace Przychodnia.Service.Implementation.Entity;
 
-public class PostalCodeService(IPostalCodeRepository repo) : IPostalCodeService
+public class PostalCodeService(IPostalCodeRepository repo, IMapper mapper) : IPostalCodeService
 {
     private readonly IPostalCodeRepository _repo = repo;
+    private readonly IMapper _mapper = mapper;
     public async Task<PostalCode> CreateAsync(PostalCodeDTO dto)
-    {
-        var entity = await _repo.AddAsync(new PostalCode
-        {
-            Code = dto.Code,
-            City = dto.City
-        });
+    {   
+        var entity = _mapper.Map<PostalCode>(dto);
+        await _repo.AddAsync(entity);
         await _repo.SaveChangesAsync();
         return entity;
     }
@@ -31,7 +30,7 @@ public class PostalCodeService(IPostalCodeRepository repo) : IPostalCodeService
     public async Task RemoveAsync(int id)
     {
         var entity = await _repo.GetByIdAsync(id)
-            ?? throw new ArgumentNullException("Nie znaleziono obektu");
+            ?? throw new KeyNotFoundException("Nie znaleziono kodu pocztowego");
 
         _repo.Remove(entity);
         await _repo.SaveChangesAsync();
@@ -42,9 +41,7 @@ public class PostalCodeService(IPostalCodeRepository repo) : IPostalCodeService
         var existing = await _repo.GetByIdAsync(id) 
             ?? throw new KeyNotFoundException("Nie znaleziono kodu pocztowego");
 
-        existing.Code = dto.Code;
-        existing.City = dto.City;
-
+        _mapper.Map(dto, existing);
         await _repo.SaveChangesAsync();
     }
 }

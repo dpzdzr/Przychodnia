@@ -12,8 +12,8 @@ namespace Przychodnia.Repository.Implementation;
 
 public class UserRepository(DbContext context) : BaseRepository<User>(context), IUserRepository
 {
-    public async Task<List<User>> GetUsersByTypeAsync(UserType type)
-        => await _dbSet.Where(u => u.UserType == type).ToListAsync();
+    public async Task<List<User>> GetUsersByTypeAsync(UserTypeEnum type)
+        => await _dbSet.Where(u => u.UserType.Id == (int)type).ToListAsync();
 
     public async Task<List<User>> GetAllWithUserTypeAsync()
         => await _dbSet.Include(u => u.UserType).ToListAsync();

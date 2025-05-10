@@ -88,9 +88,10 @@ public class UserListViewModel : BaseViewModel
     }
     private async Task RemoveUser()
     {
-        if (_dialogService.Confirm("Potwierdzenie usunięcia", "Czy na pewno chcesz usunąć wybranego użytkownika?"))
+        if(SelectedUser?.Id is int userId && 
+            _dialogService.Confirm("Potwierdzenie usunięcia", "Czy na pewno chcesz usunąć wybranego użytkownika?"))
         {
-            await _userService.RemoveAsync(SelectedUser.Id);
+            await _userService.RemoveAsync(userId);
             Users.Remove(SelectedUser);
         }
     }

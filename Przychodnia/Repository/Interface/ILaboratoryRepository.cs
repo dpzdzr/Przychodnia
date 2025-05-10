@@ -9,5 +9,5 @@ namespace Przychodnia.Repository.Interface;
 
 public interface ILaboratoryRepository : IBaseRepository<Laboratory>
 {
-    Task<Laboratory?> GetLaboratoryByNameAsync(string laboratoryName);
+    Task<IEnumerable<Laboratory>> GetAllWithDetailsAsync();
 }

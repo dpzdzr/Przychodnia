@@ -23,6 +23,9 @@ public class UserService(IUserRepository userRepo, ILaboratoryRepository labRepo
     public async Task<List<User>> GetAllWithUserTypeAsync()
         => await _userRepo.GetAllWithUserTypeAsync();
 
+    public async Task<List<User>> GetUsersByUserType(UserTypeEnum type)
+        => await _userRepo.GetUsersByTypeAsync(type);
+
     public async Task RemoveAsync(int id)
     {
         var entity = await _userRepo.GetByIdAsync(id) 
@@ -68,4 +71,5 @@ public class UserService(IUserRepository userRepo, ILaboratoryRepository labRepo
         targetUser.Laboratory = lab;
         targetUser.UserType = userType;
     }
+
 }

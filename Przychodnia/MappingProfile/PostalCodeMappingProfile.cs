@@ -14,6 +14,7 @@ public class PostalCodeMappingProfile : Profile
 {
     public PostalCodeMappingProfile()
     {
+        CreateMap<PostalCodeDTO, PostalCode>();
         CreateMap<PostalCodeWrapper, PostalCodeDTO>().ReverseMap();
     }
 }

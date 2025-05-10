@@ -32,7 +32,7 @@ public class AdminPanelViewModel : NavigableBaseViewModel, INavigationService
             (() => NavigateToAsync<PatientListViewModel>(vm => vm.InitializeAsync()));
 
         NavigateToLaboratoriesListCommand = new AsyncRelayCommand
-            (() => NavigateToAsync<LaboratoryListViewModel>());
+            (() => NavigateToAsync<LaboratoryListViewModel>(vm => vm.InitializeAsync()));
 
         NavigateBackCommand = new RelayCommand(NavigateBack);
     }

@@ -17,4 +17,6 @@ public interface IUserService
     Task<User?> GetByIdWithDetailsAsync(int id);
 
     Task UpdateAsync(int id, UserDTO dto);
+    
+    Task<List<User>> GetUsersByUserType(UserTypeEnum type);
 }

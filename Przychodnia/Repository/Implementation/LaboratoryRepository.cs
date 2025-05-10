@@ -11,6 +11,6 @@ namespace Przychodnia.Repository.Implementation;
 
 public class LaboratoryRepository(DbContext context) : BaseRepository<Laboratory>(context), ILaboratoryRepository
 {
-    public async Task<Laboratory?> GetLaboratoryByNameAsync(string laboratoryName)
-        => await _dbSet.SingleOrDefaultAsync(l => l.Name == laboratoryName);
+    public async Task<IEnumerable<Laboratory>> GetAllWithDetailsAsync()
+        => await _dbSet.Include(l => l.Manager).ToListAsync();
 }

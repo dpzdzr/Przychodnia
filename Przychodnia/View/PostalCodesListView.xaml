@@ -35,7 +35,7 @@
             </DataGrid>
 
             <Grid Grid.Row="1">
-                <Button Content="Usuń" Grid.Column="0" Height="25" Command="{Binding DeleteCommand}" HorizontalAlignment="Left" Margin="0, 15,15,15"/>
+                <Button Content="Usuń" Grid.Column="0" Command="{Binding DeleteCommand}" HorizontalAlignment="Left" Margin="0, 15,15,15"/>
             </Grid>
 
         </Grid>
