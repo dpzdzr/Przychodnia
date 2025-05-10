@@ -26,8 +26,8 @@ public partial class PatientListViewModel : BaseViewModel
     private readonly IServiceProvider _serviceProvider;
     private readonly IDialogService _dialogService;
 
-    [ObservableProperty] private ObservableCollection<PatientWrapper> patients;
-    [ObservableProperty] private PatientWrapper _selectedPatient;
+    [ObservableProperty] private PatientWrapper? selectedPatient;
+    [ObservableProperty] private ObservableCollection<PatientWrapper> patients = [];
 
     public PatientListViewModel(IPatientService patientService, INavigationService navigationService, IServiceProvider serviceProvider, IDialogService dialogService)
     {
@@ -76,7 +76,7 @@ public partial class PatientListViewModel : BaseViewModel
             Patients.Remove(SelectedPatient);
         }
     }
-    partial void OnSelectedPatientChanged(PatientWrapper value)
+    partial void OnSelectedPatientChanged(PatientWrapper? value)
     {
         (EditPatientCommand as AsyncRelayCommand)?.NotifyCanExecuteChanged();
         (RemovePatientCommand as AsyncRelayCommand)?.NotifyCanExecuteChanged();

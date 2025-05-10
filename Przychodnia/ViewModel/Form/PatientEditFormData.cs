@@ -10,5 +10,5 @@ namespace Przychodnia.ViewModel.Form;
 
 public partial class PatientEditFormData : PatientFormDataBase
 {
-    [ObservableProperty] public int id;
+    [ObservableProperty] private int id;
 }

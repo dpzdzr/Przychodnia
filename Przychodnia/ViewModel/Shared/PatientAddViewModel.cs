@@ -22,13 +22,12 @@ namespace Przychodnia.ViewModel.Shared;
 public class PatientAddViewModel : PatientFormBaseViewModel<PatientAddFormData>
 {
     private readonly IPatientService _patientService;
-    private readonly IMessenger _messenger;
+
     public PatientAddViewModel(IPostalCodeService postalCodeService, IDialogService dialogService,
         IPatientService patientService, IMapper mapper, IMessenger messenger)
-        : base(postalCodeService, dialogService, mapper)
+        : base(postalCodeService, dialogService, mapper, messenger)
     {
         _patientService = patientService;
-        _messenger = messenger;
         ActionButtonCommand = new AsyncRelayCommand(AddPatient);
     }
 

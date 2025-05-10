@@ -48,7 +48,7 @@ public class AdminPanelViewModel : NavigableBaseViewModel, INavigationService
     public IAsyncRelayCommand NavigateToLaboratoriesListCommand { get; }
     public ICommand NavigateBackCommand { get; }
 
-    private async Task NavigateToAsync<TViewModel>(Func<TViewModel, Task> initializer = null)
+    private async Task NavigateToAsync<TViewModel>(Func<TViewModel, Task>? initializer = null)
         where TViewModel : BaseViewModel
     {
         if (CurrentViewModel is TViewModel)

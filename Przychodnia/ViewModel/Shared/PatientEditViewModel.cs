@@ -24,8 +24,8 @@ public partial class PatientEditViewModel : PatientFormBaseViewModel<PatientEdit
 
     [ObservableProperty] private PatientWrapper _editPatientWrapper;
 
-    public PatientEditViewModel(IPatientService patientService, IDialogService dialogService, IPostalCodeService postalCodeService, IMapper mapper)
-    : base(postalCodeService, dialogService, mapper)
+    public PatientEditViewModel(IPatientService patientService, IDialogService dialogService, IPostalCodeService postalCodeService, IMapper mapper, IMessenger messenger)
+    : base(postalCodeService, dialogService, mapper, messenger)
     {
         _patientService = patientService;
         ActionButtonCommand = new AsyncRelayCommand(EditPatient);

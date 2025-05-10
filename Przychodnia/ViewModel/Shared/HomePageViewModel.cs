@@ -10,5 +10,5 @@ namespace Przychodnia.ViewModel.Shared;
 
 public partial class HomePageViewModel() : BaseViewModel
 {
-    [ObservableProperty] private string caption;
+    [ObservableProperty] private string caption = string.Empty;
 }

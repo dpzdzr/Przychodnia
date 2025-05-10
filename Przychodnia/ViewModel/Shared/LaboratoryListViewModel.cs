@@ -25,11 +25,11 @@ public partial class LaboratoryListViewModel : BaseViewModel
     private readonly IMapper _mapper;
     private readonly IMessenger _messenger;
     
-    [ObservableProperty] private ObservableCollection<LaboratoryWrapper> labs;
-    [ObservableProperty] private LaboratoryWrapper? selectedLab;
-    [ObservableProperty] private LaboratoryWrapper editLab;
-    [ObservableProperty] private ObservableCollection<UserWrapper> managers;
     [ObservableProperty] private bool isEditMode;
+    [ObservableProperty] private LaboratoryWrapper editLab;
+    [ObservableProperty] private LaboratoryWrapper? selectedLab;
+    [ObservableProperty] private ObservableCollection<UserWrapper> managers = [];
+    [ObservableProperty] private ObservableCollection<LaboratoryWrapper> labs = [];
 
     public LaboratoryListViewModel(IDialogService dialogService, ILaboratoryService labService,
         IUserService userService, IMapper mapper, IMessenger messenger)

@@ -23,8 +23,8 @@ public abstract partial class UserFormBaseViewModel<TForm> : BaseViewModel
     protected readonly IDialogService _dialogService;
     protected readonly IMapper _mapper;
 
-    [ObservableProperty] private ObservableCollection<UserType> userTypes;
-    [ObservableProperty] private ObservableCollection<Laboratory> laboratories;
+    [ObservableProperty] private ObservableCollection<UserType> userTypes = [];
+    [ObservableProperty] private ObservableCollection<Laboratory> laboratories = [];
 
     public UserFormBaseViewModel(IUserTypeService userTypeService, ILaboratoryService laboratoryService, IDialogService dialogService, IMapper mapper)
     {

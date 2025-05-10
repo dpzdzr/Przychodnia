@@ -14,10 +14,8 @@ public class UserTypeService(IUserTypeRepository repo) : IUserTypeService
     private readonly IUserTypeRepository _repo = repo;
 
     public async Task<List<UserType>> GetAllAsync()
-        => await repo.GetAllAsync();
+        => await _repo.GetAllAsync();
 
     public async Task<List<string>> GetNamesAsync()
-        => await repo.GetNamesAsync();
-
-
+        => await _repo.GetNamesAsync();
 }

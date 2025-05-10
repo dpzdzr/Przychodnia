@@ -12,13 +12,13 @@ namespace Przychodnia.ViewModel.Form;
 public abstract partial class UserFormDataBase : ObservableValidator
 {
 
-    [ObservableProperty] protected string firstName;
-    [ObservableProperty] protected string lastName;
-    [ObservableProperty] protected string login;
-    [ObservableProperty] protected string passwordHash;
-    [ObservableProperty] protected string licenseNumber;
-    [ObservableProperty] protected bool? isActive = false;
-    [ObservableProperty] protected UserType? selectedUserType;
-    [ObservableProperty] protected Laboratory? selectedLaboratory;
-    [ObservableProperty] protected Laboratory? managedLaboratory;
+    [ObservableProperty] private string? firstName;
+    [ObservableProperty] private string? lastName;
+    [ObservableProperty] private string? login;
+    [ObservableProperty] private string? passwordHash;
+    [ObservableProperty] private string? licenseNumber;
+    [ObservableProperty] private bool? isActive = false;
+    [ObservableProperty] private UserType? selectedUserType;
+    [ObservableProperty] private Laboratory? selectedLaboratory;
+    [ObservableProperty] private Laboratory? managedLaboratory;
 }

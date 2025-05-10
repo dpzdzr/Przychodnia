@@ -27,10 +27,10 @@ public partial class PostalCodeListViewModel : BaseViewModel
     private readonly IMapper _mapper;
     private readonly IMessenger _messenger;
 
-    [ObservableProperty] private PostalCodeWrapper? selectedPostalCode;
-    [ObservableProperty] private PostalCodeWrapper editPostalCode;
-    [ObservableProperty] private ObservableCollection<PostalCodeWrapper> postalCodes;
     [ObservableProperty] private bool isEditMode;
+    [ObservableProperty] private PostalCodeWrapper editPostalCode;
+    [ObservableProperty] private PostalCodeWrapper? selectedPostalCode;
+    [ObservableProperty] private ObservableCollection<PostalCodeWrapper> postalCodes = [];
 
     public PostalCodeListViewModel(IPostalCodeService postalCodeService, IDialogService dialogService, IMapper mapper, IMessenger messenger)
     {
@@ -82,9 +82,9 @@ public partial class PostalCodeListViewModel : BaseViewModel
         {
             var dto = _mapper.Map<PostalCodeDTO>(EditPostalCode);
             await _postalCodeService.UpdateAsync(EditPostalCode.Id, dto);
-            _messenger.Send(new PostalCodeAddedOrEditedMessage(SelectedPostalCode));
             _dialogService.Show("Sukces", "Pomyślnie zaktualizowano kod pocztowy");
             _mapper.Map(EditPostalCode, SelectedPostalCode);
+            _messenger.Send(new PostalCodeAddedOrEditedMessage(SelectedPostalCode));
         }
         catch (Exception ex)
         {
@@ -97,8 +97,9 @@ public partial class PostalCodeListViewModel : BaseViewModel
         {
             var dto = _mapper.Map<PostalCodeDTO>(EditPostalCode);
             var entity = await _postalCodeService.CreateAsync(dto);
-            PostalCodes.Add(new PostalCodeWrapper(entity));
-            _messenger.Send(new PostalCodeAddedOrEditedMessage(new(entity)));
+            var wrapper = new PostalCodeWrapper(entity);
+            PostalCodes.Add(wrapper);
+            _messenger.Send(new PostalCodeAddedOrEditedMessage(wrapper));
             _dialogService.Show("Sukces", "Pomyślnie dodano kod pocztowy");
             ClearForm();
         }
