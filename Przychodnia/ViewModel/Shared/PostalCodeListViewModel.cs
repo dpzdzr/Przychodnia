@@ -47,7 +47,7 @@ public partial class PostalCodeListViewModel : BaseViewModel
     }
 
     public string ActionButtonText => IsEditMode ? "Edytuj" : "Zapisz";
-    public string FormHeader => IsEditMode ? "Edytuj wybrany kod pocztowy" 
+    public string FormHeader => IsEditMode ? "Edytuj wybrany kod pocztowy"
         : "Dodaj nowy kod pocztowy";
 
     public IAsyncRelayCommand SaveCommand { get; }
@@ -62,7 +62,7 @@ public partial class PostalCodeListViewModel : BaseViewModel
 
     private async Task DeletePostalCode()
     {
-        if (_dialogService.Confirm("Potwierdzenie usunięcia", 
+        if (_dialogService.Confirm("Potwierdzenie usunięcia",
             "Czy na pewno chcesz usunąć wybrany kod pocztowy?"))
         {
             await _postalCodeService.RemoveAsync(SelectedPostalCode.Id);
@@ -122,7 +122,10 @@ public partial class PostalCodeListViewModel : BaseViewModel
     partial void OnSelectedPostalCodeChanged(PostalCodeWrapper? value)
     {
         IsEditMode = value != null;
-        EditPostalCode = value?.Clone() ?? new PostalCodeWrapper(new PostalCode());
+        if (value is not null)
+            _mapper.Map(value, EditPostalCode);
+        else
+            EditPostalCode = CreateEmptyPostalCodeWrapper();
         (DeleteCommand as AsyncRelayCommand)?.NotifyCanExecuteChanged();
     }
 }

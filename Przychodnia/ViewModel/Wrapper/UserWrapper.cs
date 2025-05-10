@@ -10,17 +10,32 @@ using System.Threading.Tasks;
 
 namespace Przychodnia.ViewModel.Wrapper;
 
-public partial class UserWrapper(User user) : ObservableObject
+public partial class UserWrapper : ObservableObject
 {
-    [ObservableProperty] private int? id = user.Id;
-    [ObservableProperty] private string? firstName = user.FirstName;
-    [ObservableProperty] private string? lastName = user.LastName;
-    [ObservableProperty] private string? login = user.Login;
-    [ObservableProperty] private string? passwordHash = user.PasswordHash;
-    [ObservableProperty] private string? licenseNumber = user.LicenseNumber;
-    [ObservableProperty] private bool? isActive = user.IsActive;
-    [ObservableProperty] private UserType? userType = user.UserType;
-    [ObservableProperty] private Laboratory? laboratory = user.Laboratory;
-    [ObservableProperty] private Laboratory? managedLaboratory = user.ManagedLaboratory;
+    [ObservableProperty] private int? id;
+    [ObservableProperty] private string? firstName;
+    [ObservableProperty] private string? lastName;
+    [ObservableProperty] private string? login;
+    [ObservableProperty] private string? passwordHash;
+    [ObservableProperty] private string? licenseNumber;
+    [ObservableProperty] private bool? isActive;
+    [ObservableProperty] private UserType? userType;
+    [ObservableProperty] private Laboratory? laboratory;
+    [ObservableProperty] private Laboratory? managedLaboratory;
+
+    public UserWrapper(User user)
+    {
+        Id = user.Id;
+        FirstName = user.FirstName;
+        LastName = user.LastName;
+        Login = user.Login;
+        PasswordHash = user.PasswordHash;
+        LicenseNumber = user.LicenseNumber;
+        IsActive = user.IsActive;
+        UserType = user.UserType;
+        Laboratory = user.Laboratory;
+        ManagedLaboratory = user.ManagedLaboratory;
+    }
+
     public string FullName => $"{FirstName} {LastName}".Trim();
 }

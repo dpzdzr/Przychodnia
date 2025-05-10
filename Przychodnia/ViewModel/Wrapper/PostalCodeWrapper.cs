@@ -9,10 +9,16 @@ using System.Threading.Tasks;
 
 namespace Przychodnia.ViewModel.Wrapper;
 
-public partial class PostalCodeWrapper(PostalCode entity) : ObservableObject
+public partial class PostalCodeWrapper : ObservableObject
 {
-    [ObservableProperty] private int id = entity.Id;
-    [ObservableProperty] private string code = entity.Code;
-    [ObservableProperty] private string city = entity.City;
-    public PostalCodeWrapper Clone() => new(new PostalCode { Id = Id, Code = code, City = city });
+    [ObservableProperty] private int id;
+    [ObservableProperty] private string code;
+    [ObservableProperty] private string city;
+
+    public PostalCodeWrapper(PostalCode entity)
+    {
+        Id = entity.Id;
+        Code = entity.Code;
+        City = entity.City;
+    }
 }

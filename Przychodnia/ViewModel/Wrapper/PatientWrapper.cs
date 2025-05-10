@@ -8,15 +8,29 @@ using System.Threading.Tasks;
 
 namespace Przychodnia.ViewModel.Wrapper;
 
-public partial class PatientWrapper(Patient entity) : ObservableObject
+public partial class PatientWrapper : ObservableObject
 {
-    [ObservableProperty] private int id = entity.Id;
-    [ObservableProperty] private string pesel = entity.Pesel;
-    [ObservableProperty] private string firstName = entity.FirstName;
-    [ObservableProperty] private string lastName = entity.LastName;
-    [ObservableProperty] private PostalCodeWrapper? postalCode = entity.PostalCode is null ? null : new(entity.PostalCode);
-    [ObservableProperty] private string? street = entity.Street;
-    [ObservableProperty] private string? houseNumber = entity.HouseNumber;
-    [ObservableProperty] private string? apartmentNumber = entity.ApartmentNumber;
-    [ObservableProperty] private Sex? sex = entity.Sex;
+    [ObservableProperty] private int id;
+    [ObservableProperty] private string pesel;
+    [ObservableProperty] private string firstName;
+    [ObservableProperty] private string lastName;
+    [ObservableProperty] private PostalCodeWrapper? postalCode;
+    [ObservableProperty] private string? street;
+    [ObservableProperty] private string? houseNumber;
+    [ObservableProperty] private string? apartmentNumber;
+    [ObservableProperty] private Sex? sex;
+
+    public PatientWrapper(Patient entity)
+    {
+        Id = entity.Id;
+        Pesel = entity.Pesel;
+        FirstName = entity.FirstName;
+        LastName = entity.LastName;
+        PostalCode = entity.PostalCode is null ? null : new(entity.PostalCode);
+        Street = entity.Street;
+        HouseNumber = entity.HouseNumber;
+        ApartmentNumber = entity.ApartmentNumber;
+        Sex = entity.Sex;
+    }
 }
+
