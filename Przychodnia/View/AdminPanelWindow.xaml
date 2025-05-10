@@ -30,17 +30,24 @@
                 <MenuItem Header="Zamknij"/>
             </MenuItem>
         </Menu>
-        <Border CornerRadius="10" BorderThickness="2" BorderBrush="LightGray" Margin="5" Background="LightGray">
-            <StackPanel Orientation="Vertical" Margin="10" DockPanel.Dock="Left" Background="LightGray" Width="160">
-                <Button Content="← Wstecz" Command="{Binding NavigateBackCommand}" IsEnabled="{Binding CanNavigateBack}" Margin="5,5,5,30" Width="150"/>
-                <StackPanel>
-                    <Button Content="Użytkownicy" Command="{Binding NavigateToUsersListCommand}" />
-                    <Button Content="Pacjenci" Command="{Binding NavigateToPatientsListCommand}"/>
-                    <Button Content="Kody pocztowe" Command="{Binding NavigateToPostalCodesListCommand}"/>
-                    <Button Content="Laboratoria" Command="{Binding NavigateToLaboratoriesListCommand}"/>
+
+        <Grid DockPanel.Dock="Left">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Border CornerRadius="10" BorderThickness="2" BorderBrush="LightGray" Margin="5" Background="LightGray">
+                <StackPanel Grid.Row="0" Orientation="Vertical" Margin="10"  Background="LightGray" Width="160">
+                    <Button Content="← Wstecz" Command="{Binding NavigateBackCommand}" IsEnabled="{Binding CanNavigateBack}" Margin="5,5,5,30" Width="150"/>
+                    <StackPanel>
+                        <Button Content="Użytkownicy" Command="{Binding NavigateToUsersListCommand}" />
+                        <Button Content="Pacjenci" Command="{Binding NavigateToPatientsListCommand}"/>
+                        <Button Content="Kody pocztowe" Command="{Binding NavigateToPostalCodesListCommand}"/>
+                        <Button Content="Laboratoria" Command="{Binding NavigateToLaboratoriesListCommand}"/>
+                    </StackPanel>
                 </StackPanel>
-            </StackPanel>
-        </Border>
+            </Border>
+        </Grid>
         <ContentControl Content="{Binding CurrentViewModel}">
             <ContentControl.Resources>
                 <DataTemplate DataType="{x:Type adminViewmodels:UserAddViewModel}">
@@ -49,8 +56,8 @@
                 <DataTemplate DataType="{x:Type adminViewmodels:UserListViewModel}">
                     <views:UsersListView/>
                 </DataTemplate>
-                <DataTemplate DataType="{x:Type adminViewmodels:AdminPanelHomePageViewModel}">
-                    <views:AdminPanelHomePageView/>
+                <DataTemplate DataType="{x:Type sharedViewmodels:HomePageViewModel}">
+                    <views:HomePageView/>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type adminViewmodels:UserEditViewModel}">
                     <views:UserFormView/>

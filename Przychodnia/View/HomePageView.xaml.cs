@@ -18,9 +18,9 @@ namespace Przychodnia.View
     /// <summary>
     /// Interaction logic for AdminPanelHomePageView.xaml
     /// </summary>
-    public partial class AdminPanelHomePageView : UserControl
+    public partial class HomePageView : UserControl
     {
-        public AdminPanelHomePageView()
+        public HomePageView()
         {
             InitializeComponent();
         }

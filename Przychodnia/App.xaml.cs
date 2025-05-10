@@ -71,7 +71,7 @@ namespace Przychodnia
             services.AddTransient<UserAddViewModel>();
             services.AddSingleton<AdminPanelViewModel>();
             services.AddTransient<UserListViewModel>();
-            services.AddSingleton<AdminPanelHomePageViewModel>();
+            services.AddSingleton<HomePageViewModel>();
             services.AddTransient<UserEditViewModel>();
             services.AddTransient<PostalCodeListViewModel>();
             services.AddTransient<PatientAddViewModel>();

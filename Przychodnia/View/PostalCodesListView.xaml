@@ -27,7 +27,7 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <DataGrid ItemsSource="{Binding PostalCodes}" SelectedItem="{Binding SelectedPostalCode}" AutoGenerateColumns="False" Margin="5" IsReadOnly="True" CanUserAddRows="False" CanUserReorderColumns="False" HeadersVisibility="Column" FontSize="15">
+            <DataGrid ItemsSource="{Binding PostalCodes}" SelectedItem="{Binding SelectedPostalCode}" AutoGenerateColumns="False" IsReadOnly="True" CanUserAddRows="False" CanUserReorderColumns="False" HeadersVisibility="Column" FontSize="15">
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Kod pocztowy"  Binding="{Binding Code}" Width="*"/>
                     <DataGridTextColumn Header="Miasto" Binding="{Binding City}" Width="2*"/>
@@ -35,43 +35,59 @@
             </DataGrid>
 
             <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
-                <Button Content="Usuń" Grid.Column="0" Margin="5,10,5,10" Height="25" Command="{Binding DeleteCommand}"/>
+                <Button Content="Usuń" Grid.Column="0" Height="25" Command="{Binding DeleteCommand}" HorizontalAlignment="Left" Margin="0, 15,15,15"/>
             </Grid>
 
         </Grid>
 
-        <Border Grid.Column="1" CornerRadius="10" BorderThickness="2" BorderBrush="LightGray" Margin="5">
-            <Grid Grid.Column="2" >
+        <Border Grid.Column="1" CornerRadius="10" BorderThickness="2" BorderBrush="LightGray" Margin="25" >
+            <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="3*"/>
                 </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*"/>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="*"/>
-                </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Row="1" Grid.ColumnSpan="3" d:Text="Dodaj nowy kod pocztowy" Text="{Binding FormHeader}" Margin="20" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="25" TextWrapping="Wrap" TextAlignment="Center" FontWeight="DemiBold"/>
-
-                <StackPanel Grid.Column="1" Grid.Row="2">
-                    <TextBlock Text="Miasto" Margin="0,0,0,0"/>
-                    <TextBox Text="{Binding EditPostalCode.City}"/>
-                    <TextBlock Text="Kod pocztowy" Margin="0,10,0,0"/>
-                    <toolkit:MaskedTextBox Mask="00-000" Text="{Binding EditPostalCode.Code}"/>
-                </StackPanel>
-
-                <Button Grid.Row="3" Content="{Binding ActionButtonText}" Grid.Column="1" Width="150" Height="25" Margin="20,20,20,10" Command="{Binding SaveCommand}"/>
-                <Button Grid.Row="4" Content="Anuluj" Grid.Column="1" Width="150" Height="25" Margin="20, 10, 20, 20" Command="{Binding CancelCommand}" Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                <Grid Grid.Row="1">
+                    <TextBlock Text="Dodaj nowy kod pocztowy" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="25" FontWeight="DemiBold" TextWrapping="Wrap"/>
+                </Grid>
+                <Grid Grid.Row="2" Margin="0,30,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="Miasto" Margin="0,0,0,2" FontSize="13"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" FontSize="17" Text="{Binding EditPostalCode.City}"/>
+                </Grid>
+                <Grid Grid.Row="3" Margin="0,10,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Row="0" Grid.Column="1" Text="Kod pocztowy" Margin="0,0,0,2" FontSize="13"/>
+                    <toolkit:MaskedTextBox Grid.Row="1" Grid.Column="1" FontSize="17" Mask="00-000" Text="{Binding EditPostalCode.Code}"/>
+                </Grid>
+                <Grid Grid.Row="4" Margin="0,20,0,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Button Grid.Row="0" Content="{Binding ActionButtonText}" Command="{Binding SaveCommand}"/>
+                    <Button Grid.Row="1" Content="Anuluj" Command="{Binding CancelCommand}" Visibility="{Binding IsEditMode, Converter={StaticResource BoolToVisibilityConverter}}"/>
+                </Grid>
             </Grid>
         </Border>
     </Grid>

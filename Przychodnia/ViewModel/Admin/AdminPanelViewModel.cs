@@ -20,12 +20,11 @@ public class AdminPanelViewModel : NavigableBaseViewModel, INavigationService
     public AdminPanelViewModel(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
-
-        CurrentViewModel = _serviceProvider.GetRequiredService<AdminPanelHomePageViewModel>();
+        InitializeHomePage();
 
         NavigateToUsersListCommand = new AsyncRelayCommand
             (() => NavigateToAsync<UserListViewModel>(vm => vm.InitializeAsync()));
-
+        
         NavigateToPostalCodesListCommand = new AsyncRelayCommand
             (() => NavigateToAsync<PostalCodeListViewModel>(vm => vm.InitializeAsync()));
 
@@ -67,5 +66,11 @@ public class AdminPanelViewModel : NavigableBaseViewModel, INavigationService
         {
             IsBusy = false;
         }
+    }
+    private void InitializeHomePage()
+    {
+        var homePage = _serviceProvider.GetRequiredService<HomePageViewModel>();
+        homePage.Caption = "Panel administratora";
+        CurrentViewModel = homePage;
     }
 }
