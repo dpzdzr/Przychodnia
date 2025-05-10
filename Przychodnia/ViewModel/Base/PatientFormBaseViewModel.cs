@@ -22,36 +22,23 @@ public abstract partial class PatientFormBaseViewModel<TForm> : BaseViewModel
 {
     protected readonly IMapper _mapper;
     protected readonly IDialogService _dialogService;
+    protected readonly IMessenger _messenger;
     private readonly IPostalCodeService _postalCodeService;
 
     private List<PostalCodeWrapper> _allPostalCodes = [];
-    [ObservableProperty] private string enteredCode;
-    [ObservableProperty] private ObservableCollection<PostalCodeWrapper> cities;
-    [ObservableProperty] private ObservableCollection<PostalCodeWrapper> postalCodes;
 
-    public PatientFormBaseViewModel(IPostalCodeService postalCodeService, IDialogService dialogService, IMapper mapper)
+    [ObservableProperty] private string enteredCode = string.Empty;
+    [ObservableProperty] private ObservableCollection<PostalCodeWrapper> cities = [];
+    [ObservableProperty] private ObservableCollection<PostalCodeWrapper> postalCodes = [];
+
+    public PatientFormBaseViewModel(IPostalCodeService postalCodeService, IDialogService dialogService, IMapper mapper, IMessenger messenger)
     {
         _mapper = mapper;
         _dialogService = dialogService;
         _postalCodeService = postalCodeService;
+        _messenger = messenger;
 
-        WeakReferenceMessenger.Default.Register<PostalCodeAddedOrEditedMessage>(this, (r, m) =>
-        {
-            PostalCodeWrapper wrapper = m.Value;
-
-            var existing = _allPostalCodes.FirstOrDefault(pc => pc.Id == wrapper.Id);
-
-            if (existing is not null)
-            {
-                existing.Code = wrapper.Code;
-                existing.City = wrapper.City;
-            }
-            else
-            {
-                _allPostalCodes.Add(wrapper);
-            }
-            FilterCodes();
-        });
+        _messenger.Register<PostalCodeAddedOrEditedMessage>(this, HandlePostalCodeMessage);
     }
 
     public TForm FormData { get; set; } = new();
@@ -60,6 +47,19 @@ public abstract partial class PatientFormBaseViewModel<TForm> : BaseViewModel
         {Model.Sex.Male, "Mężczyzna" },
         {Model.Sex.Female, "Kobieta" }
     };
+
+    public void HandlePostalCodeMessage(object recipient, PostalCodeAddedOrEditedMessage message)
+    {
+        var wrapper = message.Value;
+        var existing = _allPostalCodes.FirstOrDefault(pc => pc.Id == wrapper.Id);
+
+        if (existing is not null)
+            _mapper.Map(wrapper, existing);
+        else
+            _allPostalCodes.Add(wrapper);
+        
+        FilterCodes();
+    }
 
     private void FilterCodes()
     {
