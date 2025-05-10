@@ -12,15 +12,16 @@
     <UserControl.Resources>
         <converter:BoolToYesNoConverter x:Key="BoolToYesNoConverter"/>
     </UserControl.Resources>
-    
-    <Grid d:Background="White">
+
+    <Grid d:Background="#ededed">
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <DataGrid ItemsSource="{Binding Users}" SelectedItem="{Binding SelectedUser}"
                   Grid.Row="0" AutoGenerateColumns="False" CanUserReorderColumns="False" CanUserDeleteRows="False" 
-                  CanUserAddRows="False" ColumnWidth="*" Margin="10" IsReadOnly="True" HeadersVisibility="Column" FontSize="12">
+                  CanUserAddRows="False" ColumnWidth="*" Margin="10" IsReadOnly="True" HeadersVisibility="Column" FontSize="12" Background="#ededed" >
+
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
                 <DataGridTextColumn Header="Imię" Binding="{Binding FirstName}"/>

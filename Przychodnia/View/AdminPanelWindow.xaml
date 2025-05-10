@@ -11,36 +11,36 @@
         Title="Przychodnia" Height="800" Width="1200">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <Style TargetType="Button">
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Margin" Value="10"/>
+            <Setter Property="Background" Value="#2E86C1"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+        </Style>
     </Window.Resources>
 
-    <DockPanel IsEnabled="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}">
+    <DockPanel IsEnabled="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}" Background="#ededed">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="Plik">
                 <MenuItem Header="Wyloguj"/>
                 <MenuItem Header="Zamknij"/>
             </MenuItem>
         </Menu>
-        <StackPanel Orientation="Vertical" Margin="10" DockPanel.Dock="Left">
-            <Button Content="← Wstecz" Command="{Binding NavigateBackCommand}" IsEnabled="{Binding CanNavigateBack}" Margin="5,5,5,20" Width="125"/>
-            <Expander Header="Użytkownicy">
+        <Border CornerRadius="10" BorderThickness="2" BorderBrush="LightGray" Margin="5" Background="LightGray">
+            <StackPanel Orientation="Vertical" Margin="10" DockPanel.Dock="Left" Background="LightGray" Width="160">
+                <Button Content="← Wstecz" Command="{Binding NavigateBackCommand}" IsEnabled="{Binding CanNavigateBack}" Margin="5,5,5,30" Width="150"/>
                 <StackPanel>
-                    <Button Content="Przeglądaj" Command="{Binding NavigateToUsersListCommand}" Margin="5" Width="125"/>
+                    <Button Content="Użytkownicy" Command="{Binding NavigateToUsersListCommand}" />
+                    <Button Content="Pacjenci" Command="{Binding NavigateToPatientsListCommand}"/>
+                    <Button Content="Kody pocztowe" Command="{Binding NavigateToPostalCodesListCommand}"/>
+                    <Button Content="Laboratoria" Command="{Binding NavigateToLaboratoriesListCommand}"/>
                 </StackPanel>
-            </Expander>
-
-            <Expander Header="Pacjenci">
-                <StackPanel>
-                    <Button Content="Przeglądaj" Command="{Binding NavigateToPatientsListCommand}" Margin="5" Width="125"/>
-                </StackPanel>
-            </Expander>
-
-            <Expander Header="Kody pocztowe">
-                <StackPanel>
-                    <Button Content="Przeglądaj" Command="{Binding NavigateToPostalCodesListCommand}" Margin="5" Width="125"/>
-                </StackPanel>
-            </Expander>
-        </StackPanel>
-
+            </StackPanel>
+        </Border>
         <ContentControl Content="{Binding CurrentViewModel}">
             <ContentControl.Resources>
                 <DataTemplate DataType="{x:Type adminViewmodels:UserAddViewModel}">
@@ -64,9 +64,11 @@
                 <DataTemplate DataType="{x:Type sharedViewmodels:PatientAddViewModel}">
                     <views:PatientFormView/>
                 </DataTemplate>
-                
                 <DataTemplate DataType="{x:Type sharedViewmodels:PatientEditViewModel}">
                     <views:PatientFormView/>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type sharedViewmodels:LaboratoryListViewModel}">
+                    <views:LaboratoryListView/>
                 </DataTemplate>
 
             </ContentControl.Resources>

@@ -77,6 +77,7 @@ namespace Przychodnia
             services.AddTransient<PatientAddViewModel>();
             services.AddTransient<PatientEditViewModel>();
             services.AddTransient<PatientListViewModel>();
+            services.AddTransient<LaboratoryListViewModel>();
 
         }
 

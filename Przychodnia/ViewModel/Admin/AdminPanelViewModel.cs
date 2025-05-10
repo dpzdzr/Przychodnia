@@ -32,6 +32,9 @@ public class AdminPanelViewModel : NavigableBaseViewModel, INavigationService
         NavigateToPatientsListCommand = new AsyncRelayCommand
             (() => NavigateToAsync<PatientListViewModel>(vm => vm.InitializeAsync()));
 
+        NavigateToLaboratoriesListCommand = new AsyncRelayCommand
+            (() => NavigateToAsync<LaboratoryListViewModel>());
+
         NavigateBackCommand = new RelayCommand(NavigateBack);
     }
 
@@ -43,6 +46,7 @@ public class AdminPanelViewModel : NavigableBaseViewModel, INavigationService
     public IAsyncRelayCommand NavigateToUsersListCommand { get; }
     public IAsyncRelayCommand NavigateToPostalCodesListCommand { get; }
     public IAsyncRelayCommand NavigateToPatientsListCommand { get; }
+    public IAsyncRelayCommand NavigateToLaboratoriesListCommand { get; }
     public ICommand NavigateBackCommand { get; }
 
     private async Task NavigateToAsync<TViewModel>(Func<TViewModel, Task> initializer = null)
