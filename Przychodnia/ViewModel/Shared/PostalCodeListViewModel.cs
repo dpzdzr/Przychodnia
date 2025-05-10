@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.DirectoryServices;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using AutoMapper;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Przychodnia.Message;
@@ -18,17 +20,17 @@ using Przychodnia.ViewModel.Wrapper;
 
 namespace Przychodnia.ViewModel.Shared;
 
-public class PostalCodeListViewModel : BaseViewModel
+public partial class PostalCodeListViewModel : BaseViewModel
 {
     private readonly IPostalCodeService _postalCodeService;
     private readonly IDialogService _dialogService;
     private readonly IMapper _mapper;
     private readonly IMessenger _messenger;
 
-    private PostalCodeWrapper? _selectedPostalCode;
-    private PostalCodeWrapper _editPostalCode;
-    private ObservableCollection<PostalCodeWrapper> _postalCodes;
-    private bool _isEditMode;
+    [ObservableProperty] private PostalCodeWrapper? selectedPostalCode;
+    [ObservableProperty] private PostalCodeWrapper editPostalCode;
+    [ObservableProperty] private ObservableCollection<PostalCodeWrapper> postalCodes;
+    [ObservableProperty] private bool isEditMode;
 
     public PostalCodeListViewModel(IPostalCodeService postalCodeService, IDialogService dialogService, IMapper mapper, IMessenger messenger)
     {
@@ -41,41 +43,12 @@ public class PostalCodeListViewModel : BaseViewModel
         CancelCommand = new RelayCommand(ClearForm);
         DeleteCommand = new AsyncRelayCommand(DeletePostalCode, () => IsEditMode);
 
-        EditPostalCode = new(new PostalCode());
+        EditPostalCode = CreateEmptyPostalCodeWrapper();
     }
 
-    public bool IsEditMode
-    {
-        get => _isEditMode;
-        set => SetProperty(ref _isEditMode, value);
-    }
-    public ObservableCollection<PostalCodeWrapper> PostalCodes
-    {
-        get => _postalCodes;
-        set => SetProperty(ref _postalCodes, value);
-    }
-    public PostalCodeWrapper? SelectedPostalCode
-    {
-        get => _selectedPostalCode;
-        set
-        {
-            if (SetProperty(ref _selectedPostalCode, value))
-            {
-                IsEditMode = value != null && value.Id != 0;
-                EditPostalCode = value?.Clone() ?? new PostalCodeWrapper(new PostalCode());
-                OnPropertyChanged(nameof(ActionButtonText));
-                OnPropertyChanged(nameof(FormHeader));
-                (DeleteCommand as AsyncRelayCommand)?.NotifyCanExecuteChanged();
-            }
-        }
-    }
-    public PostalCodeWrapper EditPostalCode
-    {
-        get => _editPostalCode;
-        set => SetProperty(ref _editPostalCode, value);
-    }
     public string ActionButtonText => IsEditMode ? "Edytuj" : "Zapisz";
-    public string FormHeader => IsEditMode ? "Edytuj wybrany kod pocztowy" : "Dodaj nowy kod pocztowy";
+    public string FormHeader => IsEditMode ? "Edytuj wybrany kod pocztowy" 
+        : "Dodaj nowy kod pocztowy";
 
     public IAsyncRelayCommand SaveCommand { get; }
     public ICommand CancelCommand { get; }
@@ -89,7 +62,8 @@ public class PostalCodeListViewModel : BaseViewModel
 
     private async Task DeletePostalCode()
     {
-        if (_dialogService.Confirm("Potwierdzenie usunięcia", "Czy na pewno chcesz usunąć wybrany kod pocztowy?"))
+        if (_dialogService.Confirm("Potwierdzenie usunięcia", 
+            "Czy na pewno chcesz usunąć wybrany kod pocztowy?"))
         {
             await _postalCodeService.RemoveAsync(SelectedPostalCode.Id);
             PostalCodes.Remove(SelectedPostalCode);
@@ -98,6 +72,13 @@ public class PostalCodeListViewModel : BaseViewModel
     private async Task SubmitPostalCodeAsync()
     {
         if (IsEditMode)
+            await UpdatePostalCodeAsync();
+        else
+            await AddPostalCodeAsync();
+    }
+    private async Task UpdatePostalCodeAsync()
+    {
+        try
         {
             var dto = _mapper.Map<PostalCodeDTO>(EditPostalCode);
             await _postalCodeService.UpdateAsync(EditPostalCode.Id, dto);
@@ -105,7 +86,14 @@ public class PostalCodeListViewModel : BaseViewModel
             _dialogService.Show("Sukces", "Pomyślnie zaktualizowano kod pocztowy");
             _mapper.Map(EditPostalCode, SelectedPostalCode);
         }
-        else
+        catch (Exception ex)
+        {
+            _dialogService.Error("Błąd", $"{ex.Message}");
+        }
+    }
+    private async Task AddPostalCodeAsync()
+    {
+        try
         {
             var dto = _mapper.Map<PostalCodeDTO>(EditPostalCode);
             var entity = await _postalCodeService.CreateAsync(dto);
@@ -114,10 +102,27 @@ public class PostalCodeListViewModel : BaseViewModel
             _dialogService.Show("Sukces", "Pomyślnie dodano kod pocztowy");
             ClearForm();
         }
+        catch (Exception ex)
+        {
+            _dialogService.Error("Błąd", $"{ex.Message}");
+        }
     }
     private void ClearForm()
     {
         SelectedPostalCode = null;
-        EditPostalCode = new PostalCodeWrapper(new PostalCode());
+        EditPostalCode = CreateEmptyPostalCodeWrapper();
+    }
+    private PostalCodeWrapper CreateEmptyPostalCodeWrapper() => new(new PostalCode());
+
+    partial void OnIsEditModeChanged(bool value)
+    {
+        OnPropertyChanged(nameof(ActionButtonText));
+        OnPropertyChanged(nameof(FormHeader));
+    }
+    partial void OnSelectedPostalCodeChanged(PostalCodeWrapper? value)
+    {
+        IsEditMode = value != null;
+        EditPostalCode = value?.Clone() ?? new PostalCodeWrapper(new PostalCode());
+        (DeleteCommand as AsyncRelayCommand)?.NotifyCanExecuteChanged();
     }
 }

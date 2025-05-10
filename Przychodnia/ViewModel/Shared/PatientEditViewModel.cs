@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using AutoMapper;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Przychodnia.Model;
@@ -17,11 +18,11 @@ using Przychodnia.ViewModel.Wrapper;
 
 namespace Przychodnia.ViewModel.Shared;
 
-public class PatientEditViewModel : PatientFormBaseViewModel<PatientEditFormData>
+public partial class PatientEditViewModel : PatientFormBaseViewModel<PatientEditFormData>
 {
     private readonly IPatientService _patientService;
 
-    private PatientWrapper _editPatientWrapper;
+    [ObservableProperty] private PatientWrapper _editPatientWrapper;
 
     public PatientEditViewModel(IPatientService patientService, IDialogService dialogService, IPostalCodeService postalCodeService, IMapper mapper)
     : base(postalCodeService, dialogService, mapper)
@@ -32,11 +33,6 @@ public class PatientEditViewModel : PatientFormBaseViewModel<PatientEditFormData
 
     public static string HeaderText => "Edytuj wybranego pacjenta";
     public static string ActionButtonText => "Edytuj";
-    public PatientWrapper EditPatientWrapper
-    {
-        get => _editPatientWrapper;
-        set => SetProperty(ref _editPatientWrapper, value);
-    }
 
     public ICommand ActionButtonCommand { get; }
 

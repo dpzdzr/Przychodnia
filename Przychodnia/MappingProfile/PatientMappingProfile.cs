@@ -17,7 +17,7 @@ public class PatientMappingProfile : Profile
     {
         CreateMap<PatientWrapper, PatientDTO>()
             .ForMember(dest => dest.PostalCodeId, opt => opt.MapFrom(src => src.PostalCode.Id));
-        CreateMap<PatientEditFormData, PatientWrapper>();
+        CreateMap<PatientWrapper, PatientEditFormData>().ReverseMap();
         CreateMap<PatientAddFormData, PatientDTO>();
         CreateMap<PatientDTO, Patient>();
     }

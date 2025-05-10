@@ -3,17 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Przychodnia.ViewModel.Base;
 
 namespace Przychodnia.ViewModel.Shared;
 
-public class HomePageViewModel() : BaseViewModel
+public partial class HomePageViewModel() : BaseViewModel
 {
-    private string _caption;
-
-    public string Caption
-    {
-        get => _caption;
-        set => SetProperty(ref _caption, value);
-    }
+    [ObservableProperty] private string caption;
 }
