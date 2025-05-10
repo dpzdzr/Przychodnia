@@ -72,4 +72,6 @@ public class UserService(IUserRepository userRepo, ILaboratoryRepository labRepo
         targetUser.UserType = userType;
     }
 
+    public async Task<List<User>> GetLabManagersWithoutLabAssignedAsync()
+        => await _userRepo.GetLabManagersWithoutManagedLabAsync();
 }

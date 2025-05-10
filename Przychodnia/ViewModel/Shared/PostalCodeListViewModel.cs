@@ -101,10 +101,9 @@ public class PostalCodeListViewModel : BaseViewModel
         {
             var dto = _mapper.Map<PostalCodeDTO>(EditPostalCode);
             await _postalCodeService.UpdateAsync(EditPostalCode.Id, dto);
-            SelectedPostalCode.Code = EditPostalCode.Code;
-            SelectedPostalCode.City = EditPostalCode.City;
             _messenger.Send(new PostalCodeAddedOrEditedMessage(SelectedPostalCode));
             _dialogService.Show("Sukces", "Pomyślnie zaktualizowano kod pocztowy");
+            _mapper.Map(EditPostalCode, SelectedPostalCode);
         }
         else
         {

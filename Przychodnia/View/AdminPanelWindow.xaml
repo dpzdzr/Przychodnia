@@ -36,7 +36,7 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Border CornerRadius="10" BorderThickness="2" BorderBrush="LightGray" Margin="5" Background="LightGray">
+            <Border CornerRadius="10" BorderThickness="2" BorderBrush="LightGray" Margin="15" Background="LightGray">
                 <StackPanel Grid.Row="0" Orientation="Vertical" Margin="10"  Background="LightGray" Width="160">
                     <Button Content="← Wstecz" Command="{Binding NavigateBackCommand}" IsEnabled="{Binding CanNavigateBack}" Margin="5,5,5,30" Width="150"/>
                     <StackPanel>

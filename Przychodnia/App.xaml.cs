@@ -5,7 +5,7 @@ using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Przychodnia.Data;
-using Przychodnia.Mapping;
+using Przychodnia.MappingProfile;
 using Przychodnia.Repository.Implementation;
 using Przychodnia.Repository.Interface;
 using Przychodnia.Service.Implementation;
@@ -34,7 +34,7 @@ namespace Przychodnia
             _serviceProvider = serviceCollection.BuildServiceProvider();
         }
 
-        private void ConfigureServices(ServiceCollection services)
+        private static void ConfigureServices(ServiceCollection services)
         {
             // DbContext
             services.AddDbContext<DbContext, AppDbContext>();
@@ -42,10 +42,8 @@ namespace Przychodnia
             //Messenger
             services.AddSingleton<IMessenger>(WeakReferenceMessenger.Default);
 
-
             // Mappers
-            services.AddAutoMapper(typeof(UserMappingProfile));
-            services.AddAutoMapper(typeof(PostalCodeMappingProfile));
+            services.AddAutoMapper(typeof(UserMappingProfile).Assembly);
 
             // Repositories
             services.AddScoped<IUserRepository, UserRepository>();
@@ -57,7 +55,8 @@ namespace Przychodnia
             // Services
             services.AddSingleton<IDialogService, DialogService>();
             services.AddSingleton<NavigationServiceProxy>();
-            services.AddSingleton<INavigationService>(provider => provider.GetRequiredService<NavigationServiceProxy>());
+            services.AddSingleton<INavigationService>(provider 
+                => provider.GetRequiredService<NavigationServiceProxy>());
 
             // Entities services
             services.AddTransient<IUserService, UserService>();
@@ -78,7 +77,6 @@ namespace Przychodnia
             services.AddTransient<PatientEditViewModel>();
             services.AddTransient<PatientListViewModel>();
             services.AddTransient<LaboratoryListViewModel>();
-
         }
 
         protected override void OnStartup(StartupEventArgs e)

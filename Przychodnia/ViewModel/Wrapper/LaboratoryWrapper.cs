@@ -13,9 +13,14 @@ public partial class LaboratoryWrapper(Laboratory entity) : ObservableObject
     [ObservableProperty] private int? id = entity.Id;
     [ObservableProperty] private string? name = entity.Name;
     [ObservableProperty] private string? type = entity.Type;
-    [ObservableProperty] private UserWrapper? manager = 
-        entity.Manager is User manager ? new(manager) : null;
+    [ObservableProperty] private UserWrapper? manager 
+        = entity.Manager is User manager ? new(manager) : null;
 
     public string ManagerFullName
         => Manager is not null ? $"{Manager.FirstName} {Manager.LastName}" : string.Empty;
+
+    partial void OnManagerChanged(UserWrapper? value)
+    {
+        OnPropertyChanged(nameof(ManagerFullName));
+    }
 }

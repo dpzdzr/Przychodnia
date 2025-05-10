@@ -1,19 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Przychodnia.Model;
 using Przychodnia.Repository.Interface;
 
 namespace Przychodnia.Repository.Implementation;
 
-public class BaseRepository<T> : IBaseRepository<T> where T : class
+public abstract class BaseRepository<T, TContext> : IBaseRepository<T> 
+    where T : class
+    where TContext : DbContext
 {
-    protected readonly DbContext _context;
+    protected readonly TContext _context;
     protected readonly DbSet<T> _dbSet;
 
-    public BaseRepository(DbContext context)
+    public BaseRepository(TContext context)
     {
         _context = context;
         _dbSet = _context.Set<T>();
@@ -36,4 +40,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : class
 
     public void Update(T entity)
         => _dbSet.Update(entity);
+
+    public async Task<bool> AnyAsync(Expression<Func<T, bool>> predicate)
+        => await _dbSet.AnyAsync(predicate);
 }

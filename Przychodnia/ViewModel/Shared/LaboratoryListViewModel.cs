@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Przychodnia.Model;
 using Przychodnia.Model.DTO;
 using Przychodnia.Service.Interface;
@@ -21,21 +22,22 @@ public class LaboratoryListViewModel : BaseViewModel
     private readonly ILaboratoryService _labService;
     private readonly IUserService _userService;
     private readonly IMapper _mapper;
+    private readonly IMessenger _messenger;
 
     private ObservableCollection<LaboratoryWrapper> _labs;
     private LaboratoryWrapper? _selectedLab;
     private LaboratoryWrapper _editLab;
     private ObservableCollection<UserWrapper> _managers;
-    private UserWrapper? _selectedManager;
     private bool _isEditMode;
 
     public LaboratoryListViewModel(IDialogService dialogService, ILaboratoryService labService,
-        IUserService userService, IMapper mapper)
+        IUserService userService, IMapper mapper, IMessenger messenger)
     {
         _dialogService = dialogService;
         _labService = labService;
         _userService = userService;
         _mapper = mapper;
+        _messenger = messenger;
 
         ActionButtonCommand = new AsyncRelayCommand(SubmitLaboratoryAsync);
         CancelButtonCommand = new RelayCommand(ClearForm);
@@ -57,8 +59,14 @@ public class LaboratoryListViewModel : BaseViewModel
             if (SetProperty(ref _selectedLab, value))
             {
                 IsEditMode = value != null;
-                SelectedManager = value?.Manager is not null ? value.Manager : null;
-                if (value is not null) _mapper.Map(value, EditLab);
+                if (value is not null)
+                {
+                    _mapper.Map(value, EditLab);
+                    EditLab.Manager = FindMatchingManager(value.Manager?.Id);
+                }
+                else
+                    EditLab = new(new Laboratory());
+
                 OnPropertyChanged(nameof(ActionButtonText));
                 OnPropertyChanged(nameof(FormHeaderText));
                 (RemoveButtonCommand as AsyncRelayCommand)?.NotifyCanExecuteChanged();
@@ -69,15 +77,6 @@ public class LaboratoryListViewModel : BaseViewModel
     {
         get => _editLab;
         set => SetProperty(ref _editLab, value);
-    }
-    public UserWrapper SelectedManager
-    {
-        get => _selectedManager;
-        set
-        {
-            if (SetProperty(ref _selectedManager, value))
-                EditLab.Manager = value;
-    }
     }
     public ObservableCollection<UserWrapper> Managers
     {
@@ -107,16 +106,52 @@ public class LaboratoryListViewModel : BaseViewModel
 
     private async Task RemoveLaboratory()
     {
-
+        try
+        {
+            var confirmation = _dialogService.Confirm("Potwierdzenie usunięcia", "Czy na pewno chcesz usunąć wybrane laboratorium?");
+            if (SelectedLab?.Id is int labId && confirmation is true)
+            {
+                await _labService.RemoveAsync(labId);
+                Labs.Remove(SelectedLab);
+            }
+        }
+        catch (Exception ex)
+        {
+            _dialogService.Error("Błąd", $"{ex.Message}");
+        }
     }
-
     private async Task SubmitLaboratoryAsync()
     {
         if (IsEditMode)
-        {
-
-        }
+            await EditLaboratory();
         else
+            await AddLaboratory();
+    }
+    private async Task EditLaboratory()
+    {
+        try
+        {
+            if (EditLab.Id is int id)
+            {
+                var dto = _mapper.Map<LaboratoryDTO>(EditLab);
+                await _labService.UpdateAsync(id, dto);
+            }
+            else
+            {
+                _dialogService.Error("Błąd", "Nie można zidentyfikować edytowanego laboratorium.");
+                return;
+            }
+            _dialogService.Show("Sukces", "Pomyślnie edytowano wybrane laboratorium");
+            _mapper.Map(EditLab, SelectedLab);
+        }
+        catch (Exception ex)
+        {
+            _dialogService.Error("Błąd", $"{ex.Message}");
+        }
+    }
+    private async Task AddLaboratory()
+    {
+        try
         {
             var dto = _mapper.Map<LaboratoryDTO>(EditLab);
             var entity = await _labService.AddAsync(dto);
@@ -124,12 +159,16 @@ public class LaboratoryListViewModel : BaseViewModel
             _dialogService.Show("Sukces", "Pomyślnie dodano nowe laboratorium");
             ClearForm();
         }
+        catch (Exception ex)
+        {
+            _dialogService.Error("Błąd", $"{ex.Message}");
+        }
     }
-
     private void ClearForm()
     {
         SelectedLab = null;
         EditLab = new(new Laboratory());
     }
-
+    private UserWrapper? FindMatchingManager(int? id)
+        => Managers.FirstOrDefault(m => m.Id == id);
 }

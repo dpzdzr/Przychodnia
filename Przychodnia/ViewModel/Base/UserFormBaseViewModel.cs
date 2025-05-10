@@ -41,8 +41,6 @@ public abstract class UserFormBaseViewModel<TForm> : BaseViewModel
          => FormData.SelectedUserType?.IsDoctor == true;
     public bool IsLabTechnician
         => FormData.SelectedUserType?.IsLabTechnician == true;
-    public bool IsLabManager
-        => FormData.SelectedUserType?.IsLabManager == true;
     public bool HasLicenseNumber
         => FormData.SelectedUserType?.HasLicenseNumber == true;
 
@@ -61,7 +59,6 @@ public abstract class UserFormBaseViewModel<TForm> : BaseViewModel
         {
             OnPropertyChanged(nameof(IsDoctor));
             OnPropertyChanged(nameof(IsLabTechnician));
-            OnPropertyChanged(nameof(IsLabManager));
             OnPropertyChanged(nameof(HasLicenseNumber));
         }
     }

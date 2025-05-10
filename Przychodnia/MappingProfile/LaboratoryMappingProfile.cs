@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Przychodnia.Mapping;
+namespace Przychodnia.MappingProfile;
 
 public class LaboratoryMappingProfile : Profile
 {

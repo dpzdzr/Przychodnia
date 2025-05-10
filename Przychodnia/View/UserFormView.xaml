@@ -55,13 +55,6 @@
                 SelectedItem="{Binding FormData.SelectedLaboratory}"
                 Visibility="{Binding IsLabTechnician, Converter={StaticResource BoolToVisibilityConverter}}"
                 DisplayMemberPath="Name"/>
-            <TextBlock Text="Zarządzane laboratorium" Margin="0,5,0,0" 
-                       Visibility="{Binding IsLabManager, Converter={StaticResource BoolToVisibilityConverter}}"/>
-            <ComboBox 
-                ItemsSource="{Binding Laboratories}"
-                SelectedItem="{Binding FormData.ManagedLaboratory}"
-                Visibility="{Binding IsLabManager, Converter={StaticResource BoolToVisibilityConverter}}"
-                DisplayMemberPath="Name"/>
             <TextBlock Text="Użytkownik aktywny" Margin="0,5,0,0"/>
             <CheckBox IsChecked="{Binding FormData.IsActive}"/>
         </StackPanel>

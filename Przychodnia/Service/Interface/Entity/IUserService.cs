@@ -13,6 +13,7 @@ public interface IUserService
     Task<User> CreateAsync(UserDTO dto);
     Task RemoveAsync(int id);
     Task<List<User>> GetAllWithUserTypeAsync();
+    Task<List<User>> GetLabManagersWithoutLabAssignedAsync();
 
     Task<User?> GetByIdWithDetailsAsync(int id);
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 using Przychodnia.Model;
@@ -14,5 +15,5 @@ public interface ILaboratoryService
     Task RemoveAsync(int id);
     Task<IEnumerable<Laboratory>> GetAllAsync();
     Task<IEnumerable<Laboratory>> GetAllWithDetailsAsync();
-
+    Task UpdateAsync(int id, LaboratoryDTO dto);
 }
