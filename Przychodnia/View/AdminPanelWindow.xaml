@@ -8,19 +8,9 @@
         xmlns:views="clr-namespace:Przychodnia.View" 
         d:DataContext="{d:DesignInstance Type=adminViewmodels:AdminPanelViewModel}"
         mc:Ignorable="d"
-        Title="Przychodnia" Height="800" Width="1200">
+        Title="Przychodnia" Height="1000" Width="1700">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-        <Style TargetType="Button">
-            <Setter Property="Width" Value="150"/>
-            <Setter Property="Height" Value="30"/>
-            <Setter Property="Margin" Value="10"/>
-            <Setter Property="Background" Value="#2E86C1"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="BorderBrush" Value="Transparent"/>
-            <Setter Property="BorderThickness" Value="0"/>
-        </Style>
     </Window.Resources>
 
     <DockPanel IsEnabled="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}" Background="#ededed">
@@ -37,8 +27,8 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Border CornerRadius="10" BorderThickness="2" BorderBrush="LightGray" Margin="15" Background="LightGray">
-                <StackPanel Grid.Row="0" Orientation="Vertical" Margin="10"  Background="LightGray" Width="160">
-                    <Button Content="← Wstecz" Command="{Binding NavigateBackCommand}" IsEnabled="{Binding CanNavigateBack}" Margin="5,5,5,30" Width="150"/>
+                <StackPanel Grid.Row="0" Orientation="Vertical" Margin="10"  Background="LightGray" Width="175">
+                    <Button Content="← Wstecz" Command="{Binding NavigateBackCommand}" IsEnabled="{Binding CanNavigateBack}" Margin="5,5,5,30" Width="160"/>
                     <StackPanel>
                         <Button Content="Użytkownicy" Command="{Binding NavigateToUsersListCommand}" />
                         <Button Content="Pacjenci" Command="{Binding NavigateToPatientsListCommand}"/>

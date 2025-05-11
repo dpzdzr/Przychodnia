@@ -29,7 +29,8 @@ public partial class PatientListViewModel : BaseViewModel
     [ObservableProperty] private PatientWrapper? selectedPatient;
     [ObservableProperty] private ObservableCollection<PatientWrapper> patients = [];
 
-    public PatientListViewModel(IPatientService patientService, INavigationService navigationService, IServiceProvider serviceProvider, IDialogService dialogService)
+    public PatientListViewModel(IPatientService patientService, INavigationService navigationService,
+        IServiceProvider serviceProvider, IDialogService dialogService)
     {
         _patientService = patientService;
         _navigationService = navigationService;
@@ -38,6 +39,7 @@ public partial class PatientListViewModel : BaseViewModel
 
         AddPatientCommand = new AsyncRelayCommand(AddPatient);
         EditPatientCommand = new AsyncRelayCommand(EditPatient, () => SelectedPatient != null);
+        CancelSelectionCommand = new RelayCommand(CancelSelection, () => SelectedPatient != null);
         RemovePatientCommand = new AsyncRelayCommand(RemovePatient, () => SelectedPatient != null);
 
         WeakReferenceMessenger.Default.Register<PatientAddedMessage>(this, (r, m) =>
@@ -46,9 +48,10 @@ public partial class PatientListViewModel : BaseViewModel
         });
     }
 
-    public ICommand AddPatientCommand { get; }
-    public ICommand EditPatientCommand { get; }
-    public ICommand RemovePatientCommand { get; }
+    public IAsyncRelayCommand AddPatientCommand { get; }
+    public IAsyncRelayCommand EditPatientCommand { get; }
+    public IAsyncRelayCommand RemovePatientCommand { get; }
+    public IRelayCommand CancelSelectionCommand { get; }
 
     public async Task InitializeAsync()
     {
@@ -65,7 +68,8 @@ public partial class PatientListViewModel : BaseViewModel
     private async Task EditPatient()
     {
         var editVm = _serviceProvider.GetRequiredService<PatientEditViewModel>();
-        await editVm.InitializeAsync(SelectedPatient);
+        if (SelectedPatient is not null)
+            await editVm.InitializeAsync(SelectedPatient);
         _navigationService.NavigateTo(editVm);
     }
     private async Task RemovePatient()
@@ -76,9 +80,14 @@ public partial class PatientListViewModel : BaseViewModel
             Patients.Remove(SelectedPatient);
         }
     }
+    private void CancelSelection()
+    {
+        SelectedPatient = null;
+    }
     partial void OnSelectedPatientChanged(PatientWrapper? value)
     {
         (EditPatientCommand as AsyncRelayCommand)?.NotifyCanExecuteChanged();
         (RemovePatientCommand as AsyncRelayCommand)?.NotifyCanExecuteChanged();
+        (CancelSelectionCommand as RelayCommand)?.NotifyCanExecuteChanged();
     }
 }

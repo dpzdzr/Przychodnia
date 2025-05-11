@@ -14,13 +14,14 @@ public partial class LaboratoryWrapper : ObservableObject
     [ObservableProperty] private string? name;
     [ObservableProperty] private string? type;
     [ObservableProperty] private UserWrapper? manager;
-
+    [ObservableProperty] private List<UserWrapper>? workers;
     public LaboratoryWrapper(Laboratory entity)
     {
         Id = entity.Id;
         Name = entity.Name;
         Type = entity.Type;
         Manager = entity.Manager is User manager ? new(manager) : null;
+        Workers = entity.Workers?.Select(u => new UserWrapper(u)).ToList(); 
     }
 
     public string ManagerFullName

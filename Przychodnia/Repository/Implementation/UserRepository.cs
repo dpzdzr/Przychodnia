@@ -11,14 +11,14 @@ using Przychodnia.Repository.Interface;
 
 namespace Przychodnia.Repository.Implementation;
 
-public class UserRepository(AppDbContext context) 
+public class UserRepository(AppDbContext context)
     : BaseRepository<User, AppDbContext>(context), IUserRepository
 {
     public async Task<List<User>> GetUsersByTypeAsync(UserTypeEnum type)
         => await _dbSet.Where(u => u.UserType.Id == (int)type).ToListAsync();
 
-    public async Task<List<User>> GetAllWithUserTypeAsync()
-        => await _dbSet.Include(u => u.UserType).ToListAsync();
+    public async Task<List<User>> GetAllWithDetailsAsync()
+        => await _dbSet.Include(u => u.UserType).Include(u => u.Laboratory).ToListAsync();
 
     public async Task<List<User>> GetLabManagersWithoutManagedLabAsync()
     {

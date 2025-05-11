@@ -11,9 +11,9 @@ namespace Przychodnia.ViewModel.Wrapper;
 
 public partial class PostalCodeWrapper : ObservableObject
 {
-    [ObservableProperty] private int id;
-    [ObservableProperty] private string code;
-    [ObservableProperty] private string city;
+    [ObservableProperty] private int? id;
+    [ObservableProperty] private string? code;
+    [ObservableProperty] private string? city;
 
     public PostalCodeWrapper(PostalCode entity)
     {

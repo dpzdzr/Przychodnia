@@ -65,8 +65,19 @@ public partial class PostalCodeListViewModel : BaseViewModel
         if (_dialogService.Confirm("Potwierdzenie usunięcia",
             "Czy na pewno chcesz usunąć wybrany kod pocztowy?"))
         {
-            await _postalCodeService.RemoveAsync(SelectedPostalCode.Id);
-            PostalCodes.Remove(SelectedPostalCode);
+            try
+            {
+                if (SelectedPostalCode is not null)
+                {
+                    if (SelectedPostalCode.Id is int id)
+                        await _postalCodeService.RemoveAsync(id);
+                    PostalCodes.Remove(SelectedPostalCode);
+                }
+            }
+            catch (Exception ex)
+            {
+                _dialogService.Error("Błąd", $"{ex.Message}");
+            }
         }
     }
     private async Task SubmitPostalCodeAsync()
@@ -81,10 +92,12 @@ public partial class PostalCodeListViewModel : BaseViewModel
         try
         {
             var dto = _mapper.Map<PostalCodeDTO>(EditPostalCode);
-            await _postalCodeService.UpdateAsync(EditPostalCode.Id, dto);
+            if (EditPostalCode.Id is int id)
+                await _postalCodeService.UpdateAsync(id, dto);
             _dialogService.Show("Sukces", "Pomyślnie zaktualizowano kod pocztowy");
             _mapper.Map(EditPostalCode, SelectedPostalCode);
-            _messenger.Send(new PostalCodeAddedOrEditedMessage(SelectedPostalCode));
+            if (SelectedPostalCode is not null)
+                _messenger.Send(new PostalCodeAddedOrEditedMessage(SelectedPostalCode));
         }
         catch (Exception ex)
         {
@@ -113,8 +126,7 @@ public partial class PostalCodeListViewModel : BaseViewModel
         SelectedPostalCode = null;
         EditPostalCode = CreateEmptyPostalCodeWrapper();
     }
-    private PostalCodeWrapper CreateEmptyPostalCodeWrapper() => new(new PostalCode());
-
+    private static PostalCodeWrapper CreateEmptyPostalCodeWrapper() => new(new PostalCode());
     partial void OnIsEditModeChanged(bool value)
     {
         OnPropertyChanged(nameof(ActionButtonText));

@@ -21,7 +21,7 @@ public partial class UserEditViewModel : UserFormBaseViewModel<UserEditFormData>
 {
     private readonly IUserService _userService;
 
-    [ObservableProperty] private UserWrapper editUserWrapper;
+    [ObservableProperty] private UserWrapper? editUserWrapper;
 
     public UserEditViewModel(IDialogService dialogService, ILaboratoryService labService, IUserTypeService userTypeService, IUserService userService, IMapper mapper) 
         : base(userTypeService, labService, dialogService, mapper)

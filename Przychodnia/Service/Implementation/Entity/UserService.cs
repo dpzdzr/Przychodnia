@@ -20,8 +20,8 @@ public class UserService(IUserRepository userRepo, ILaboratoryRepository labRepo
     private readonly IUserTypeRepository _userTypeRepo = userTypeRepo;
     private readonly IMapper _mapper = mapper;
 
-    public async Task<List<User>> GetAllWithUserTypeAsync()
-        => await _userRepo.GetAllWithUserTypeAsync();
+    public async Task<List<User>> GetAllWithDetailsAsync()
+        => await _userRepo.GetAllWithDetailsAsync();
 
     public async Task<List<User>> GetUsersByUserType(UserTypeEnum type)
         => await _userRepo.GetUsersByTypeAsync(type);

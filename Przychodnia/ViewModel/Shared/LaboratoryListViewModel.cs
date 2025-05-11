@@ -24,10 +24,11 @@ public partial class LaboratoryListViewModel : BaseViewModel
     private readonly IUserService _userService;
     private readonly IMapper _mapper;
     private readonly IMessenger _messenger;
-    
+
     [ObservableProperty] private bool isEditMode;
     [ObservableProperty] private LaboratoryWrapper editLab;
     [ObservableProperty] private LaboratoryWrapper? selectedLab;
+    [ObservableProperty] private ObservableCollection<UserWrapper> workers = [];
     [ObservableProperty] private ObservableCollection<UserWrapper> managers = [];
     [ObservableProperty] private ObservableCollection<LaboratoryWrapper> labs = [];
 
@@ -41,7 +42,7 @@ public partial class LaboratoryListViewModel : BaseViewModel
         _messenger = messenger;
 
         ActionButtonCommand = new AsyncRelayCommand(SubmitLaboratoryAsync);
-        CancelButtonCommand = new RelayCommand(ClearForm);
+        CancelButtonCommand = new RelayCommand(ClearForm, () => IsEditMode);
         RemoveButtonCommand = new AsyncRelayCommand(RemoveLaboratory, () => IsEditMode);
 
         EditLab = new(new Laboratory());
@@ -67,7 +68,7 @@ public partial class LaboratoryListViewModel : BaseViewModel
     {
         try
         {
-            var confirmation = _dialogService.Confirm("Potwierdzenie usunięcia", 
+            var confirmation = _dialogService.Confirm("Potwierdzenie usunięcia",
                 "Czy na pewno chcesz usunąć wybrane laboratorium?");
             if (SelectedLab?.Id is int labId && confirmation is true)
             {
@@ -146,5 +147,6 @@ public partial class LaboratoryListViewModel : BaseViewModel
         OnPropertyChanged(nameof(ActionButtonText));
         OnPropertyChanged(nameof(FormHeaderText));
         (RemoveButtonCommand as AsyncRelayCommand)?.NotifyCanExecuteChanged();
+        (CancelButtonCommand as RelayCommand)?.NotifyCanExecuteChanged();
     }
 }

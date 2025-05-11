@@ -26,8 +26,8 @@ public partial class UserListViewModel : BaseViewModel
     private readonly INavigationService _navigationService;
     private readonly IServiceProvider _serviceProvider;
 
-    [ObservableProperty] private UserWrapper selectedUser;
-    [ObservableProperty] private ObservableCollection<UserWrapper> users;
+    [ObservableProperty] private UserWrapper? selectedUser;
+    [ObservableProperty] private ObservableCollection<UserWrapper> users = [];
 
     public UserListViewModel(IDialogService dialogService, IUserService userService,
     INavigationService navigationService, IServiceProvider serviceProvider)
@@ -37,9 +37,10 @@ public partial class UserListViewModel : BaseViewModel
         _navigationService = navigationService;
         _serviceProvider = serviceProvider;
 
-        DeleteUserCommand = new AsyncRelayCommand(RemoveUser, () => SelectedUser != null);
-        EditUserCommand = new AsyncRelayCommand(EditUser, () => SelectedUser != null);
         AddUserCommand = new AsyncRelayCommand(AddUser);
+        CancelCommand = new RelayCommand(Cancel, () => SelectedUser != null);
+        EditUserCommand = new AsyncRelayCommand(EditUser, () => SelectedUser != null);
+        DeleteUserCommand = new AsyncRelayCommand(RemoveUser, () => SelectedUser != null);
 
         WeakReferenceMessenger.Default.Register<UserAddedMessage>(this, (r, m) =>
         {
@@ -50,15 +51,16 @@ public partial class UserListViewModel : BaseViewModel
     public IAsyncRelayCommand DeleteUserCommand { get; }
     public IAsyncRelayCommand EditUserCommand { get; }
     public IAsyncRelayCommand AddUserCommand { get; }
+    public IRelayCommand CancelCommand { get; }
 
     public async Task InitializeAsync()
     {
-        var items = await _userService.GetAllWithUserTypeAsync();
+        var items = await _userService.GetAllWithDetailsAsync();
         Users = [.. items.Select(u => new UserWrapper(u))];
     }
 
     private async Task AddUser()
-    {  
+    {
         var addVm = _serviceProvider.GetRequiredService<UserAddViewModel>();
         await addVm.InitializeAsync();
         _navigationService.NavigateTo(addVm);
@@ -71,16 +73,22 @@ public partial class UserListViewModel : BaseViewModel
     }
     private async Task RemoveUser()
     {
-        if(SelectedUser?.Id is int userId && 
+        if (SelectedUser?.Id is int userId &&
             _dialogService.Confirm("Potwierdzenie usunięcia", "Czy na pewno chcesz usunąć wybranego użytkownika?"))
         {
             await _userService.RemoveAsync(userId);
             Users.Remove(SelectedUser);
         }
     }
-    partial void OnSelectedUserChanged(UserWrapper value)
+    private void Cancel()
+    {
+        SelectedUser = null;
+    }
+
+    partial void OnSelectedUserChanged(UserWrapper? value)
     {
         (DeleteUserCommand as AsyncRelayCommand)?.NotifyCanExecuteChanged();
         (EditUserCommand as AsyncRelayCommand)?.NotifyCanExecuteChanged();
+        (CancelCommand as RelayCommand)?.NotifyCanExecuteChanged();
     }
 }

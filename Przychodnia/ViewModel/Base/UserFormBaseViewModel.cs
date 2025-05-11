@@ -46,7 +46,7 @@ public abstract partial class UserFormBaseViewModel<TForm> : BaseViewModel
     public async Task InitializeFormDataAsync()
     {
         UserTypes = [.. await _userTypeService.GetAllAsync()];
-        Laboratories = [.. await _labService.GetAllAsync()];
+        Laboratories = [null, .. await _labService.GetAllAsync()];
 
         FormData.SelectedUserType = UserTypes.First();
     }

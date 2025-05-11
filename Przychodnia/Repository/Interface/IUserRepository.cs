@@ -11,6 +11,6 @@ namespace Przychodnia.Repository.Interface;
 public interface IUserRepository : IBaseRepository<User>
 {
     Task<List<User>> GetUsersByTypeAsync(UserTypeEnum type);
-    Task<List<User>> GetAllWithUserTypeAsync();
+    Task<List<User>> GetAllWithDetailsAsync();
     Task<List<User>> GetLabManagersWithoutManagedLabAsync();
 }

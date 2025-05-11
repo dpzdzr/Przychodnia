@@ -12,15 +12,15 @@ public class Appointment
     public DateTime? Date { get; set; }
     public bool? Completed { get; set; }
 
-    [Required]
+    //[Required]
     public int ScheduledById { get; set; }
-    public virtual User ScheduledBy { get; set; }
+    public virtual User? ScheduledBy { get; set; }
 
-    [Required]
+    //[Required]
     public int AttendingDoctorId { get; set; }
-    public virtual User AttendingDoctor { get; set; }
+    public virtual User? AttendingDoctor { get; set; }
 
-    [Required]
+    //[Required]
     public int PatientId { get; set; }
-    public virtual Patient Patient { get; set; }
+    public virtual Patient? Patient { get; set; }
 }
