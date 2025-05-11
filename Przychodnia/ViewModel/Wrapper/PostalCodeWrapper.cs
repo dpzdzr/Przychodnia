@@ -21,4 +21,6 @@ public partial class PostalCodeWrapper : ObservableObject
         Code = entity.Code;
         City = entity.City;
     }
+    // needed for mapping PatientWrapper -> EditForm
+    public PostalCodeWrapper() { } 
 }

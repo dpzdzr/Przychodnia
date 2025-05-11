@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Przychodnia.ViewModel.Wrapper.WrapperHelper;
 
 namespace Przychodnia.ViewModel.Wrapper;
 
@@ -26,7 +27,7 @@ public partial class PatientWrapper : ObservableObject
         Pesel = entity.Pesel;
         FirstName = entity.FirstName;
         LastName = entity.LastName;
-        PostalCode = entity.PostalCode is null ? null : new(entity.PostalCode);
+        PostalCode = WrapPropertyIfNotNull(entity.PostalCode, pc => new PostalCodeWrapper(pc));
         Street = entity.Street;
         HouseNumber = entity.HouseNumber;
         ApartmentNumber = entity.ApartmentNumber;

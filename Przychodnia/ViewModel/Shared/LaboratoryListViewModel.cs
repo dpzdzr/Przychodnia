@@ -58,7 +58,7 @@ public partial class LaboratoryListViewModel : BaseViewModel
     public async Task InitializeAsync()
     {
         var labs = await _labService.GetAllWithDetailsAsync();
-        Labs = [.. labs.Select(l => new LaboratoryWrapper(l))];
+        Labs = [.. labs.Select(l => new LaboratoryWrapper(l, true, true))];
 
         var managers = await _userService.GetUsersByUserType(UserTypeEnum.KierownikLaboratorium);
         Managers = [.. managers.Select(m => new UserWrapper(m))];

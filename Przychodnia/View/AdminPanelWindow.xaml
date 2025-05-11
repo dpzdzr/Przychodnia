@@ -26,8 +26,8 @@
                 <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Border CornerRadius="10" BorderThickness="2" BorderBrush="LightGray" Margin="15" Background="LightGray">
-                <StackPanel Grid.Row="0" Orientation="Vertical" Margin="10"  Background="LightGray" Width="175">
+            <Border CornerRadius="10" BorderThickness="2" BorderBrush="#d9d9d9" Margin="15" Background="#d9d9d9">
+                <StackPanel Grid.Row="0" Orientation="Vertical" Margin="10"  Background="#d9d9d9" Width="175">
                     <Button Content="← Wstecz" Command="{Binding NavigateBackCommand}" IsEnabled="{Binding CanNavigateBack}" Margin="5,5,5,30" Width="160"/>
                     <StackPanel>
                         <Button Content="Użytkownicy" Command="{Binding NavigateToUsersListCommand}" />

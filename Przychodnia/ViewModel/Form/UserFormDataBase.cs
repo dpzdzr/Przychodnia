@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Przychodnia.Model;
+using Przychodnia.ViewModel.Wrapper;
 
 namespace Przychodnia.ViewModel.Form;
 
@@ -18,7 +19,7 @@ public abstract partial class UserFormDataBase : ObservableValidator
     [ObservableProperty] private string? passwordHash;
     [ObservableProperty] private string? licenseNumber;
     [ObservableProperty] private bool? isActive = false;
-    [ObservableProperty] private UserType? selectedUserType;
-    [ObservableProperty] private Laboratory? selectedLaboratory;
-    [ObservableProperty] private Laboratory? managedLaboratory;
+    [ObservableProperty] private UserTypeWrapper? selectedUserType;
+    [ObservableProperty] private LaboratoryWrapper? selectedLaboratory;
+    [ObservableProperty] private LaboratoryWrapper? managedLaboratory;
 }

@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Przychodnia.ViewModel.Wrapper.WrapperHelper;
 
 namespace Przychodnia.ViewModel.Wrapper;
 
@@ -19,11 +20,11 @@ public partial class UserWrapper : ObservableObject
     [ObservableProperty] private string? passwordHash;
     [ObservableProperty] private string? licenseNumber;
     [ObservableProperty] private bool? isActive;
-    [ObservableProperty] private UserType? userType;
-    [ObservableProperty] private Laboratory? laboratory;
-    [ObservableProperty] private Laboratory? managedLaboratory;
+    [ObservableProperty] private UserTypeWrapper? userType;
+    [ObservableProperty] private LaboratoryWrapper? laboratory;
+    [ObservableProperty] private LaboratoryWrapper? managedLaboratory;
 
-    public UserWrapper(User user)
+    public UserWrapper(User user, bool includeLaboratories = true)
     {
         Id = user.Id;
         FirstName = user.FirstName;
@@ -32,9 +33,14 @@ public partial class UserWrapper : ObservableObject
         PasswordHash = user.PasswordHash;
         LicenseNumber = user.LicenseNumber;
         IsActive = user.IsActive;
-        UserType = user.UserType;
-        Laboratory = user.Laboratory;
-        ManagedLaboratory = user.ManagedLaboratory;
+        UserType = WrapPropertyIfNotNull(user.UserType, l => new UserTypeWrapper(l));
+
+        if (includeLaboratories)
+        {
+            Laboratory = 
+                WrapPropertyIfNotNull(user.Laboratory, l => new LaboratoryWrapper(l));
+            ManagedLaboratory = WrapPropertyIfNotNull(user.ManagedLaboratory, ml => new LaboratoryWrapper(ml));
+        }
     }
 
     public string FullName => $"{FirstName} {LastName}".Trim();

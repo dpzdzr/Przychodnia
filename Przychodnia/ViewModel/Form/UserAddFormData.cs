@@ -19,5 +19,6 @@ public class UserAddFormData : UserFormDataBase
         IsActive = false;
         SelectedUserType = null;
         SelectedLaboratory = null;
+        ManagedLaboratory = null;
     }
 }

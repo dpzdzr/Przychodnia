@@ -12,6 +12,7 @@ using Przychodnia.Model;
 using Przychodnia.Service.Interface;
 using Przychodnia.Service.Interface.Entity;
 using Przychodnia.ViewModel.Form;
+using Przychodnia.ViewModel.Wrapper;
 
 namespace Przychodnia.ViewModel.Base;
 
@@ -23,8 +24,8 @@ public abstract partial class UserFormBaseViewModel<TForm> : BaseViewModel
     protected readonly IDialogService _dialogService;
     protected readonly IMapper _mapper;
 
-    [ObservableProperty] private ObservableCollection<UserType> userTypes = [];
-    [ObservableProperty] private ObservableCollection<Laboratory> laboratories = [];
+    [ObservableProperty] private ObservableCollection<UserTypeWrapper> userTypes = [];
+    [ObservableProperty] private ObservableCollection<LaboratoryWrapper> laboratories = [];
 
     public UserFormBaseViewModel(IUserTypeService userTypeService, ILaboratoryService laboratoryService, IDialogService dialogService, IMapper mapper)
     {
@@ -45,8 +46,10 @@ public abstract partial class UserFormBaseViewModel<TForm> : BaseViewModel
 
     public async Task InitializeFormDataAsync()
     {
-        UserTypes = [.. await _userTypeService.GetAllAsync()];
-        Laboratories = [null, .. await _labService.GetAllAsync()];
+        var userTypes = await _userTypeService.GetAllAsync();
+        UserTypes = [.. userTypes.Select(ut => new UserTypeWrapper(ut))];
+        var laboratories = await _labService.GetAllAsync();
+        Laboratories = [null, .. laboratories.Select(l => new LaboratoryWrapper(l))];
 
         FormData.SelectedUserType = UserTypes.First();
     }

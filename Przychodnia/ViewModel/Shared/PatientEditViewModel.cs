@@ -39,9 +39,10 @@ public partial class PatientEditViewModel : PatientFormBaseViewModel<PatientEdit
     public async Task InitializeAsync(PatientWrapper wrapper)
     {
         EditPatientWrapper = wrapper;
-        await base.InitializeFormDataAsync();
         _mapper.Map(EditPatientWrapper, FormData);
+        await base.InitializeFormDataAsync();
         EnteredCode = FormData.PostalCode?.Code ?? string.Empty;
+        FormData.PostalCode = Cities.FirstOrDefault(c => c.Id == EditPatientWrapper.PostalCode?.Id);
     }
 
     private async Task EditPatient()

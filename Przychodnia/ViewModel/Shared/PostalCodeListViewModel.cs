@@ -40,7 +40,7 @@ public partial class PostalCodeListViewModel : BaseViewModel
         _messenger = messenger;
 
         SaveCommand = new AsyncRelayCommand(SubmitPostalCodeAsync);
-        CancelCommand = new RelayCommand(ClearForm);
+        CancelCommand = new RelayCommand(ClearForm, () => IsEditMode);
         DeleteCommand = new AsyncRelayCommand(DeletePostalCode, () => IsEditMode);
 
         EditPostalCode = CreateEmptyPostalCodeWrapper();
@@ -51,7 +51,7 @@ public partial class PostalCodeListViewModel : BaseViewModel
         : "Dodaj nowy kod pocztowy";
 
     public IAsyncRelayCommand SaveCommand { get; }
-    public ICommand CancelCommand { get; }
+    public IRelayCommand CancelCommand { get; }
     public IAsyncRelayCommand DeleteCommand { get; }
 
     public async Task InitializeAsync()
@@ -139,6 +139,7 @@ public partial class PostalCodeListViewModel : BaseViewModel
             _mapper.Map(value, EditPostalCode);
         else
             EditPostalCode = CreateEmptyPostalCodeWrapper();
-        (DeleteCommand as AsyncRelayCommand)?.NotifyCanExecuteChanged();
+        DeleteCommand.NotifyCanExecuteChanged();
+        CancelCommand.NotifyCanExecuteChanged();
     }
 }
