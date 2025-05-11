@@ -6,6 +6,7 @@
         xmlns:adminViewmodels="clr-namespace:Przychodnia.ViewModel.Admin"
         xmlns:sharedViewmodels="clr-namespace:Przychodnia.ViewModel.Shared"
         xmlns:views="clr-namespace:Przychodnia.View" 
+        Icon="/Assets/icon.ico"
         d:DataContext="{d:DesignInstance Type=adminViewmodels:AdminPanelViewModel}"
         mc:Ignorable="d"
         Title="Przychodnia" Height="1000" Width="1700">
