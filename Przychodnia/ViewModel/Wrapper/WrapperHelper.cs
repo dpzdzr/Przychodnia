@@ -12,7 +12,6 @@ public static class WrapperHelper
         (TSource? source, Func<TSource, TWrapper> wrapperFactory)
         where TSource : class
         where TWrapper : class
-    {
-        return source is not null ? wrapperFactory(source) : null;
-    }
+        => source is not null ? wrapperFactory(source) : null;
+    
 }

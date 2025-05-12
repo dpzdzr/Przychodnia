@@ -38,7 +38,7 @@ public abstract partial class PatientFormBaseViewModel<TForm> : BaseViewModel
         _postalCodeService = postalCodeService;
         _messenger = messenger;
 
-        _messenger.Register<PostalCodeAddedOrEditedMessage>(this, HandlePostalCodeMessage);
+        _messenger.Register<PostalCodeAltered>(this, HandlePostalCodeMessage);
     }
 
     public TForm FormData { get; set; } = new();
@@ -48,7 +48,7 @@ public abstract partial class PatientFormBaseViewModel<TForm> : BaseViewModel
         {Model.Sex.Female, "Kobieta" }
     };
 
-    public void HandlePostalCodeMessage(object recipient, PostalCodeAddedOrEditedMessage message)
+    public void HandlePostalCodeMessage(object recipient, PostalCodeAltered message)
     {
         var wrapper = message.Value;
         var existing = _allPostalCodes.FirstOrDefault(pc => pc.Id == wrapper.Id);

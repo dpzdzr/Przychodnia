@@ -21,10 +21,10 @@ namespace Przychodnia.ViewModel.Admin;
 
 public partial class UserListViewModel : BaseViewModel
 {
-    private readonly IDialogService _dialogService;
     private readonly IUserService _userService;
-    private readonly INavigationService _navigationService;
+    private readonly IDialogService _dialogService;
     private readonly IServiceProvider _serviceProvider;
+    private readonly INavigationService _navigationService;
 
     [ObservableProperty] private UserWrapper? selectedUser;
     [ObservableProperty] private ObservableCollection<UserWrapper> users = [];
@@ -32,10 +32,10 @@ public partial class UserListViewModel : BaseViewModel
     public UserListViewModel(IDialogService dialogService, IUserService userService,
     INavigationService navigationService, IServiceProvider serviceProvider)
     {
-        _dialogService = dialogService;
         _userService = userService;
-        _navigationService = navigationService;
+        _dialogService = dialogService;
         _serviceProvider = serviceProvider;
+        _navigationService = navigationService;
 
         AddUserCommand = new AsyncRelayCommand(AddUser);
         CancelCommand = new RelayCommand(Cancel, () => SelectedUser != null);
@@ -48,10 +48,10 @@ public partial class UserListViewModel : BaseViewModel
         });
     }
 
-    public IAsyncRelayCommand DeleteUserCommand { get; }
-    public IAsyncRelayCommand EditUserCommand { get; }
-    public IAsyncRelayCommand AddUserCommand { get; }
     public IRelayCommand CancelCommand { get; }
+    public IAsyncRelayCommand AddUserCommand { get; }
+    public IAsyncRelayCommand EditUserCommand { get; }
+    public IAsyncRelayCommand DeleteUserCommand { get; }
 
     public async Task InitializeAsync()
     {
@@ -80,10 +80,7 @@ public partial class UserListViewModel : BaseViewModel
             Users.Remove(SelectedUser);
         }
     }
-    private void Cancel()
-    {
-        SelectedUser = null;
-    }
+    private void Cancel() => SelectedUser = null;
 
     partial void OnSelectedUserChanged(UserWrapper? value)
     {

@@ -97,7 +97,7 @@ public partial class PostalCodeListViewModel : BaseViewModel
             _dialogService.Show("Sukces", "Pomyślnie zaktualizowano kod pocztowy");
             _mapper.Map(EditPostalCode, SelectedPostalCode);
             if (SelectedPostalCode is not null)
-                _messenger.Send(new PostalCodeAddedOrEditedMessage(SelectedPostalCode));
+                _messenger.Send(new PostalCodeAltered(SelectedPostalCode));
         }
         catch (Exception ex)
         {
@@ -112,7 +112,7 @@ public partial class PostalCodeListViewModel : BaseViewModel
             var entity = await _postalCodeService.CreateAsync(dto);
             var wrapper = new PostalCodeWrapper(entity);
             PostalCodes.Add(wrapper);
-            _messenger.Send(new PostalCodeAddedOrEditedMessage(wrapper));
+            _messenger.Send(new PostalCodeAltered(wrapper));
             _dialogService.Show("Sukces", "Pomyślnie dodano kod pocztowy");
             ClearForm();
         }

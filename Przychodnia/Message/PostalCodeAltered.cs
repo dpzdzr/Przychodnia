@@ -9,6 +9,6 @@ using System.Threading.Tasks;
 
 namespace Przychodnia.Message;
 
-public class PostalCodeAddedOrEditedMessage(PostalCodeWrapper value)
+public class PostalCodeAltered(PostalCodeWrapper value)
         : ValueChangedMessage<PostalCodeWrapper>(value)
 { }
