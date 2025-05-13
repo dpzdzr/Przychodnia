@@ -58,7 +58,7 @@ public partial class PatientListViewModel : BaseListViewModel<PatientWrapper>
     {
         await TryExecuteAsync(async () =>
         {
-            if (_dialogService.Confirm("Potwierdzenie usunięcia", "Czy na pewno chcesz usunąć wybranego pacjenta?"))
+            if (Confirm("Potwierdzenie usunięcia", "Czy na pewno chcesz usunąć wybranego pacjenta?"))
             {
                 if (SelectedItem is null || SelectedItem.Id is not int id)
                     throw new InvalidOperationException("Nie można usunąć pacjenta bez ID");

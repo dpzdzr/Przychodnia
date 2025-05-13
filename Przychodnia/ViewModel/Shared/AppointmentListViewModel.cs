@@ -13,53 +13,44 @@ using Przychodnia.ViewModel.Wrapper;
 
 namespace Przychodnia.ViewModel.Shared;
 
-public partial class AppointmentListViewModel : BaseViewModel
+public partial class AppointmentListViewModel : BaseListViewModel<AppointmentWrapper>
 {
     private readonly IAppointmentService _appointmentService;
 
-    [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(EditCommand))]
-    [NotifyCanExecuteChangedFor(nameof(CancelSelectionCommand))]
-    [NotifyCanExecuteChangedFor(nameof(RemoveCommand))]
-    [NotifyCanExecuteChangedFor(nameof(AddCommand))]
-    private AppointmentWrapper? selectedAppointment;
-    [ObservableProperty] private ObservableCollection<AppointmentWrapper> appointments = [];
-
-    public AppointmentListViewModel(IAppointmentService appointmentService, IDialogService dialogService) : base(dialogService)
+    public AppointmentListViewModel(IAppointmentService appointmentService, IDialogService dialogService, 
+        INavigationService navigationService, IServiceProvider serviceProvider) 
+        : base(dialogService, navigationService, serviceProvider)
     {
         _appointmentService = appointmentService;
-
-        //CancelCommand = new RelayCommand(CancelSelection, () => IsAnySelected);
-        AddCommand = new AsyncRelayCommand(AddAppointment, () => IsAnySelected);
-        RemoveCommand = new AsyncRelayCommand(RemoveAppointment, () => IsAnySelected);
-        EditCommand = new AsyncRelayCommand(EditAppointment, () => IsAnySelected);
     }
 
-    //IRelayCommand CancelCommand { get; }
-    IAsyncRelayCommand AddCommand { get; }
-    IAsyncRelayCommand EditCommand { get; }
-    IAsyncRelayCommand RemoveCommand { get; }
-
-    public async Task InitializeAsync()
+    public override async Task InitializeAsync()
     {
         var items =  await _appointmentService.GetAllWithDetailsAsync();
-        items = [.. items.Select(a => new AppointmentWrapper(a))];
+        Items = [.. items.Select(a => new AppointmentWrapper(a))];
     }
 
-    private bool IsAnySelected => SelectedAppointment is not null;
+    protected override Task Add()
+    {
+        throw new NotImplementedException();
+    }
+    protected override Task Edit()
+    {
+        throw new NotImplementedException();
+    }
+    protected async override Task Remove()
+    {
+        await TryExecuteAsync(async () => 
+        {
+            if (Confirm("Potwierdzenie usunięcia", "Czy na pewno chcesz usunąć wybraną wizytę?"))
+            {
+                if (SelectedItem is null || SelectedItem.Id is not int id)
+                    throw new InvalidOperationException("Nie można usunąć wizyty bez ID");
+                
+                Items.Remove(SelectedItem);
+            }
 
-    [RelayCommand(CanExecute = nameof(IsAnySelected))]
-    private void CancelSelection() => SelectedAppointment = null;
-    private async Task AddAppointment()
-    {
-        throw new NotImplementedException();
-    }
-    private async Task EditAppointment()
-    {
-        throw new NotImplementedException();
-    }
-    private async Task RemoveAppointment()
-    {
-        throw new NotImplementedException();
+        
+        });
     }
 }
