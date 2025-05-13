@@ -60,11 +60,13 @@ public partial class LaboratoryListViewModel : BaseViewModel
 
         var managers = await _userService.GetUsersByUserType(UserTypeEnum.KierownikLaboratorium);
         Managers = [.. managers.Select(m => new UserWrapper(m))];
+
+        Managers.Insert(0, new UserWrapper(null, createDummy: true)); // <- dummy option
     }
 
     private async Task RemoveLaboratory()
     {
-        try
+        await TryExecuteAsync(async () =>
         {
             var confirmation = _dialogService.Confirm("Potwierdzenie usunięcia",
                 "Czy na pewno chcesz usunąć wybrane laboratorium?");
@@ -73,11 +75,7 @@ public partial class LaboratoryListViewModel : BaseViewModel
                 await _labService.RemoveAsync(labId);
                 Labs.Remove(SelectedLab);
             }
-        }
-        catch (Exception ex)
-        {
-            _dialogService.Error("Błąd", $"{ex.Message}");
-        }
+        });
     }
     private async Task SubmitLaboratoryAsync()
     {
@@ -88,7 +86,7 @@ public partial class LaboratoryListViewModel : BaseViewModel
     }
     private async Task EditLaboratory()
     {
-        try
+        await TryExecuteAsync(async () =>
         {
             if (EditLab.Id is int id)
             {
@@ -102,26 +100,18 @@ public partial class LaboratoryListViewModel : BaseViewModel
             }
             _dialogService.Show("Sukces", "Pomyślnie edytowano wybrane laboratorium");
             _mapper.Map(EditLab, SelectedLab);
-        }
-        catch (Exception ex)
-        {
-            _dialogService.Error("Błąd", $"{ex.Message}");
-        }
+        });
     }
     private async Task AddLaboratory()
     {
-        try
+        await TryExecuteAsync(async () =>
         {
             var dto = _mapper.Map<LaboratoryDTO>(EditLab);
             var entity = await _labService.AddAsync(dto);
             Labs.Add(new LaboratoryWrapper(entity));
             _dialogService.Show("Sukces", "Pomyślnie dodano nowe laboratorium");
             ClearForm();
-        }
-        catch (Exception ex)
-        {
-            _dialogService.Error("Błąd", $"{ex.Message}");
-        }
+        });
     }
     private void ClearForm()
     {
@@ -144,7 +134,7 @@ public partial class LaboratoryListViewModel : BaseViewModel
 
         OnPropertyChanged(nameof(ActionButtonText));
         OnPropertyChanged(nameof(FormHeaderText));
-        (RemoveButtonCommand as AsyncRelayCommand)?.NotifyCanExecuteChanged();
-        (CancelButtonCommand as RelayCommand)?.NotifyCanExecuteChanged();
+        RemoveButtonCommand.NotifyCanExecuteChanged();
+        CancelButtonCommand.NotifyCanExecuteChanged();
     }
 }

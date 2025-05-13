@@ -23,21 +23,34 @@ public partial class UserWrapper : BaseWrapper
     [ObservableProperty] private LaboratoryWrapper? laboratory;
     [ObservableProperty] private LaboratoryWrapper? managedLaboratory;
 
-    public UserWrapper(User user, bool includeLaboratories = true)
+    public UserWrapper() { }
+    public UserWrapper(User? user, bool includeLaboratories = true, bool createDummy = false)
     {
-        Id = user.Id;
-        FirstName = user.FirstName;
-        LastName = user.LastName;
-        Login = user.Login;
-        PasswordHash = user.PasswordHash;
-        LicenseNumber = user.LicenseNumber;
-        IsActive = user.IsActive;
-        UserType = WrapIfNotNull(user.UserType, l => new UserTypeWrapper(l));
-
-        if (includeLaboratories)
+        if (user is null)
         {
-            Laboratory = WrapIfNotNull(user.Laboratory, l => new LaboratoryWrapper(l));
-            ManagedLaboratory = WrapIfNotNull(user.ManagedLaboratory, ml => new LaboratoryWrapper(ml));
+            if(!createDummy)
+                throw new ArgumentNullException(nameof(user), "Użytkownik nie może być nnull, chyba że jawnie tworzysz obiekt dummy.");
+
+            Id = null;
+            FirstName = "brak";
+            LastName = string.Empty;
+        }
+        else
+        {
+            Id = user.Id;
+            FirstName = user.FirstName;
+            LastName = user.LastName;
+            Login = user.Login;
+            PasswordHash = user.PasswordHash;
+            LicenseNumber = user.LicenseNumber;
+            IsActive = user.IsActive;
+            UserType = WrapIfNotNull(user.UserType, l => new UserTypeWrapper(l));
+
+            if (includeLaboratories)
+            {
+                Laboratory = WrapIfNotNull(user.Laboratory, l => new LaboratoryWrapper(l));
+                ManagedLaboratory = WrapIfNotNull(user.ManagedLaboratory, ml => new LaboratoryWrapper(ml));
+            }
         }
     }
 

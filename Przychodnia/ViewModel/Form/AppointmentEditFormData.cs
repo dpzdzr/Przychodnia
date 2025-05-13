@@ -8,7 +8,7 @@ using Przychodnia.Model;
 
 namespace Przychodnia.ViewModel.Form;
 
-public class AppointmentEditFormData : AppointmentFormDataBase
+public partial class AppointmentEditFormData : AppointmentFormDataBase
 {
     [ObservableProperty] private int id;
 }

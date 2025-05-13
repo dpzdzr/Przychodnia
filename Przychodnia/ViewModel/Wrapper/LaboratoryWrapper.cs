@@ -31,6 +31,6 @@ public partial class LaboratoryWrapper : BaseWrapper
             Workers = MapListIfNotNull(entity.Workers, u => new UserWrapper(u, false));
     }
 
-    public string ManagerFullName
-        => Manager is not null ? $"{Manager.FirstName} {Manager.LastName}" : string.Empty;
+    public string? ManagerFullName
+        => Manager is not null ? $"{Manager.FirstName} {Manager.LastName}" : null;
 }
