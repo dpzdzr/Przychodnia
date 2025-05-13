@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Przychodnia.Model;
 using Przychodnia.Model.DTO;
+using Przychodnia.ViewModel.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,8 @@ using System.Threading.Tasks;
 
 namespace Przychodnia.ViewModel.Wrapper;
 
-public partial class PostalCodeWrapper : ObservableObject
+public partial class PostalCodeWrapper : BaseWrapper
 {
-    [ObservableProperty] private int? id;
     [ObservableProperty] private string? code;
     [ObservableProperty] private string? city;
 

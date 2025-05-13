@@ -19,7 +19,6 @@ namespace Przychodnia.ViewModel.Shared;
 
 public partial class LaboratoryListViewModel : BaseViewModel
 {
-    private readonly IDialogService _dialogService;
     private readonly ILaboratoryService _labService;
     private readonly IUserService _userService;
     private readonly IMapper _mapper;
@@ -33,9 +32,8 @@ public partial class LaboratoryListViewModel : BaseViewModel
     [ObservableProperty] private ObservableCollection<LaboratoryWrapper> labs = [];
 
     public LaboratoryListViewModel(IDialogService dialogService, ILaboratoryService labService,
-        IUserService userService, IMapper mapper, IMessenger messenger)
+        IUserService userService, IMapper mapper, IMessenger messenger) : base(dialogService)
     {
-        _dialogService = dialogService;
         _labService = labService;
         _userService = userService;
         _mapper = mapper;

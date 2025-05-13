@@ -1,19 +1,19 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Przychodnia.Model;
+using Przychodnia.ViewModel.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Przychodnia.ViewModel.Wrapper.WrapperHelper;
 
 namespace Przychodnia.ViewModel.Wrapper;
 
-public partial class LaboratoryWrapper : ObservableObject
+public partial class LaboratoryWrapper : BaseWrapper
 {
-    [ObservableProperty] private int? id;
     [ObservableProperty] private string? name;
     [ObservableProperty] private string? type;
+    [NotifyPropertyChangedFor(nameof(ManagerFullName))]
     [ObservableProperty] private UserWrapper? manager;
     [ObservableProperty] private List<UserWrapper>? workers;
     
@@ -24,18 +24,13 @@ public partial class LaboratoryWrapper : ObservableObject
         Name = entity.Name;
         Type = entity.Type;
 
-        if (includeManager && entity.Manager is not null)
-            Manager = new(entity.Manager);
+        if (includeManager)
+            Manager = WrapIfNotNull(entity.Manager, m => new UserWrapper(m, false));
 
         if (includeWorkers && entity.Workers is not null)
-            Workers = entity.Workers?.Select(u => new UserWrapper(u)).ToList();
+            Workers = MapListIfNotNull(entity.Workers, u => new UserWrapper(u, false));
     }
 
     public string ManagerFullName
         => Manager is not null ? $"{Manager.FirstName} {Manager.LastName}" : string.Empty;
-
-    partial void OnManagerChanged(UserWrapper? value)
-    {
-        OnPropertyChanged(nameof(ManagerFullName));
-    }
 }

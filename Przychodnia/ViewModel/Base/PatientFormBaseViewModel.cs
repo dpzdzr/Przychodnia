@@ -21,7 +21,6 @@ public abstract partial class PatientFormBaseViewModel<TForm> : BaseViewModel
     where TForm : PatientFormDataBase, new()
 {
     protected readonly IMapper _mapper;
-    protected readonly IDialogService _dialogService;
     protected readonly IMessenger _messenger;
     private readonly IPostalCodeService _postalCodeService;
 
@@ -32,9 +31,9 @@ public abstract partial class PatientFormBaseViewModel<TForm> : BaseViewModel
     [ObservableProperty] private ObservableCollection<PostalCodeWrapper> postalCodes = [];
 
     public PatientFormBaseViewModel(IPostalCodeService postalCodeService, IDialogService dialogService, IMapper mapper, IMessenger messenger)
+        : base(dialogService)
     {
         _mapper = mapper;
-        _dialogService = dialogService;
         _postalCodeService = postalCodeService;
         _messenger = messenger;
 

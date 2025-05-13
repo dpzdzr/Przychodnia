@@ -23,7 +23,6 @@ namespace Przychodnia.ViewModel.Shared;
 public partial class PostalCodeListViewModel : BaseViewModel
 {
     private readonly IPostalCodeService _postalCodeService;
-    private readonly IDialogService _dialogService;
     private readonly IMapper _mapper;
     private readonly IMessenger _messenger;
 
@@ -32,10 +31,9 @@ public partial class PostalCodeListViewModel : BaseViewModel
     [ObservableProperty] private PostalCodeWrapper? selectedPostalCode;
     [ObservableProperty] private ObservableCollection<PostalCodeWrapper> postalCodes = [];
 
-    public PostalCodeListViewModel(IPostalCodeService postalCodeService, IDialogService dialogService, IMapper mapper, IMessenger messenger)
+    public PostalCodeListViewModel(IPostalCodeService postalCodeService, IDialogService dialogService, IMapper mapper, IMessenger messenger) : base(dialogService)
     {
         _postalCodeService = postalCodeService;
-        _dialogService = dialogService;
         _mapper = mapper;
         _messenger = messenger;
 

@@ -19,73 +19,50 @@ using Przychodnia.ViewModel.Wrapper;
 
 namespace Przychodnia.ViewModel.Admin;
 
-public partial class UserListViewModel : BaseViewModel
+public partial class UserListViewModel : BaseListViewModel<UserWrapper>
 {
     private readonly IUserService _userService;
-    private readonly IDialogService _dialogService;
-    private readonly IServiceProvider _serviceProvider;
-    private readonly INavigationService _navigationService;
-
-    [ObservableProperty] private UserWrapper? selectedUser;
-    [ObservableProperty] private ObservableCollection<UserWrapper> users = [];
 
     public UserListViewModel(IDialogService dialogService, IUserService userService,
     INavigationService navigationService, IServiceProvider serviceProvider)
+        : base(dialogService, navigationService, serviceProvider)
     {
         _userService = userService;
-        _dialogService = dialogService;
-        _serviceProvider = serviceProvider;
-        _navigationService = navigationService;
-
-        AddUserCommand = new AsyncRelayCommand(AddUser);
-        CancelCommand = new RelayCommand(Cancel, () => SelectedUser != null);
-        EditUserCommand = new AsyncRelayCommand(EditUser, () => SelectedUser != null);
-        DeleteUserCommand = new AsyncRelayCommand(RemoveUser, () => SelectedUser != null);
 
         WeakReferenceMessenger.Default.Register<UserAddedMessage>(this, (r, m) =>
         {
-            Users.Add(new UserWrapper(m.Value));
+            Items.Add(new UserWrapper(m.Value));
         });
     }
 
-    public IRelayCommand CancelCommand { get; }
-    public IAsyncRelayCommand AddUserCommand { get; }
-    public IAsyncRelayCommand EditUserCommand { get; }
-    public IAsyncRelayCommand DeleteUserCommand { get; }
-
-    public async Task InitializeAsync()
+    public override async Task InitializeAsync()
     {
         var items = await _userService.GetAllWithDetailsAsync();
-        Users = [.. items.Select(u => new UserWrapper(u))];
+        Items = [.. items.Select(u => new UserWrapper(u))];
     }
 
-    private async Task AddUser()
+    protected override async Task Add()
     {
         var addVm = _serviceProvider.GetRequiredService<UserAddViewModel>();
         await addVm.InitializeAsync();
         _navigationService.NavigateTo(addVm);
     }
-    private async Task EditUser()
+    protected override async Task Edit()
     {
         var editVm = _serviceProvider.GetRequiredService<UserEditViewModel>();
-        await editVm.InitializeAsync(SelectedUser);
+        await editVm.InitializeAsync(SelectedItem);
         _navigationService.NavigateTo(editVm);
     }
-    private async Task RemoveUser()
+    protected override async Task Remove()
     {
-        if (SelectedUser?.Id is int userId &&
-            _dialogService.Confirm("Potwierdzenie usunięcia", "Czy na pewno chcesz usunąć wybranego użytkownika?"))
+        await TryExecuteAsync(async () =>
         {
-            await _userService.RemoveAsync(userId);
-            Users.Remove(SelectedUser);
-        }
-    }
-    private void Cancel() => SelectedUser = null;
-
-    partial void OnSelectedUserChanged(UserWrapper? value)
-    {
-        (DeleteUserCommand as AsyncRelayCommand)?.NotifyCanExecuteChanged();
-        (EditUserCommand as AsyncRelayCommand)?.NotifyCanExecuteChanged();
-        (CancelCommand as RelayCommand)?.NotifyCanExecuteChanged();
+            if (SelectedItem?.Id is int userId &&
+                Confirm("Potwierdzenie usunięcia", "Czy na pewno chcesz usunąć wybranego użytkownika?"))
+            {
+                await _userService.RemoveAsync(userId);
+                Items.Remove(SelectedItem);
+            }
+        });
     }
 }

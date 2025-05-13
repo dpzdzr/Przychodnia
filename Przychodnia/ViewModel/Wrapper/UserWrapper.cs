@@ -1,19 +1,18 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Przychodnia.Model;
 using Przychodnia.Model.DTO;
+using Przychodnia.ViewModel.Base;
 using Przychodnia.ViewModel.Form;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Przychodnia.ViewModel.Wrapper.WrapperHelper;
 
 namespace Przychodnia.ViewModel.Wrapper;
 
-public partial class UserWrapper : ObservableObject
+public partial class UserWrapper : BaseWrapper
 {
-    [ObservableProperty] private int? id;
     [ObservableProperty] private string? firstName;
     [ObservableProperty] private string? lastName;
     [ObservableProperty] private string? login;
@@ -33,13 +32,12 @@ public partial class UserWrapper : ObservableObject
         PasswordHash = user.PasswordHash;
         LicenseNumber = user.LicenseNumber;
         IsActive = user.IsActive;
-        UserType = WrapPropertyIfNotNull(user.UserType, l => new UserTypeWrapper(l));
+        UserType = WrapIfNotNull(user.UserType, l => new UserTypeWrapper(l));
 
         if (includeLaboratories)
         {
-            Laboratory = 
-                WrapPropertyIfNotNull(user.Laboratory, l => new LaboratoryWrapper(l));
-            ManagedLaboratory = WrapPropertyIfNotNull(user.ManagedLaboratory, ml => new LaboratoryWrapper(ml));
+            Laboratory = WrapIfNotNull(user.Laboratory, l => new LaboratoryWrapper(l));
+            ManagedLaboratory = WrapIfNotNull(user.ManagedLaboratory, ml => new LaboratoryWrapper(ml));
         }
     }
 

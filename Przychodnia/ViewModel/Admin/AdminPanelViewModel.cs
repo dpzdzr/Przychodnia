@@ -16,8 +16,10 @@ namespace Przychodnia.ViewModel.Admin;
 public class AdminPanelViewModel : NavigableBaseViewModel, INavigationService
 {
     private readonly IServiceProvider _serviceProvider;
+    private readonly string _homePageCaption = "Panel administratora";
 
-    public AdminPanelViewModel(IServiceProvider serviceProvider)
+    public AdminPanelViewModel(IServiceProvider serviceProvider, IDialogService dialogService)
+        : base(dialogService)
     {
         _serviceProvider = serviceProvider;
         InitializeHomePage();
@@ -70,7 +72,7 @@ public class AdminPanelViewModel : NavigableBaseViewModel, INavigationService
     private void InitializeHomePage()
     {
         var homePage = _serviceProvider.GetRequiredService<HomePageViewModel>();
-        homePage.Caption = "Panel administratora";
+        homePage.Caption = _homePageCaption;
         CurrentViewModel = homePage;
     }
 }

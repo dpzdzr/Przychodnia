@@ -50,11 +50,20 @@
                    VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="40" FontWeight="DemiBold"/>
 
                 <StackPanel Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Margin="0,30,50,0">
-                    <TextBlock Text="Imię" Margin="0,0,0,5"/>
+                    <TextBlock Margin="0,0,0,5">
+                        <Run Text="Imię "/>
+                        <Run Text="*" Foreground="Red"/>
+                    </TextBlock>  
                     <TextBox d:Text="Jan" Text="{Binding FormData.FirstName}"/>
-                    <TextBlock Text="Nazwisko" />
+                    <TextBlock>
+                        <Run Text="Nazwisko "/>
+                        <Run Text="*" Foreground="Red"/>
+                    </TextBlock>
                     <TextBox Text="{Binding FormData.LastName}"/>
-                    <TextBlock Text="PESEL" />
+                    <TextBlock>
+                        <Run Text="PESEL "/>
+                        <Run Text="*" Foreground="Red"/>
+                    </TextBlock>
                     <TextBox Text="{Binding FormData.Pesel}"/>
                     <TextBlock Text="Płeć"/>
                     <ComboBox ItemsSource="{Binding SexDispDict}"
@@ -78,7 +87,8 @@
                       DisplayMemberPath="City"/>
                 </StackPanel>
                 
-                <Button Grid.Row="3" Grid.ColumnSpan="2" Content="{Binding ActionButtonText}" Margin="0,40,0,0" Command="{Binding ActionButtonCommand}"/>
+                <Button Grid.Row="3" Grid.ColumnSpan="2" IsDefault="True"
+                        Content="{Binding ActionButtonText}" Margin="0,40,0,0" Command="{Binding ActionButtonCommand}"/>
             </Grid>
         </Border>
     </Grid>

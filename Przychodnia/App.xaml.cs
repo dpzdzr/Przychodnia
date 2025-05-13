@@ -51,6 +51,7 @@ namespace Przychodnia
             services.AddScoped<ILaboratoryRepository, LaboratoryRepository>();
             services.AddScoped<IPostalCodeRepository, PostalCodeRepository>();
             services.AddScoped<IPatientRepository, PatientRepository>();
+            services.AddScoped<IAppointmentService, AppointmentService>();
 
             // Services
             services.AddSingleton<IDialogService, DialogService>();
@@ -64,6 +65,7 @@ namespace Przychodnia
             services.AddTransient<ILaboratoryService, LaboratoryService>();
             services.AddTransient<IPostalCodeService, PostalCodeService>();
             services.AddTransient<IPatientService, PatientService>();
+            services.AddTransient<IAppointmentService, AppointmentService>();
 
             // ViewModels
             services.AddTransient<LoginViewModel>();
@@ -77,6 +79,7 @@ namespace Przychodnia
             services.AddTransient<PatientEditViewModel>();
             services.AddTransient<PatientListViewModel>();
             services.AddTransient<LaboratoryListViewModel>();
+            services.AddTransient<AppointmentListViewModel>();
         }
 
         protected override void OnStartup(StartupEventArgs e)

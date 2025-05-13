@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Przychodnia.Model;
+using Przychodnia.ViewModel.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,9 +9,8 @@ using System.Threading.Tasks;
 
 namespace Przychodnia.ViewModel.Wrapper;
 
-public partial class UserTypeWrapper : ObservableObject
+public partial class UserTypeWrapper : BaseWrapper
 {
-    [ObservableProperty] private int id;
     [ObservableProperty] private string name;
 
     public UserTypeWrapper(UserType entity)

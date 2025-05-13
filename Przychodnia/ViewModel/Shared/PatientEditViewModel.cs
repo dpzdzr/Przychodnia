@@ -51,7 +51,9 @@ public partial class PatientEditViewModel : PatientFormBaseViewModel<PatientEdit
         {
             _mapper.Map(FormData, EditPatientWrapper);
             var dto = _mapper.Map<PatientDTO>(EditPatientWrapper);
-            await _patientService.UpdateAsync(EditPatientWrapper.Id, dto);
+            if (EditPatientWrapper.Id is not int id)
+                throw new InvalidOperationException("Nie można aktualizować pacjenta bez ID");
+            await _patientService.UpdateAsync(id, dto);
             _dialogService.Show("Sukces", "Pomyślnie edytowano pacjenta");
         }
         catch (Exception ex)

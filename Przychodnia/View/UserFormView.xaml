@@ -52,9 +52,15 @@
                     <TextBox Text="{Binding FormData.FirstName}"/>
                     <TextBlock Text="Nazwisko"/>
                     <TextBox Text="{Binding FormData.LastName}"/>
-                    <TextBlock Text="Login"/>
+                    <TextBlock>
+                        <Run Text="Login"/>
+                        <Run Text="*" Foreground="Red"/>
+                    </TextBlock>
                     <TextBox Text="{Binding FormData.Login}"/>
-                    <TextBlock Text="Hasło"/>
+                    <TextBlock>
+                        <Run Text="Hasło"/>
+                        <Run Text="*" Foreground="Red"/>
+                    </TextBlock>
                     <TextBox Text="{Binding FormData.PasswordHash}"/>
                 </StackPanel>
                 <StackPanel Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Margin="50,30,0,0">
@@ -77,7 +83,7 @@
                     <TextBlock Text="Użytkownik aktywny"/>
                     <CheckBox IsChecked="{Binding FormData.IsActive}" Margin="0,5,0,0"/>
                 </StackPanel>
-                <Button Grid.Row="3" Grid.ColumnSpan="2" Margin="0,30,0,0" 
+                <Button Grid.Row="3" Grid.ColumnSpan="2" Margin="0,30,0,0" IsDefault="True"
                         Content="{Binding ActionButtonText}" 
                         Command="{Binding SaveUserCommand}"/>
             </Grid>

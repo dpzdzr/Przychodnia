@@ -9,6 +9,8 @@
         Icon="/Assets/icon.ico"
         d:DataContext="{d:DesignInstance Type=adminViewmodels:AdminPanelViewModel}"
         mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
         Title="Przychodnia" Height="1000" Width="1700">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>

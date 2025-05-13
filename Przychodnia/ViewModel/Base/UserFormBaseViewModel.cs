@@ -21,18 +21,17 @@ public abstract partial class UserFormBaseViewModel<TForm> : BaseViewModel
 {
     private readonly ILaboratoryService _labService;
     private readonly IUserTypeService _userTypeService;
-    protected readonly IDialogService _dialogService;
     protected readonly IMapper _mapper;
 
     [ObservableProperty] private ObservableCollection<UserTypeWrapper> userTypes = [];
     [ObservableProperty] private ObservableCollection<LaboratoryWrapper> laboratories = [];
 
     public UserFormBaseViewModel(IUserTypeService userTypeService, ILaboratoryService laboratoryService, IDialogService dialogService, IMapper mapper)
+        : base(dialogService)
     {
         _mapper = mapper;
         _userTypeService = userTypeService;
         _labService = laboratoryService;    
-        _dialogService = dialogService;
         FormData.PropertyChanged += OnFormDataPropertyChanged;
     }
 

@@ -5,13 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Przychodnia.Model;
-using static Przychodnia.ViewModel.Wrapper.WrapperHelper;
+using Przychodnia.ViewModel.Base;
+
 
 namespace Przychodnia.ViewModel.Wrapper;
 
-public partial class AppointmentWrapper : ObservableObject
+public partial class AppointmentWrapper : BaseWrapper
 {
-    [ObservableProperty] private int? id;
     [ObservableProperty] private DateTime? date;
     [ObservableProperty] private bool? completed;
     [ObservableProperty] private UserWrapper? scheduledBy;
@@ -23,9 +23,8 @@ public partial class AppointmentWrapper : ObservableObject
         Id = entity.Id;
         Date = entity.Date;
         Completed = entity.Completed;
-        ScheduledBy = WrapPropertyIfNotNull(entity.ScheduledBy, s => new UserWrapper(s, false));
-        AttendingDoctor = WrapPropertyIfNotNull(entity.AttendingDoctor, s => new UserWrapper(s, false));
-        Patient = WrapPropertyIfNotNull(entity.Patient, p => new PatientWrapper(p));
-
+        ScheduledBy = WrapIfNotNull(entity.ScheduledBy, s => new UserWrapper(s, false));
+        AttendingDoctor = WrapIfNotNull(entity.AttendingDoctor, s => new UserWrapper(s, false));
+        Patient = WrapIfNotNull(entity.Patient, p => new PatientWrapper(p));
     }
 }
