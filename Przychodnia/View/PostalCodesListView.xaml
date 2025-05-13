@@ -85,7 +85,8 @@
                     <toolkit:MaskedTextBox Grid.Row="1" Grid.Column="1" FontSize="18" Mask="00-000" Text="{Binding EditPostalCode.Code}" Background="#FAFAFA" BorderThickness="0,0,0,1" BorderBrush="#808080" />
                 </Grid>
                 <Grid Grid.Row="4" Margin="0,20,0,0">
-                    <Button Grid.Row="0" Content="{Binding ActionButtonText}" Command="{Binding SaveCommand}"/>
+                    <Button Grid.Row="0" IsDefault="True"
+                            Content="{Binding ActionButtonText}" Command="{Binding SaveCommand}"/>
                 </Grid>
             </Grid>
         </Border>

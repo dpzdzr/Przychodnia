@@ -17,7 +17,7 @@ using Przychodnia.ViewModel.Wrapper;
 namespace Przychodnia.ViewModel.Base;
 
 public abstract partial class UserFormBaseViewModel<TForm> : BaseViewModel
-    where TForm : UserFormDataBase, new()
+    where TForm : UserBaseFormData, new()
 {
     private readonly ILaboratoryService _labService;
     private readonly IUserTypeService _userTypeService;

@@ -12,6 +12,7 @@
     
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converter:NullToStringConverter x:Key="NullToStringConverter"/>
         <converter:SexToStringConverter x:Key="SexToStringConverter"/>
         <Style TargetType="StackPanel">
             <Setter Property="Width" Value="300"/>
@@ -88,7 +89,7 @@
                 </StackPanel>
                 
                 <Button Grid.Row="3" Grid.ColumnSpan="2" IsDefault="True"
-                        Content="{Binding ActionButtonText}" Margin="0,40,0,0" Command="{Binding ActionButtonCommand}"/>
+                        Content="{Binding SubmitButtonText}" Margin="0,40,0,0" Command="{Binding SubmitCommand}"/>
             </Grid>
         </Border>
     </Grid>

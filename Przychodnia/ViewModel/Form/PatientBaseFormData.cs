@@ -9,7 +9,7 @@ using Przychodnia.ViewModel.Wrapper;
 
 namespace Przychodnia.ViewModel.Form;
 
-public abstract partial class PatientFormDataBase : ObservableObject
+public abstract partial class PatientBaseFormData : ObservableObject
 {
     [ObservableProperty] private string? firstName;
     [ObservableProperty] private string? lastName;

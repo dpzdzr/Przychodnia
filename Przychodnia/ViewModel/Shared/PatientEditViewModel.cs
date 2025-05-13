@@ -18,47 +18,38 @@ using Przychodnia.ViewModel.Wrapper;
 
 namespace Przychodnia.ViewModel.Shared;
 
-public partial class PatientEditViewModel : PatientFormBaseViewModel<PatientEditFormData>
+public partial class PatientEditViewModel(IPatientService patientService, IDialogService dialogService,
+    IPostalCodeService postalCodeService, IMapper mapper, IMessenger messenger) 
+    : PatientFormBaseViewModel<PatientEditFormData>(postalCodeService, dialogService, mapper, messenger)
 {
-    private readonly IPatientService _patientService;
+    private readonly IPatientService _patientService = patientService;
 
-    [ObservableProperty] private PatientWrapper _editPatientWrapper;
-
-    public PatientEditViewModel(IPatientService patientService, IDialogService dialogService, IPostalCodeService postalCodeService, IMapper mapper, IMessenger messenger)
-    : base(postalCodeService, dialogService, mapper, messenger)
-    {
-        _patientService = patientService;
-        ActionButtonCommand = new AsyncRelayCommand(EditPatient);
-    }
+    [ObservableProperty] private PatientWrapper? _editPatientWrapper;
 
     public static string HeaderText => "Edytuj wybranego pacjenta";
-    public static string ActionButtonText => "Edytuj";
-
-    public ICommand ActionButtonCommand { get; }
+    public static string SubmitButtonText => "Edytuj";
 
     public async Task InitializeAsync(PatientWrapper wrapper)
     {
         EditPatientWrapper = wrapper;
         _mapper.Map(EditPatientWrapper, FormData);
         await base.InitializeFormDataAsync();
-        EnteredCode = FormData.PostalCode?.Code ?? string.Empty;
         FormData.PostalCode = Cities.FirstOrDefault(c => c.Id == EditPatientWrapper.PostalCode?.Id);
+        EnteredCode = FormData.PostalCode?.Code ?? string.Empty;
     }
 
-    private async Task EditPatient()
+    protected async override Task Submit()
     {
-        try
+        await TryExecuteAsync(async () =>
         {
             _mapper.Map(FormData, EditPatientWrapper);
+            if (FormData.PostalCode is not null && FormData.PostalCode.Id is null)
+                EditPatientWrapper!.PostalCode = null;
             var dto = _mapper.Map<PatientDTO>(EditPatientWrapper);
             if (EditPatientWrapper.Id is not int id)
                 throw new InvalidOperationException("Nie można aktualizować pacjenta bez ID");
             await _patientService.UpdateAsync(id, dto);
             _dialogService.Show("Sukces", "Pomyślnie edytowano pacjenta");
-        }
-        catch (Exception ex)
-        {
-            _dialogService.Show("Błąd", $"{ex.Message}\n{ex.InnerException?.Message ?? string.Empty}");
-        }
+        });
     }
 }

@@ -19,44 +19,31 @@ using Przychodnia.ViewModel.Wrapper;
 
 namespace Przychodnia.ViewModel.Shared;
 
-public class PatientAddViewModel : PatientFormBaseViewModel<PatientAddFormData>
+public class PatientAddViewModel(IPostalCodeService postalCodeService, IDialogService dialogService,
+    IPatientService patientService, IMapper mapper, IMessenger messenger) 
+    : PatientFormBaseViewModel<PatientAddFormData>(postalCodeService, dialogService, mapper, messenger)
 {
-    private readonly IPatientService _patientService;
-
-    public PatientAddViewModel(IPostalCodeService postalCodeService, IDialogService dialogService,
-        IPatientService patientService, IMapper mapper, IMessenger messenger)
-        : base(postalCodeService, dialogService, mapper, messenger)
-    {
-        _patientService = patientService;
-        ActionButtonCommand = new AsyncRelayCommand(AddPatient);
-    }
+    private readonly IPatientService _patientService = patientService;
 
     public static string HeaderText => "Dodaj pacjenta";
-    public static string ActionButtonText => "Dodaj";
-
-    public ICommand ActionButtonCommand { get; }
+    public static string SubmitButtonText => "Dodaj";
 
     public async Task InitializeAsync() => await base.InitializeFormDataAsync();
 
-    private async Task AddPatient()
+    protected override async Task Submit()
     {
-        try
+        await TryExecuteAsync(async () => 
         {
             var dto = _mapper.Map<PatientDTO>(FormData);
             var entity = await _patientService.CreateAsync(dto);
             NotifyPatientAdded(entity);
             _dialogService.Show("Sukces", "Pomyślnie dodano nowego pacjenta");
-        }
-        catch (Exception ex)
-        {
-            _dialogService.Show("Błąd", $"{ex.Message}\n{ex.InnerException?.Message ?? string.Empty}");
-        }
-        ClearForm();
+            ClearForm();
+        });
     }
 
     private void NotifyPatientAdded(Patient entity)
         => _messenger.Send(new PatientAddedMessage(entity));
-
     private void ClearForm()
     {
         EnteredCode = string.Empty;

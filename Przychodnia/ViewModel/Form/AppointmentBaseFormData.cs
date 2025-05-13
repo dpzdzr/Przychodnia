@@ -9,7 +9,7 @@ using Przychodnia.ViewModel.Wrapper;
 
 namespace Przychodnia.ViewModel.Form;
 
-public abstract partial class AppointmentFormDataBase : ObservableObject
+public abstract partial class AppointmentBaseFormData : ObservableObject
 {
     [ObservableProperty] private DateTime? date;
     [ObservableProperty] private bool? completed;

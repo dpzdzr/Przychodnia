@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Przychodnia.ViewModel.Form;
 
-public class AppointmentAddFormData : AppointmentFormDataBase
+public class AppointmentAddFormData : AppointmentBaseFormData
 {
     public void ClearForm()
     {

@@ -9,7 +9,7 @@ using Przychodnia.ViewModel.Wrapper;
 
 namespace Przychodnia.ViewModel.Form;
 
-public partial class UserEditFormData : UserFormDataBase
+public partial class UserEditFormData : UserBaseFormData
 {
     [ObservableProperty] private int id;
 }

@@ -37,6 +37,7 @@
                         <Button Content="Pacjenci" Command="{Binding NavigateToPatientsListCommand}"/>
                         <Button Content="Kody pocztowe" Command="{Binding NavigateToPostalCodesListCommand}"/>
                         <Button Content="Laboratoria" Command="{Binding NavigateToLaboratoriesListCommand}"/>
+                        <Button Content="Wizyty" Command="{Binding NavigateToAppointmentsListCommand}"/>
                     </StackPanel>
                 </StackPanel>
             </Border>

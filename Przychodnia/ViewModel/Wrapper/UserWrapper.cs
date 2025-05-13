@@ -29,7 +29,7 @@ public partial class UserWrapper : BaseWrapper
         if (user is null)
         {
             if(!createDummy)
-                throw new ArgumentNullException(nameof(user), "Użytkownik nie może być nnull, chyba że jawnie tworzysz obiekt dummy.");
+                throw new ArgumentNullException(nameof(user), "Użytkownik nie może być null, chyba że jawnie tworzysz obiekt dummy.");
 
             Id = null;
             FirstName = "brak";

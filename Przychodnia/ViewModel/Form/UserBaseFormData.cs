@@ -10,7 +10,7 @@ using Przychodnia.ViewModel.Wrapper;
 
 namespace Przychodnia.ViewModel.Form;
 
-public abstract partial class UserFormDataBase : ObservableValidator
+public abstract partial class UserBaseFormData : ObservableValidator
 {
 
     [ObservableProperty] private string? firstName;

@@ -14,7 +14,7 @@ using Przychodnia.ViewModel.Wrapper;
 namespace Przychodnia.ViewModel.Base;
 
 public partial class AppointmentFormBaseViewModel<TForm> : BaseViewModel
-    where TForm : AppointmentFormDataBase, new()
+    where TForm : AppointmentBaseFormData, new()
 {
     private readonly IUserService _userService;
     private readonly IPatientService _patientService;
