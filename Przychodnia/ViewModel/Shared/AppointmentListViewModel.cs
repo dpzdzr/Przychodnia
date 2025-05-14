@@ -24,6 +24,8 @@ public partial class AppointmentListViewModel : BaseListViewModel<AppointmentWra
         _appointmentService = appointmentService;
     }
 
+    public static string HeaderText => "Wizyty";
+
     public override async Task InitializeAsync()
     {
         var items =  await _appointmentService.GetAllWithDetailsAsync();
@@ -61,8 +63,6 @@ public partial class AppointmentListViewModel : BaseListViewModel<AppointmentWra
                 
                 Items.Remove(SelectedItem);
             }
-
-        
         });
     }
 }

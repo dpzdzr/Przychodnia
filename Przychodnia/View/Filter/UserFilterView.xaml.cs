@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Przychodnia.View
+namespace Przychodnia.View.Filter
 {
     /// <summary>
-    /// Interaction logic for AppointmentListView.xaml
+    /// Interaction logic for UserFilterView.xaml
     /// </summary>
-    public partial class AppointmentListView : UserControl
+    public partial class UserFilterView : UserControl
     {
-        public AppointmentListView()
+        public UserFilterView()
         {
             InitializeComponent();
         }

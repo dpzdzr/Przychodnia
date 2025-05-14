@@ -65,11 +65,10 @@
                 </StackPanel>
                 <StackPanel Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Margin="50,30,0,0">
                     <TextBlock Text="Rola" Margin="0,0,0,5"/>
-                    <ComboBox 
-                ItemsSource="{Binding UserTypes}"
-                SelectedItem="{Binding FormData.SelectedUserType}"
-                DisplayMemberPath="Name"
-                />
+                    <ComboBox ItemsSource="{Binding UserTypes}"
+                              SelectedItem="{Binding FormData.SelectedUserType, Mode=TwoWay}"
+                              DisplayMemberPath="Name"
+                              />
                     <TextBlock Text="Numer licencji"
                        Visibility="{Binding HasLicenseNumber, Converter={StaticResource BoolToVisibilityConverter}}"/>
                     <TextBox Text="{Binding FormData.LicenseNumber}" 

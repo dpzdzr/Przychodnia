@@ -1,0 +1,29 @@
+﻿<UserControl x:Class="Przychodnia.View.DataGrid.UserListDataGrid"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:converter="clr-namespace:Przychodnia.Converter"
+             xmlns:local="clr-namespace:Przychodnia.View.DataGrid" xmlns:admin="clr-namespace:Przychodnia.ViewModel.Admin" d:DataContext="{d:DesignInstance Type=admin:UserListViewModel}"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="1400">
+    <UserControl.Resources>
+        <converter:BoolToYesNoConverter x:Key="BoolToYesNoConverter"/>
+    </UserControl.Resources>
+    <Grid>
+        <DataGrid ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}" ColumnWidth="*">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="0.25*"/>
+                <DataGridTextColumn Header="Imię" Binding="{Binding FirstName}"/>
+                <DataGridTextColumn Header="Nazwisko" Binding="{Binding LastName}"/>
+                <DataGridTextColumn Header="Typ" Binding="{Binding UserType.Name}" Width="1.5*"/>
+                <DataGridTextColumn Header="Login" Binding="{Binding Login}"/>
+                <DataGridTextColumn Header="Hash hasła" Binding="{Binding PasswordHash}"/>
+                <DataGridTextColumn Header="Numer licencji" Binding="{Binding LicenseNumber}"/>
+                <DataGridTextColumn Header="Laboratorium" Binding="{Binding Laboratory.Name}"/>
+                <DataGridTextColumn Header="Zarządzane laboratorium" Binding="{Binding ManagedLaboratory.Name}" Width="1.5*"/>
+                <DataGridTextColumn Header="Aktywny" Binding="{Binding IsActive, Converter={StaticResource BoolToYesNoConverter}}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

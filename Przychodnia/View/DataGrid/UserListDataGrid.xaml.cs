@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Przychodnia.View
+namespace Przychodnia.View.DataGrid
 {
     /// <summary>
-    /// Interaction logic for PatientsListView.xaml
+    /// Interaction logic for UserListDataGrid.xaml
     /// </summary>
-    public partial class PatientsListView : UserControl
+    public partial class UserListDataGrid : UserControl
     {
-        public PatientsListView()
+        public UserListDataGrid()
         {
             InitializeComponent();
         }

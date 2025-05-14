@@ -48,7 +48,7 @@
                     <views:UserFormView/>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type adminViewmodels:UserListViewModel}">
-                    <views:UsersListView/>
+                    <views:BaseListView/>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type sharedViewmodels:HomePageViewModel}">
                     <views:HomePageView/>
@@ -60,7 +60,7 @@
                     <views:PostalCodesListView/>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type sharedViewmodels:PatientListViewModel}">
-                    <views:PatientsListView/>
+                    <views:BaseListView/>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type sharedViewmodels:PatientAddViewModel}">
                     <views:PatientFormView/>
@@ -70,6 +70,9 @@
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type sharedViewmodels:LaboratoryListViewModel}">
                     <views:LaboratoryListView/>
+                </DataTemplate>                
+                <DataTemplate DataType="{x:Type sharedViewmodels:AppointmentListViewModel}">
+                    <views:BaseListView/>
                 </DataTemplate>
 
             </ContentControl.Resources>

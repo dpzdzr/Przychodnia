@@ -51,7 +51,7 @@ namespace Przychodnia
             services.AddScoped<ILaboratoryRepository, LaboratoryRepository>();
             services.AddScoped<IPostalCodeRepository, PostalCodeRepository>();
             services.AddScoped<IPatientRepository, PatientRepository>();
-            services.AddScoped<IAppointmentService, AppointmentService>();
+            services.AddScoped<IAppointmentRepository, AppointmentRepository>();
 
             // Services
             services.AddSingleton<IDialogService, DialogService>();

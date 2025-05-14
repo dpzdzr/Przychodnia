@@ -52,6 +52,8 @@ public partial class UserListViewModel : BaseListViewModel<UserWrapper>
         _userTypeService = userTypeService;
     }
 
+    public static string HeaderText => "Użytkownicy";
+
     public override async Task InitializeAsync()
     {
         _allItems = [.. (await _userService.GetAllWithDetailsAsync())

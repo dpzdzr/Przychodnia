@@ -26,7 +26,6 @@ public class Examination
 
     public int PerformingLaboratoryId { get; set; }
     public Laboratory PerformingLaboratory { get; set; }
-
 }
 
 public enum ExaminationType

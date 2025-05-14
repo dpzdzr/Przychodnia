@@ -40,6 +40,7 @@ public partial class UserEditViewModel : UserFormBaseViewModel<UserEditFormData>
         EditUserWrapper = wrapper;
         await base.InitializeFormDataAsync();
         _mapper.Map(EditUserWrapper, FormData);
+        FormData.SelectedUserType = UserTypes.FirstOrDefault(ut => ut.Id == FormData.SelectedUserType!.Id);
     }
 
     private async Task EditUserAsync()
