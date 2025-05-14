@@ -26,11 +26,15 @@ public partial class UserListViewModel : BaseListViewModel<UserWrapper>
     private readonly IUserTypeService _userTypeService;
 
 
-    [ObservableProperty]
-    private ObservableCollection<string> userTypeNames = [];
     private List<UserTypeWrapper> userTypes = [];
     [ObservableProperty]
-    private string selectedUserTypeName;
+    private ObservableCollection<string> userTypeNames = [];
+    [ObservableProperty]
+    private string selectedUserTypeName = string.Empty;
+    [ObservableProperty]
+    private string selectedUserFirstName = string.Empty;
+    [ObservableProperty]
+    private string selectedUserLastName = string.Empty;
 
     public UserListViewModel(IDialogService dialogService, IUserService userService,
     INavigationService navigationService, IServiceProvider serviceProvider,
@@ -89,6 +93,8 @@ public partial class UserListViewModel : BaseListViewModel<UserWrapper>
     protected override void ClearFilter()
     {
         SelectedUserTypeName = UserTypeNames.First();
+        SelectedUserFirstName = string.Empty;
+        SelectedUserLastName = string.Empty;
         Filter();
     }
 
@@ -99,9 +105,24 @@ public partial class UserListViewModel : BaseListViewModel<UserWrapper>
         if (SelectedUserTypeName != "brak" &&
             userTypes.FirstOrDefault(t => t.Name == SelectedUserTypeName) is { } selectedType)
         {
-            query = query.Where(u => u.UserType.Id == selectedType.Id);
+            query = query.Where(u => u.UserType!.Id == selectedType.Id);
         }
 
+        query = FilterByNamePart(query, u => u.FirstName, SelectedUserFirstName);
+        query = FilterByNamePart(query, u => u.LastName, SelectedUserLastName);
+
         return query;
+    }
+    private static IEnumerable<UserWrapper> FilterByNamePart
+        (IEnumerable<UserWrapper> source, Func<UserWrapper, string?> selector, string? filter)
+    {
+
+        if (string.IsNullOrWhiteSpace(filter))
+            return source;
+
+        var pattern = filter.Trim();
+
+        return source.Where(u => !string.IsNullOrWhiteSpace(selector(u)) &&
+                            selector(u)!.StartsWith(pattern, StringComparison.OrdinalIgnoreCase));
     }
 }
