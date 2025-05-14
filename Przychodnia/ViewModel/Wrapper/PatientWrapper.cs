@@ -32,5 +32,7 @@ public partial class PatientWrapper : BaseWrapper
         ApartmentNumber = entity.ApartmentNumber;
         Sex = entity.Sex;
     }
+
+    public string FullName => $"{FirstName} {LastName}".Trim();
 }
 

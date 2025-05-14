@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:converter="clr-namespace:Przychodnia.Converter"
              xmlns:shared="clr-namespace:Przychodnia.ViewModel.Shared"
-             xmlns:local="clr-namespace:Przychodnia.View.DataGrid" xmlns:admin="clr-namespace:Przychodnia.ViewModel.Admin" d:DataContext="{d:DesignInstance Type=shared:PatientListViewModel}"
+             xmlns:local="clr-namespace:Przychodnia.View.DataGrid"
+             d:DataContext="{d:DesignInstance Type=shared:PatientListViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1400">
     <UserControl.Resources>
