@@ -12,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Przychodnia.Message;
 using Przychodnia.Model;
 using Przychodnia.Repository.Interface;
+using Przychodnia.Service.Implementation.Entity;
 using Przychodnia.Service.Interface;
 using Przychodnia.Service.Interface.Entity;
 using Przychodnia.ViewModel.Base;
@@ -22,23 +23,42 @@ namespace Przychodnia.ViewModel.Admin;
 public partial class UserListViewModel : BaseListViewModel<UserWrapper>
 {
     private readonly IUserService _userService;
+    private readonly IUserTypeService _userTypeService;
+
+
+    [ObservableProperty]
+    private ObservableCollection<string> userTypeNames = [];
+    private List<UserTypeWrapper> userTypes = [];
+    [ObservableProperty]
+    private string selectedUserTypeName;
 
     public UserListViewModel(IDialogService dialogService, IUserService userService,
-    INavigationService navigationService, IServiceProvider serviceProvider)
+    INavigationService navigationService, IServiceProvider serviceProvider,
+    IUserTypeService userTypeService)
         : base(dialogService, navigationService, serviceProvider)
     {
         _userService = userService;
+        _userTypeService = userTypeService;
 
         WeakReferenceMessenger.Default.Register<UserAddedMessage>(this, (r, m) =>
         {
-            Items.Add(new UserWrapper(m.Value));
+            _allItems.Add(new UserWrapper(m.Value));
+            Filter();
         });
+        _userTypeService = userTypeService;
     }
 
     public override async Task InitializeAsync()
     {
-        var items = await _userService.GetAllWithDetailsAsync();
-        Items = [.. items.Select(u => new UserWrapper(u))];
+        _allItems = [.. (await _userService.GetAllWithDetailsAsync())
+            .Select(u => new UserWrapper(u))];
+        Items = [.. _allItems];
+
+        var names = await _userTypeService.GetNamesAsync();
+        UserTypeNames = ["brak", .. names];
+
+        var types = await _userTypeService.GetAllAsync();
+        userTypes = [.. types.Select(t => new UserTypeWrapper(t))];
     }
 
     protected override async Task Add()
@@ -64,5 +84,24 @@ public partial class UserListViewModel : BaseListViewModel<UserWrapper>
                 Items.Remove(SelectedItem);
             }
         });
+    }
+    protected override void Filter() => Items = [.. ApplyFilters()];
+    protected override void ClearFilter()
+    {
+        SelectedUserTypeName = UserTypeNames.First();
+        Filter();
+    }
+
+    private IEnumerable<UserWrapper> ApplyFilters()
+    {
+        var query = _allItems?.AsEnumerable() ?? Enumerable.Empty<UserWrapper>();
+
+        if (SelectedUserTypeName != "brak" &&
+            userTypes.FirstOrDefault(t => t.Name == SelectedUserTypeName) is { } selectedType)
+        {
+            query = query.Where(u => u.UserType.Id == selectedType.Id);
+        }
+
+        return query;
     }
 }

@@ -34,10 +34,22 @@ public partial class AppointmentListViewModel : BaseListViewModel<AppointmentWra
     {
         throw new NotImplementedException();
     }
+
+    protected override void ClearFilter()
+    {
+        throw new NotImplementedException();
+    }
+
     protected override Task Edit()
     {
         throw new NotImplementedException();
     }
+
+    protected override void Filter()
+    {
+        throw new NotImplementedException();
+    }
+
     protected async override Task Remove()
     {
         await TryExecuteAsync(async () => 

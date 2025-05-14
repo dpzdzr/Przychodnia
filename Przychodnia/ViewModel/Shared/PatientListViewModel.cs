@@ -47,6 +47,12 @@ public partial class PatientListViewModel : BaseListViewModel<PatientWrapper>
         await addVm.InitializeAsync();
         _navigationService.NavigateTo(addVm);
     }
+
+    protected override void ClearFilter()
+    {
+        throw new NotImplementedException();
+    }
+
     protected override async Task Edit()
     {
         var editVm = _serviceProvider.GetRequiredService<PatientEditViewModel>();
@@ -54,6 +60,12 @@ public partial class PatientListViewModel : BaseListViewModel<PatientWrapper>
             await editVm.InitializeAsync(SelectedItem);
         _navigationService.NavigateTo(editVm);
     }
+
+    protected override void Filter()
+    {
+        throw new NotImplementedException();
+    }
+
     protected override async Task Remove()
     {
         await TryExecuteAsync(async () =>
