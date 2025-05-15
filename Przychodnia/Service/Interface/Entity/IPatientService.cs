@@ -17,4 +17,5 @@ public interface IPatientService
     Task UpdateAsync(int id, PatientDTO dto);
     Task<Patient?> GetByIdAsync(int id);
     Task SaveChangesAsync();
+    Task<Patient?> GetByPeselAsync(string pesel);
 }

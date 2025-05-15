@@ -47,6 +47,7 @@
                                 <filter:UserFilterView/>
                             </DataTemplate>
                             <DataTemplate DataType="{x:Type shared:PatientListViewModel}">
+                                <filter:PatientFilterView/>
                             </DataTemplate>
                         </ContentControl.Resources>
                     </ContentControl>
@@ -61,7 +62,7 @@
             <ContentControl Content="{Binding}">
                 <ContentControl.Resources>
                     <DataTemplate DataType="{x:Type shared:AppointmentListViewModel}">
-                        
+                        <datagrids:AppointmentListDataGrid/>
                     </DataTemplate>
                     <DataTemplate DataType="{x:Type admin:UserListViewModel}">
                         <datagrids:UserListDataGrid/>

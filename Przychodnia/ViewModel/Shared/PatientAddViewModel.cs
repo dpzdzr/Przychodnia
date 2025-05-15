@@ -21,10 +21,8 @@ namespace Przychodnia.ViewModel.Shared;
 
 public class PatientAddViewModel(IPostalCodeService postalCodeService, IDialogService dialogService,
     IPatientService patientService, IMapper mapper, IMessenger messenger) 
-    : PatientFormBaseViewModel<PatientAddFormData>(postalCodeService, dialogService, mapper, messenger)
+    : PatientFormBaseViewModel<PatientAddFormData>(postalCodeService, dialogService, mapper, messenger, patientService)
 {
-    private readonly IPatientService _patientService = patientService;
-
     public static string HeaderText => "Dodaj pacjenta";
     public static string SubmitButtonText => "Dodaj";
 

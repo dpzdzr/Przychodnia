@@ -97,12 +97,13 @@ public partial class UserListViewModel : BaseListViewModel<UserWrapper>
         SelectedUserTypeName = UserTypeNames.First();
         SelectedUserFirstName = string.Empty;
         SelectedUserLastName = string.Empty;
-        Filter();
+        
+        Items = [.. _allItems];
     }
 
     private IEnumerable<UserWrapper> ApplyFilters()
     {
-        var query = _allItems?.AsEnumerable() ?? Enumerable.Empty<UserWrapper>();
+        var query = _allItems?.AsEnumerable() ?? [];
 
         if (SelectedUserTypeName != "brak" &&
             userTypes.FirstOrDefault(t => t.Name == SelectedUserTypeName) is { } selectedType)
@@ -110,21 +111,9 @@ public partial class UserListViewModel : BaseListViewModel<UserWrapper>
             query = query.Where(u => u.UserType!.Id == selectedType.Id);
         }
 
-        query = FilterByNamePart(query, u => u.FirstName, SelectedUserFirstName);
-        query = FilterByNamePart(query, u => u.LastName, SelectedUserLastName);
+        query = FilterByStringAttribute(query, u => u.FirstName, SelectedUserFirstName);
+        query = FilterByStringAttribute(query, u => u.LastName, SelectedUserLastName);
 
         return query;
-    }
-    private static IEnumerable<UserWrapper> FilterByNamePart
-        (IEnumerable<UserWrapper> source, Func<UserWrapper, string?> selector, string? filter)
-    {
-
-        if (string.IsNullOrWhiteSpace(filter))
-            return source;
-
-        var pattern = filter.Trim();
-
-        return source.Where(u => !string.IsNullOrWhiteSpace(selector(u)) &&
-                            selector(u)!.StartsWith(pattern, StringComparison.OrdinalIgnoreCase));
     }
 }

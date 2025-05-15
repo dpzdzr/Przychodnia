@@ -20,10 +20,8 @@ namespace Przychodnia.ViewModel.Shared;
 
 public partial class PatientEditViewModel(IPatientService patientService, IDialogService dialogService,
     IPostalCodeService postalCodeService, IMapper mapper, IMessenger messenger) 
-    : PatientFormBaseViewModel<PatientEditFormData>(postalCodeService, dialogService, mapper, messenger)
+    : PatientFormBaseViewModel<PatientEditFormData>(postalCodeService, dialogService, mapper, messenger, patientService)
 {
-    private readonly IPatientService _patientService = patientService;
-
     [ObservableProperty] private PatientWrapper? _editPatientWrapper;
 
     public static string HeaderText => "Edytuj wybranego pacjenta";

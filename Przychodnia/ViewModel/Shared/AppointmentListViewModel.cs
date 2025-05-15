@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.DependencyInjection;
 using Przychodnia.Service.Interface;
 using Przychodnia.Service.Interface.Entity;
 using Przychodnia.ViewModel.Base;
@@ -32,9 +33,11 @@ public partial class AppointmentListViewModel : BaseListViewModel<AppointmentWra
         Items = [.. items.Select(a => new AppointmentWrapper(a))];
     }
 
-    protected override Task Add()
+    protected override async Task Add()
     {
-        throw new NotImplementedException();
+        var addVm = _serviceProvider.GetRequiredService<AppointmentAddViewModel>();
+        await addVm.InitializeFormDataAsync();
+        _navigationService.NavigateTo(addVm);
     }
 
     protected override void ClearFilter()
@@ -61,6 +64,7 @@ public partial class AppointmentListViewModel : BaseListViewModel<AppointmentWra
                 if (SelectedItem is null || SelectedItem.Id is not int id)
                     throw new InvalidOperationException("Nie można usunąć wizyty bez ID");
                 
+                await _appointmentService.RemoveAsync(id);
                 Items.Remove(SelectedItem);
             }
         });

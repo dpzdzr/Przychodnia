@@ -22,7 +22,9 @@ namespace Przychodnia.ViewModel.Shared;
 public partial class PatientListViewModel : BaseListViewModel<PatientWrapper>
 {
     private readonly IPatientService _patientService;
-
+    [ObservableProperty] private string selectedPatientFirstName = string.Empty;
+    [ObservableProperty] private string selectedPatientLastName = string.Empty;
+    [ObservableProperty] private string selectedPatientPesel = string.Empty;
     public PatientListViewModel(IPatientService patientService, INavigationService navigationService,
         IServiceProvider serviceProvider, IDialogService dialogService)
         : base(dialogService, navigationService, serviceProvider)
@@ -39,8 +41,8 @@ public partial class PatientListViewModel : BaseListViewModel<PatientWrapper>
 
     public override async Task InitializeAsync()
     {
-        var items = await _patientService.GetAllWithDetailsAsync();
-        Items = [.. items.Select(p => new PatientWrapper(p))];
+        _allItems = [.. (await _patientService.GetAllWithDetailsAsync()).Select(p => new PatientWrapper(p))];
+        Items = [.. _allItems];
     }
     protected override async Task Add()
     {
@@ -50,7 +52,11 @@ public partial class PatientListViewModel : BaseListViewModel<PatientWrapper>
     }
     protected override void ClearFilter()
     {
-        throw new NotImplementedException();
+        SelectedPatientFirstName = string.Empty;
+        SelectedPatientLastName = string.Empty;
+        SelectedPatientPesel = string.Empty;
+
+        Items = [.. _allItems];
     }
     protected override async Task Edit()
     {
@@ -59,10 +65,7 @@ public partial class PatientListViewModel : BaseListViewModel<PatientWrapper>
             await editVm.InitializeAsync(SelectedItem);
         _navigationService.NavigateTo(editVm);
     }
-    protected override void Filter()
-    {
-        throw new NotImplementedException();
-    }
+    protected override void Filter() => Items = [.. ApplyFilters()];
     protected override async Task Remove()
     {
         await TryExecuteAsync(async () =>
@@ -75,5 +78,16 @@ public partial class PatientListViewModel : BaseListViewModel<PatientWrapper>
                 Items.Remove(SelectedItem);
             }
         });
+    }
+
+    private IEnumerable<PatientWrapper> ApplyFilters()
+    {
+        var query = _allItems?.AsEnumerable() ?? [];
+
+        query = FilterByStringAttribute(query, p => p.FirstName, SelectedPatientFirstName);
+        query = FilterByStringAttribute(query, p => p.LastName, SelectedPatientLastName);
+        query = FilterByStringAttribute(query, p => p.Pesel, SelectedPatientPesel);
+
+        return query;
     }
 }

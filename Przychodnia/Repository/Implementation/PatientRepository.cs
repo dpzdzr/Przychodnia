@@ -16,4 +16,6 @@ public class PatientRepository(AppDbContext context)
     public async Task<IEnumerable<Patient>> GetAllWithDetailsAsync()
         => await _dbSet.Include(p=>p.PostalCode).ToListAsync();
 
+    public async Task<Patient?> GetByPesel(string pesel)
+        => await _dbSet.FirstOrDefaultAsync(p => p.Pesel == pesel);
 }

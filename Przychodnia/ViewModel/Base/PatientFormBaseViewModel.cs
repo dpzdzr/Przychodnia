@@ -21,6 +21,7 @@ namespace Przychodnia.ViewModel.Base;
 public abstract partial class PatientFormBaseViewModel<TForm> : BaseViewModel
     where TForm : PatientBaseFormData, new()
 {
+    protected readonly IPatientService _patientService;
     protected readonly IMapper _mapper;
     protected readonly IMessenger _messenger;
     private readonly IPostalCodeService _postalCodeService;
@@ -33,16 +34,18 @@ public abstract partial class PatientFormBaseViewModel<TForm> : BaseViewModel
     [ObservableProperty] private ObservableCollection<PostalCodeWrapper> postalCodes = [];
 
     public PatientFormBaseViewModel(IPostalCodeService postalCodeService, IDialogService dialogService,
-        IMapper mapper, IMessenger messenger)
+        IMapper mapper, IMessenger messenger, IPatientService patientService)
         : base(dialogService)
     {
         _mapper = mapper;
         _postalCodeService = postalCodeService;
         _messenger = messenger;
+        _patientService = patientService;
 
         SubmitCommand = new AsyncRelayCommand(Submit);
 
         _messenger.Register<PostalCodeAltered>(this, HandlePostalCodeMessage);
+        _patientService = patientService;
     }
 
     public IAsyncRelayCommand SubmitCommand { get; }

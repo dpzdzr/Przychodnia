@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Przychodnia.Service.Interface;
+using Przychodnia.ViewModel.Wrapper;
 
 namespace Przychodnia.ViewModel.Base;
 
@@ -55,6 +56,17 @@ public abstract partial class BaseListViewModel<TWrapper> : BaseViewModel
     protected abstract Task Remove();
     protected abstract void Filter();
     protected abstract void ClearFilter();
+    protected static IEnumerable<TWrapper> FilterByStringAttribute
+        (IEnumerable<TWrapper> source, Func<TWrapper, string?> selector, string? filter)
+    {
+        if (string.IsNullOrWhiteSpace(filter))
+            return source;
+
+        var pattern = filter.Trim();
+
+        return source.Where(u => !string.IsNullOrWhiteSpace(selector(u)) &&
+                            selector(u)!.StartsWith(pattern, StringComparison.OrdinalIgnoreCase));
+    }
 
     private void Cancel() => SelectedItem = null;
 }

@@ -49,7 +49,7 @@ public class UserService(IUserRepository userRepo, ILaboratoryRepository labRepo
     {
         var user = new User();
         await MapDtoAndResolveRelationsAsync(dto, user);
-        await _userRepo.AddAsync(user);
+        user = await _userRepo.AddAsync(user);
         await _userRepo.SaveChangesAsync();
         return user;
     }

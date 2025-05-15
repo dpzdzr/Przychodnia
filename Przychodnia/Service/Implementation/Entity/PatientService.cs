@@ -65,4 +65,7 @@ public class PatientService(IPatientRepository patientRepo, IPostalCodeRepositor
         }
         targetPatient.PostalCode = postalCode;
     }
+
+    public async Task<Patient?> GetByPeselAsync(string pesel)
+        => await _patientRepo.GetByPesel(pesel);
 }

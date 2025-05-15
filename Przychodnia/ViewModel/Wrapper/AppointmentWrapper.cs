@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,12 +13,14 @@ namespace Przychodnia.ViewModel.Wrapper;
 
 public partial class AppointmentWrapper : BaseWrapper
 {
-    [ObservableProperty] private DateTime? date;
+    [NotifyPropertyChangedFor(nameof(OnlyDate))]
+    [NotifyPropertyChangedFor(nameof(OnlyTime))]
+    [ObservableProperty]
+    private DateTime? date;
     [ObservableProperty] private bool? completed;
     [ObservableProperty] private UserWrapper? scheduledBy;
     [ObservableProperty] private UserWrapper? attendingDoctor;
     [ObservableProperty] private PatientWrapper? patient;
-
     public AppointmentWrapper(Appointment entity)
     {
         Id = entity.Id;
@@ -27,4 +30,7 @@ public partial class AppointmentWrapper : BaseWrapper
         AttendingDoctor = WrapIfNotNull(entity.AttendingDoctor, s => new UserWrapper(s, false));
         Patient = WrapIfNotNull(entity.Patient, p => new PatientWrapper(p));
     }
+
+    public DateOnly? OnlyDate => Date.HasValue ? DateOnly.FromDateTime(Date.Value) : null;
+    public TimeOnly? OnlyTime => Date.HasValue ? TimeOnly.FromDateTime(Date.Value) : null;
 }
