@@ -10,14 +10,9 @@ namespace Przychodnia.Model;
 public class Examination
 {
     public int? Id { get; set; }
-    //[Required]
     public ExaminationType? ExaminationType { get; set; }
-
-    //[Required]
     public int? PatientId { get; set; }
     public Patient? Patient { get; set; }
-
-    //[Required]
     public int? OrderedById { get; set; }
     public User? OrderedBy { get; set; }
 
