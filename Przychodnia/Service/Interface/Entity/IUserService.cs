@@ -8,16 +8,12 @@ using Przychodnia.Model.DTO;
 
 namespace Przychodnia.Service.Interface.Entity;
 
-public interface IUserService
+public interface IUserService : IBaseService<User, UserDTO>
 {
-    Task<User> CreateAsync(UserDTO dto);
-    Task RemoveAsync(int id);
+    new Task<User> CreateAsync(UserDTO dto);
     Task<List<User>> GetAllWithDetailsAsync();
     Task<List<User>> GetLabManagersWithoutLabAssignedAsync();
-
     Task<User?> GetByIdWithDetailsAsync(int id);
-
-    Task UpdateAsync(int id, UserDTO dto);
-    
-    Task<List<User>> GetUsersByUserType(UserTypeEnum type);
+    new Task UpdateAsync(int id, UserDTO dto);
+    Task<List<User>> GetUsersByUserTypeAsync(UserTypeEnum type);
 }

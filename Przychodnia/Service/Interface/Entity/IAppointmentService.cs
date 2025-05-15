@@ -8,10 +8,9 @@ using Przychodnia.Model.DTO;
 
 namespace Przychodnia.Service.Interface.Entity;
 
-public interface IAppointmentService
+public interface IAppointmentService : IBaseService<Appointment, AppointmentDTO>
 {
-    Task<Appointment> CreateAsync(AppointmentDTO dto);
+    new Task<Appointment> CreateAsync(AppointmentDTO dto);
     Task<IEnumerable<Appointment>> GetAllWithDetailsAsync();
     Task<IEnumerable<Appointment>> GetAppointmentsForDoctorOnDateAsync(int doctorId, DateTime date);
-    Task RemoveAsync(int appointmentId);
 }

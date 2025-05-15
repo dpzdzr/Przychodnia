@@ -22,10 +22,18 @@ public class UserRepository(AppDbContext context)
 
     public async Task<List<User>> GetLabManagersWithoutManagedLabAsync()
     {
-        return await _context.Users
+        return await _dbSet
             .Include(u => u.UserType)
             .Where(u => u.UserTypeId == (int)UserTypeEnum.KierownikLaboratorium)
             .Where(u => !_context.Laboratories.Any(l => l.ManagerId == u.Id))
             .ToListAsync();
+    }
+
+    public async Task<User?> GetByIdWithDetailsAsync(int id)
+    {
+        return await _dbSet.Where(u => u.Id == id)
+            .Include(u => u.UserType)
+            .Include(u => u.Laboratory)
+            .FirstOrDefaultAsync();
     }
 }

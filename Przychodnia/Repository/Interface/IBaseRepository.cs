@@ -17,4 +17,5 @@ public interface IBaseRepository<T> where T : class
     void Update(T entity);
     Task SaveChangesAsync();
     Task<bool> AnyAsync(Expression<Func<T, bool>> predicate);
+    Task<bool> ExistsByIdAsync(int id);
 }

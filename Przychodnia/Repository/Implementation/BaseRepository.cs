@@ -6,12 +6,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Przychodnia.Model;
+using Przychodnia.Model.DTO;
 using Przychodnia.Repository.Interface;
 
 namespace Przychodnia.Repository.Implementation;
 
 public abstract class BaseRepository<T, TContext> : IBaseRepository<T> 
-    where T : class
+    where T : class, IEntity
     where TContext : DbContext
 {
     protected readonly TContext _context;
@@ -43,4 +44,7 @@ public abstract class BaseRepository<T, TContext> : IBaseRepository<T>
 
     public async Task<bool> AnyAsync(Expression<Func<T, bool>> predicate)
         => await _dbSet.AnyAsync(predicate);
+
+    public async Task<bool> ExistsByIdAsync(int id)
+        => await _dbSet.AnyAsync(e => e.Id == id);
 }

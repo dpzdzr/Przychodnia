@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Przychodnia.Model.DTO;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Przychodnia.Model;
 
-public class User
+public class User : IEntity
 {
     public int Id { get; set; }
     [Required]
