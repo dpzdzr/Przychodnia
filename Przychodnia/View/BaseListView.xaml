@@ -48,6 +48,8 @@
                             </DataTemplate>
                             <DataTemplate DataType="{x:Type shared:PatientListViewModel}">
                             </DataTemplate>
+                            <DataTemplate DataType="{x:Type shared:ExaminationListViewModel}">
+                            </DataTemplate>
                         </ContentControl.Resources>
                     </ContentControl>
                 </Expander>
@@ -68,6 +70,9 @@
                     </DataTemplate>
                     <DataTemplate DataType="{x:Type shared:PatientListViewModel}">
                         <datagrids:PatientListDataGrid/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type shared:ExaminationListViewModel}">
+                        <!--<datagrids:PatientListDataGrid/>-->
                     </DataTemplate>
                 </ContentControl.Resources>
             </ContentControl>
