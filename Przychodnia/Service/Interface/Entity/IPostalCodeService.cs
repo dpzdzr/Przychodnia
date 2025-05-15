@@ -8,10 +8,6 @@ using Przychodnia.Model.DTO;
 
 namespace Przychodnia.Service.Interface.Entity;
 
-public interface IPostalCodeService
+public interface IPostalCodeService : IBaseService<PostalCode, PostalCodeDTO>
 {
-    Task<PostalCode> CreateAsync(PostalCodeDTO code);
-    Task<List<PostalCode>> GetAllAsync();
-    Task RemoveAsync(int id);
-    Task UpdateAsync(int id, PostalCodeDTO dto);
 }

@@ -12,11 +12,10 @@ using Przychodnia.Service.Interface.Entity;
 
 namespace Przychodnia.Service.Implementation.Entity;
 
-public class PostalCodeService(IPostalCodeRepository repo, IMapper mapper) : IPostalCodeService
+public class PostalCodeService(IPostalCodeRepository repo, IMapper mapper) 
+    : BaseService<PostalCode, PostalCodeDTO, IPostalCodeRepository>(repo, mapper), IPostalCodeService
 {
-    private readonly IPostalCodeRepository _repo = repo;
-    private readonly IMapper _mapper = mapper;
-    public async Task<PostalCode> CreateAsync(PostalCodeDTO dto)
+    public override async Task<PostalCode> CreateAsync(PostalCodeDTO dto)
     {   
         var entity = _mapper.Map<PostalCode>(dto);
         await _repo.AddAsync(entity);
@@ -24,23 +23,16 @@ public class PostalCodeService(IPostalCodeRepository repo, IMapper mapper) : IPo
         return entity;
     }
 
-    public async Task<List<PostalCode>> GetAllAsync()
-        => await _repo.GetAllAsync();
-
-    public async Task RemoveAsync(int id)
+    public override async Task RemoveAsync(int id)
     {
-        var entity = await _repo.GetByIdAsync(id)
-            ?? throw new KeyNotFoundException("Nie znaleziono kodu pocztowego");
-
-        _repo.Remove(entity);
+        var entity = await GetByIdAsync(id);
+        _repo.Remove(entity!);
         await _repo.SaveChangesAsync();
     }
 
-    public async Task UpdateAsync(int id, PostalCodeDTO dto)
+    public override async Task UpdateAsync(int id, PostalCodeDTO dto)
     {
-        var existing = await _repo.GetByIdAsync(id) 
-            ?? throw new KeyNotFoundException("Nie znaleziono kodu pocztowego");
-
+        var existing = await GetByIdAsync(id);
         _mapper.Map(dto, existing);
         await _repo.SaveChangesAsync();
     }
