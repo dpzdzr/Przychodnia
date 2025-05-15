@@ -12,6 +12,7 @@ public partial class ExaminationWrapper : BaseWrapper
     [ObservableProperty] private LaboratoryWrapper? performingLaboratory;
     public ExaminationWrapper(Examination exam)
     {
+        Id = exam.Id;
         ExaminationType = exam.ExaminationType;
         Patient = WrapIfNotNull(exam.Patient, p => new PatientWrapper(p));
         OrderedBy = WrapIfNotNull(exam.OrderedBy, p => new UserWrapper(p));
