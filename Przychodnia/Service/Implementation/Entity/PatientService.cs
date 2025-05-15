@@ -20,7 +20,10 @@ public class PatientService(IPatientRepository patientRepo, IPostalCodeService p
     public async Task<IEnumerable<Patient>> GetAllWithDetailsAsync()
         => await _repo.GetAllWithDetailsAsync();
     public async Task<Patient?> GetByPeselAsync(string pesel)
-    => await _repo.GetByPesel(pesel);
+    {
+        return await _repo.GetByPesel(pesel) ??
+            throw new InvalidOperationException($"Patient with PESEL: {pesel} not found");
+    }
 
     public override async Task<Patient> CreateAsync(PatientDTO dto)
     {

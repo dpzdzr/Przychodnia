@@ -10,11 +10,12 @@ public class AppointmentAddFormData : AppointmentBaseFormData
 {
     public void ClearForm()
     {
-        Date = null;
+        SelectedDate = null;
+        SelectedHour = null;
         Completed = null;
         ScheduledBy = null;
-        AttendingDoctor = null;
-        Patient = null;
+        SelectedDoctor = null;
+        SelectedPatient = null;
     }
 
 }

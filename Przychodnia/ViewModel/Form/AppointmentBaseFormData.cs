@@ -11,9 +11,14 @@ namespace Przychodnia.ViewModel.Form;
 
 public abstract partial class AppointmentBaseFormData : ObservableObject
 {
-    [ObservableProperty] private DateTime? date;
-    [ObservableProperty] private bool? completed;
+    [ObservableProperty] private TimeSpan? selectedHour;
+    [ObservableProperty] private DateTime? selectedDate;
     [ObservableProperty] private UserWrapper? scheduledBy;
-    [ObservableProperty] private UserWrapper? attendingDoctor;
-    [ObservableProperty] private PatientWrapper? patient;
+    [ObservableProperty] private UserWrapper? selectedDoctor;
+    [ObservableProperty] private string enteredPatientPesel = string.Empty;
+    [ObservableProperty] private bool? completed;
+
+    public PatientWrapper? SelectedPatient { get; set; }
+    public DateTime? FullDate =>
+       SelectedDate is not null && SelectedHour is not null ? SelectedDate.Value.Date + SelectedHour.Value : null;
 }

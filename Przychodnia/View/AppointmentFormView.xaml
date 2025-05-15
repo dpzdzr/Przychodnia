@@ -52,21 +52,20 @@
                
                 <StackPanel Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Margin="0,30,50,0">
                     <TextBlock Text="PESEL pacjenta" Margin="0,0,0,5"/>
-                    <TextBox Text="{Binding EnteredPatientPesel}" Margin="0,0,0,50"/>
+                    <TextBox Text="{Binding FormData.EnteredPatientPesel}" Margin="0,0,0,50"/>
 
                     <TextBlock Text="Data" Margin="0,0,0,5"/>
-                    <DatePicker Margin="0,0,0,50" SelectedDate="{Binding SelectedDate}">
+                    <DatePicker Margin="0,0,0,50" SelectedDate="{Binding FormData.SelectedDate}"/>
 
-                    </DatePicker>
                 </StackPanel>
                 <StackPanel Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Margin="50,30,0,0">
                     <TextBlock Text="Lekarz" Margin="0,0,0,5"/>
                     <ComboBox ItemsSource="{Binding Doctors}"
-                              SelectedItem="{Binding SelectedDoctor}"
+                              SelectedItem="{Binding FormData.SelectedDoctor}"
                               DisplayMemberPath="FullName" Margin="0,0,0,50"/>
                     <TextBlock Text="Godzina" Margin="0,0,0,5"/>
                     <ComboBox ItemsSource="{Binding AvailableHours}"
-                              SelectedItem="{Binding SelectedHour}">
+                              SelectedItem="{Binding FormData.SelectedHour}">
                         <ComboBox.ItemTemplate>
                             <DataTemplate>
                                 <TextBlock Text="{Binding StringFormat={}{0:hh\\:mm}}"/>

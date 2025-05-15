@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,15 +25,12 @@ public abstract partial class AppointmentFormBaseViewModel<TForm> : BaseViewMode
     protected readonly IPatientService _patientService;
     protected readonly IMapper _mapper;
 
+    public TForm FormData { get; } = new();
     [ObservableProperty] private ObservableCollection<UserWrapper> doctors = [];
     [ObservableProperty] private ObservableCollection<PatientWrapper> patients = [];
     [ObservableProperty] private ObservableCollection<TimeSpan> availableHours = [];
-    [ObservableProperty] private TimeSpan? selectedHour;
-    [ObservableProperty] private DateTime? selectedDate;
     
-    [ObservableProperty] private UserWrapper? selectedDoctor;
-    [ObservableProperty] private string enteredPatientPesel = string.Empty;
-    protected DateTime? FullDate => SelectedDate.Value.Date + SelectedHour;
+
     public AppointmentFormBaseViewModel(IDialogService dialogService, IUserService userService, 
         IPatientService patientService, IMapper mapper, IAppointmentService appointmentService) 
         : base(dialogService)
@@ -43,36 +41,36 @@ public abstract partial class AppointmentFormBaseViewModel<TForm> : BaseViewMode
         _appointmentService = appointmentService;
 
         SubmitCommand = new AsyncRelayCommand(Submit);
+
+        FormData.PropertyChanged += OnFormDataPropertyChanged;
     }
 
     public IAsyncRelayCommand SubmitCommand { get; }
-
-    public TForm FormData { get; } = new();
 
     public async Task InitializeFormDataAsync()
     {
         var doctors = (await _userService.GetAllWithDetailsAsync())
             .Where(u => u.UserTypeId == (int)UserTypeEnum.Lekarz);
         Doctors = [.. doctors.Select(u => new UserWrapper(u)).ToList()];
-        SelectedDoctor = Doctors.First();
+        FormData.SelectedDoctor = Doctors.First();
 
         var patients = await _patientService.GetAllWithDetailsAsync();
         Patients = [.. patients.Select(u => new PatientWrapper(u)).ToList()];
 
-        UpdateAvailableHours();
+        await UpdateAvailableHours();
     }
+
     protected abstract Task Submit();
 
-    
-    private async void UpdateAvailableHours()
+    private async Task UpdateAvailableHours()
     {
-        if (SelectedDoctor?.Id is not int doctorId || SelectedDate is null)
+        if (FormData.SelectedDoctor?.Id is not int doctorId || FormData.SelectedDate is null)
         {
             AvailableHours.Clear();
             return;
         }
 
-        var appointments = await _appointmentService.GetAppointmentsForDoctorOnDateAsync(doctorId, SelectedDate.Value.Date);
+        var appointments = await _appointmentService.GetAppointmentsForDoctorOnDateAsync(doctorId, FormData.SelectedDate.Value.Date);
 
         var booked = appointments.Select(a => a.Date.Value.TimeOfDay).ToHashSet();
 
@@ -83,10 +81,11 @@ public abstract partial class AppointmentFormBaseViewModel<TForm> : BaseViewMode
 
         AvailableHours = [.. available];
 
-        SelectedHour = AvailableHours.FirstOrDefault();
+        FormData.SelectedHour = AvailableHours.FirstOrDefault();
     }
-
-    partial void OnSelectedDoctorChanged(UserWrapper? value) => UpdateAvailableHours();
-    partial void OnSelectedDateChanged(DateTime? value) => UpdateAvailableHours();
-
+    private void OnFormDataPropertyChanged(object? sender, PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(FormData.SelectedDoctor) || e.PropertyName == nameof(FormData.SelectedDate))
+            _ = UpdateAvailableHours();
+    }
 }

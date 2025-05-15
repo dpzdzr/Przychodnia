@@ -27,19 +27,8 @@ public partial class AppointmentAddViewModel(IDialogService dialogService, IUser
     {
         await TryExecuteAsync(async () =>
         {
-            var dto = new AppointmentDTO();
-
-            if (SelectedDoctor?.Id is int id)
-                dto.AttendingDoctorId = id;
-
-            var patient = await _patientService.GetByPeselAsync(EnteredPatientPesel) ??
-                throw new KeyNotFoundException("Nie znaleziono pacjenta");
-
-            dto.PatientId = patient.Id;
-
-            if (FullDate is DateTime date)
-                dto.Date = date;
-
+            FormData.SelectedPatient = new(await _patientService.GetByPeselAsync(FormData.EnteredPatientPesel));
+            var dto = _mapper.Map<AppointmentDTO>(FormData);
             await _appointmentService.CreateAsync(dto);
             ShowSucces("Pomyślnie dodano nową wizytę");
             ClearForm();
