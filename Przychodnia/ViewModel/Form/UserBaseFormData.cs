@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.ComponentModel;
-using Przychodnia.Model;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Przychodnia.ViewModel.Wrapper;
 
 namespace Przychodnia.ViewModel.Form;

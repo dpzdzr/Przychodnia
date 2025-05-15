@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Przychodnia.Model;
 using Przychodnia.Model.DTO;
 using Przychodnia.Repository.Interface;
@@ -33,7 +28,7 @@ public class PatientService(IPatientRepository patientRepo, IPostalCodeRepositor
     public async Task<Patient> CreateAsync(PatientDTO dto)
     {
         var patient = new Patient();
-        await MapDtoAndResolveRelationsAsync(dto, patient);   
+        await MapDtoAndResolveRelationsAsync(dto, patient);
         await _patientRepo.AddAsync(patient);
         await _patientRepo.SaveChangesAsync();
         return patient;
@@ -47,7 +42,7 @@ public class PatientService(IPatientRepository patientRepo, IPostalCodeRepositor
 
     public async Task UpdateAsync(int id, PatientDTO dto)
     {
-        var patient = await _patientRepo.GetByIdAsync(id) 
+        var patient = await _patientRepo.GetByIdAsync(id)
             ?? throw new KeyNotFoundException("Nie znaleziono pacjenta");
         await MapDtoAndResolveRelationsAsync(dto, patient);
         await _patientRepo.SaveChangesAsync();

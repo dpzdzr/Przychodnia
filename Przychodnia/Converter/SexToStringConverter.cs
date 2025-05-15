@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Przychodnia.Model;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
-using Przychodnia.Model;
 
 namespace Przychodnia.Converter;
 

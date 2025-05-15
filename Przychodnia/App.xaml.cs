@@ -1,7 +1,4 @@
-﻿using System.Configuration;
-using System.Data;
-using System.Windows;
-using CommunityToolkit.Mvvm.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Przychodnia.Data;
@@ -12,10 +9,10 @@ using Przychodnia.Service.Implementation;
 using Przychodnia.Service.Implementation.Entity;
 using Przychodnia.Service.Interface;
 using Przychodnia.Service.Interface.Entity;
-using Przychodnia.View;
 using Przychodnia.ViewModel.Admin;
 using Przychodnia.ViewModel.Login;
 using Przychodnia.ViewModel.Shared;
+using System.Windows;
 
 namespace Przychodnia
 {
@@ -52,11 +49,12 @@ namespace Przychodnia
             services.AddScoped<IPostalCodeRepository, PostalCodeRepository>();
             services.AddScoped<IPatientRepository, PatientRepository>();
             services.AddScoped<IAppointmentRepository, AppointmentRepository>();
+            services.AddScoped<IExaminationRepository, ExaminationRepository>();
 
             // Services
             services.AddSingleton<IDialogService, DialogService>();
             services.AddSingleton<NavigationServiceProxy>();
-            services.AddSingleton<INavigationService>(provider 
+            services.AddSingleton<INavigationService>(provider
                 => provider.GetRequiredService<NavigationServiceProxy>());
 
             // Entities services
@@ -66,6 +64,7 @@ namespace Przychodnia
             services.AddTransient<IPostalCodeService, PostalCodeService>();
             services.AddTransient<IPatientService, PatientService>();
             services.AddTransient<IAppointmentService, AppointmentService>();
+            services.AddTransient<IExaminationService, ExaminationService>();
 
             // ViewModels
             services.AddTransient<LoginViewModel>();

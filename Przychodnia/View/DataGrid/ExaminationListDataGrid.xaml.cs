@@ -3,11 +3,11 @@
 namespace Przychodnia.View.DataGrid
 {
     /// <summary>
-    /// Interaction logic for UserListDataGrid.xaml
+    /// Logika interakcji dla klasy ExaminationListDataGrid.xaml
     /// </summary>
-    public partial class UserListDataGrid : UserControl
+    public partial class ExaminationListDataGrid : UserControl
     {
-        public UserListDataGrid()
+        public ExaminationListDataGrid()
         {
             InitializeComponent();
         }

@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Przychodnia.Service.Interface;
 using System.Windows;
-using Przychodnia.Service.Interface;
 
 namespace Przychodnia.Service.Implementation;
 

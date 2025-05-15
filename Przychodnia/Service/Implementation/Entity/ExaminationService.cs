@@ -1,22 +1,14 @@
 ﻿using AutoMapper;
 using Przychodnia.Model;
 using Przychodnia.Model.DTO;
-using Przychodnia.Repository.Implementation;
 using Przychodnia.Repository.Interface;
 using Przychodnia.Service.Interface.Entity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Przychodnia.Service.Implementation.Entity;
 
-public class ExaminationService(ExaminationRepository exRepo, IMapper mapper, IUserRepository userRepo) : IExaminationService
+public class ExaminationService(IExaminationRepository exRepo, IMapper mapper, IUserRepository userRepo) : IExaminationService
 {
     private readonly IExaminationRepository _exRepository = exRepo;
-    private readonly IUserRepository _userRepo = userRepo;
     private readonly IMapper _mapper = mapper;
     public async Task<Examination> AddAsync(ExaminationDTO dto)
     {
@@ -39,7 +31,7 @@ public class ExaminationService(ExaminationRepository exRepo, IMapper mapper, IU
         _exRepository.Remove(entity);
         await _exRepository.SaveChangesAsync();
     }
-    
+
     public async Task UpdateAsync(int id, ExaminationDTO dto)
     {
         var entity = await _exRepository.GetByIdAsync(id)

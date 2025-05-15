@@ -1,26 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using AutoMapper;
-using CommunityToolkit.Mvvm.Input;
+﻿using AutoMapper;
 using CommunityToolkit.Mvvm.Messaging;
 using Przychodnia.Message;
 using Przychodnia.Model;
 using Przychodnia.Model.DTO;
-using Przychodnia.Repository.Interface;
 using Przychodnia.Service.Interface;
 using Przychodnia.Service.Interface.Entity;
 using Przychodnia.ViewModel.Base;
 using Przychodnia.ViewModel.Form;
-using Przychodnia.ViewModel.Wrapper;
 
 namespace Przychodnia.ViewModel.Shared;
 
 public class PatientAddViewModel(IPostalCodeService postalCodeService, IDialogService dialogService,
-    IPatientService patientService, IMapper mapper, IMessenger messenger) 
+    IPatientService patientService, IMapper mapper, IMessenger messenger)
     : PatientFormBaseViewModel<PatientAddFormData>(postalCodeService, dialogService, mapper, messenger)
 {
     private readonly IPatientService _patientService = patientService;
@@ -32,7 +23,7 @@ public class PatientAddViewModel(IPostalCodeService postalCodeService, IDialogSe
 
     protected override async Task Submit()
     {
-        await TryExecuteAsync(async () => 
+        await TryExecuteAsync(async () =>
         {
             var dto = _mapper.Map<PatientDTO>(FormData);
             var entity = await _patientService.CreateAsync(dto);

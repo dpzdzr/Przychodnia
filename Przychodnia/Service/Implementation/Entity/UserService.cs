@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using AutoMapper;
+﻿using AutoMapper;
 using Przychodnia.Model;
 using Przychodnia.Model.DTO;
 using Przychodnia.Repository.Interface;
@@ -28,7 +22,7 @@ public class UserService(IUserRepository userRepo, ILaboratoryRepository labRepo
 
     public async Task RemoveAsync(int id)
     {
-        var entity = await _userRepo.GetByIdAsync(id) 
+        var entity = await _userRepo.GetByIdAsync(id)
             ?? throw new KeyNotFoundException("Nie znaleziono użytkownika");
         _userRepo.Remove(entity);
         await _userRepo.SaveChangesAsync();
@@ -58,7 +52,7 @@ public class UserService(IUserRepository userRepo, ILaboratoryRepository labRepo
     {
         _mapper.Map(dto, targetUser);
 
-        var userType = await _userTypeRepo.GetByIdAsync(dto.UserTypeId) ?? 
+        var userType = await _userTypeRepo.GetByIdAsync(dto.UserTypeId) ??
             throw new KeyNotFoundException("Nieprawidłowy typ użytkownika");
 
         Laboratory? lab = null;

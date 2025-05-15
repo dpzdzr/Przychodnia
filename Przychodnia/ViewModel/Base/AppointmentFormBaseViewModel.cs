@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.ComponentModel;
-using Przychodnia.Repository.Interface;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Przychodnia.Service.Interface;
 using Przychodnia.Service.Interface.Entity;
 using Przychodnia.ViewModel.Form;
 using Przychodnia.ViewModel.Wrapper;
+using System.Collections.ObjectModel;
 
 namespace Przychodnia.ViewModel.Base;
 
@@ -22,7 +16,7 @@ public partial class AppointmentFormBaseViewModel<TForm> : BaseViewModel
     [ObservableProperty] private ObservableCollection<UserWrapper> users = [];
     [ObservableProperty] private ObservableCollection<PatientWrapper> patients = [];
 
-    public AppointmentFormBaseViewModel(IDialogService dialogService, IUserService userService, 
+    public AppointmentFormBaseViewModel(IDialogService dialogService, IUserService userService,
         IPatientService patientService) : base(dialogService)
     {
         _userService = userService;

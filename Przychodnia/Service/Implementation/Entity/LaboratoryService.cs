@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Przychodnia.Model;
 using Przychodnia.Model.DTO;
 using Przychodnia.Repository.Interface;
@@ -71,5 +66,5 @@ public class LaboratoryService(ILaboratoryRepository labRepo, IMapper mapper, IU
         if (alreadyManaging)
             throw new InvalidOperationException("Ten kierownik zarządza już innym laboratorium");
     }
-    
+
 }

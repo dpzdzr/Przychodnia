@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Documents;
-using AutoMapper;
+﻿using AutoMapper;
 using Przychodnia.Model;
 using Przychodnia.Model.DTO;
 using Przychodnia.Repository.Interface;
@@ -17,7 +11,7 @@ public class PostalCodeService(IPostalCodeRepository repo, IMapper mapper) : IPo
     private readonly IPostalCodeRepository _repo = repo;
     private readonly IMapper _mapper = mapper;
     public async Task<PostalCode> CreateAsync(PostalCodeDTO dto)
-    {   
+    {
         var entity = _mapper.Map<PostalCode>(dto);
         await _repo.AddAsync(entity);
         await _repo.SaveChangesAsync();
@@ -38,7 +32,7 @@ public class PostalCodeService(IPostalCodeRepository repo, IMapper mapper) : IPo
 
     public async Task UpdateAsync(int id, PostalCodeDTO dto)
     {
-        var existing = await _repo.GetByIdAsync(id) 
+        var existing = await _repo.GetByIdAsync(id)
             ?? throw new KeyNotFoundException("Nie znaleziono kodu pocztowego");
 
         _mapper.Map(dto, existing);

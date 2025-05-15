@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Przychodnia.Service.Interface;
 using Przychodnia.ViewModel.Base;
 
 namespace Przychodnia.ViewModel.Navigation;
 
-public abstract partial class NavigableBaseViewModel(IDialogService dialogService) 
+public abstract partial class NavigableBaseViewModel(IDialogService dialogService)
     : BaseViewModel(dialogService)
 {
     private readonly Stack<BaseViewModel> _navigationStack = new();

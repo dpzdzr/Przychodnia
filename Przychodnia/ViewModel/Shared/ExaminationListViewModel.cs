@@ -1,24 +1,21 @@
 ﻿using Przychodnia.Service.Interface;
+using Przychodnia.Service.Interface.Entity;
 using Przychodnia.ViewModel.Base;
 using Przychodnia.ViewModel.Wrapper;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Przychodnia.ViewModel.Shared;
 public class ExaminationListViewModel : BaseListViewModel<ExaminationWrapper>
 {
+    private readonly IExaminationService _examinationService;
     public static string HeaderText => "Badania";
-    public ExaminationListViewModel(INavigationService navigationService, IServiceProvider serviceProvider, IDialogService dialogService) : base(dialogService, navigationService, serviceProvider)
+    public ExaminationListViewModel(IExaminationService examinationService, INavigationService navigationService, IServiceProvider serviceProvider, IDialogService dialogService) : base(dialogService, navigationService, serviceProvider)
     {
-
+        _examinationService = examinationService;
     }
-    public override Task InitializeAsync()
+    public override async Task InitializeAsync()
     {
-        return Task.CompletedTask;
-        //throw new NotImplementedException();
+        var items = await _examinationService.GetAllWithDetailsAsync();
+        Items = [.. items.Select(e => new ExaminationWrapper(e))];
     }
 
     protected override Task Add()

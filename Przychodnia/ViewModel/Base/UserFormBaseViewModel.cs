@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using AutoMapper;
+﻿using AutoMapper;
 using CommunityToolkit.Mvvm.ComponentModel;
-using Przychodnia.Model;
 using Przychodnia.Service.Interface;
 using Przychodnia.Service.Interface.Entity;
 using Przychodnia.ViewModel.Form;
 using Przychodnia.ViewModel.Wrapper;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace Przychodnia.ViewModel.Base;
 
@@ -31,7 +24,7 @@ public abstract partial class UserFormBaseViewModel<TForm> : BaseViewModel
     {
         _mapper = mapper;
         _userTypeService = userTypeService;
-        _labService = laboratoryService;    
+        _labService = laboratoryService;
         FormData.PropertyChanged += OnFormDataPropertyChanged;
     }
 

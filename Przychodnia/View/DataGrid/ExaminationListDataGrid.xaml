@@ -1,0 +1,24 @@
+﻿<UserControl x:Class="Przychodnia.View.DataGrid.ExaminationListDataGrid"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:converter="clr-namespace:Przychodnia.Converter"
+             xmlns:shared="clr-namespace:Przychodnia.ViewModel.Shared"
+             xmlns:local="clr-namespace:Przychodnia.View.DataGrid"
+             d:DataContext="{d:DesignInstance Type=shared:ExaminationListViewModel}"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="1400">
+    <Grid>
+        <DataGrid ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}" ColumnWidth="*">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="0.25*"/>
+                <DataGridTextColumn Header="Typ Badania" Binding="{Binding ExaminationType.Value}"/>
+                <DataGridTextColumn Header="Pacjent" Binding="{Binding Patient.FullName}"/>
+                <DataGridTextColumn Header="Doktor Zlecający" Binding="{Binding OrderedBy.FullName}"/>
+                <DataGridTextColumn Header="Doktor Wykonujący" Binding="{Binding PerformingDoctor.FullName}"/>
+                <DataGridTextColumn Header="Laboratorium" Binding="{Binding PerformingLaboratory.Name}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</UserControl>

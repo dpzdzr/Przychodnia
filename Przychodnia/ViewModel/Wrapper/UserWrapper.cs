@@ -1,13 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Przychodnia.Model;
-using Przychodnia.Model.DTO;
 using Przychodnia.ViewModel.Base;
-using Przychodnia.ViewModel.Form;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Przychodnia.ViewModel.Wrapper;
 
@@ -28,7 +21,7 @@ public partial class UserWrapper : BaseWrapper
     {
         if (user is null)
         {
-            if(!createDummy)
+            if (!createDummy)
                 throw new ArgumentNullException(nameof(user), "Użytkownik nie może być null, chyba że jawnie tworzysz obiekt dummy.");
 
             Id = null;

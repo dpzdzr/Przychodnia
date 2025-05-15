@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Przychodnia.Model;
+﻿using Microsoft.EntityFrameworkCore;
 using Przychodnia.Repository.Interface;
+using System.Linq.Expressions;
 
 namespace Przychodnia.Repository.Implementation;
 
-public abstract class BaseRepository<T, TContext> : IBaseRepository<T> 
+public abstract class BaseRepository<T, TContext> : IBaseRepository<T>
     where T : class
     where TContext : DbContext
 {

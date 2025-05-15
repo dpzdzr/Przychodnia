@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Przychodnia.Model;
 
@@ -14,7 +9,7 @@ public class User
     [Required]
     public int UserTypeId { get; set; }
     public virtual UserType UserType { get; set; }
-    
+
     [Required]
     public string Login { get; set; }
     [Required]

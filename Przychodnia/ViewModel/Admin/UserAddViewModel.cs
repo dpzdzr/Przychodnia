@@ -1,23 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-using AutoMapper;
+﻿using AutoMapper;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Przychodnia.Message;
 using Przychodnia.Model;
 using Przychodnia.Model.DTO;
-using Przychodnia.Repository.Interface;
 using Przychodnia.Service.Interface;
 using Przychodnia.Service.Interface.Entity;
 using Przychodnia.ViewModel.Base;
 using Przychodnia.ViewModel.Form;
-using Przychodnia.ViewModel.Wrapper;
+using System.Windows.Input;
 
 namespace Przychodnia.ViewModel.Admin;
 
