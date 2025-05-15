@@ -61,6 +61,7 @@ namespace Przychodnia
 
             // Entities services
             services.AddTransient<IUserService, UserService>();
+            services.AddTransient<IUserLookupService, UserLookupService>();
             services.AddTransient<IUserTypeService, UserTypeService>();
             services.AddTransient<ILaboratoryService, LaboratoryService>();
             services.AddTransient<IPostalCodeService, PostalCodeService>();

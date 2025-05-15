@@ -14,4 +14,5 @@ public interface IBaseService<TEntity, TDto>
     Task UpdateAsync(int id, TDto dto);
     Task RemoveAsync(int id);
     Task EnsureExistsByIdAsync(int id);
+    Task<bool> ExistsByIdAsync(int id);
 }

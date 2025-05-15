@@ -9,11 +9,7 @@ using Przychodnia.Model.DTO;
 
 namespace Przychodnia.Service.Interface.Entity;
 
-public interface ILaboratoryService
+public interface ILaboratoryService : IBaseService<Laboratory, LaboratoryDTO>
 {
-    Task<Laboratory> AddAsync(LaboratoryDTO dto);
-    Task RemoveAsync(int id);
-    Task<IEnumerable<Laboratory>> GetAllAsync();
     Task<IEnumerable<Laboratory>> GetAllWithDetailsAsync();
-    Task UpdateAsync(int id, LaboratoryDTO dto);
 }

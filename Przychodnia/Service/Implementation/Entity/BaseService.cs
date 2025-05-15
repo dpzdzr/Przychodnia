@@ -21,13 +21,15 @@ public abstract class BaseService<TEntity, TDto, TRepository>(TRepository reposi
     public async Task EnsureExistsByIdAsync(int id)
     {
         if (!await _repo.ExistsByIdAsync(id))
-            throw new KeyNotFoundException($"Not found: {typeof(TEntity).Name} with id: {id}");
+            throw new KeyNotFoundException($"Not found: {nameof(TEntity)} with id: {id}");
     }
+    public async Task<bool> ExistsByIdAsync(int id)
+        => await _repo.ExistsByIdAsync(id);
     public virtual async Task<IEnumerable<TEntity>> GetAllAsync()
         => await _repo.GetAllAsync();
     public virtual async Task<TEntity?> GetByIdAsync(int id)
         => await _repo.GetByIdAsync(id) ??
-        throw new KeyNotFoundException($"{typeof(TEntity).Name} not found with id: {id}");
+        throw new KeyNotFoundException($"{nameof(TEntity)} not found with id: {id}");
     public abstract Task<TEntity> CreateAsync(TDto dto);
     public abstract Task UpdateAsync(int id, TDto dto);
     public abstract Task RemoveAsync(int id);

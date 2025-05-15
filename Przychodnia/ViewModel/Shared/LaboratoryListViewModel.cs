@@ -107,7 +107,7 @@ public partial class LaboratoryListViewModel : BaseViewModel
         await TryExecuteAsync(async () =>
         {
             var dto = _mapper.Map<LaboratoryDTO>(EditLab);
-            var entity = await _labService.AddAsync(dto);
+            var entity = await _labService.CreateAsync(dto);
             Labs.Add(new LaboratoryWrapper(entity, includeManager: true, includeWorkers: true));
             _dialogService.Show("Sukces", "Pomyślnie dodano nowe laboratorium");
             ClearForm();

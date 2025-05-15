@@ -11,65 +11,51 @@ using Przychodnia.Service.Interface.Entity;
 
 namespace Przychodnia.Service.Implementation.Entity;
 
-public class LaboratoryService(ILaboratoryRepository labRepo, IMapper mapper, IUserRepository userRepo)
-    : ILaboratoryService
+public class LaboratoryService(ILaboratoryRepository labRepo, IMapper mapper, IUserLookupService userLookupService)
+    : BaseService<Laboratory, LaboratoryDTO, ILaboratoryRepository>(labRepo, mapper), ILaboratoryService
 {
-    private readonly ILaboratoryRepository _labRepo = labRepo;
-    private readonly IUserRepository _userRepo = userRepo;
-    private readonly IMapper _mapper = mapper;
+    private readonly IUserLookupService _userLookupService = userLookupService; 
 
-    public async Task<Laboratory> AddAsync(LaboratoryDTO dto)
+    public async Task<IEnumerable<Laboratory>> GetAllWithDetailsAsync()
+        => await _repo.GetAllWithDetailsAsync();
+
+    public override async Task<Laboratory> CreateAsync(LaboratoryDTO dto)
     {
         var entity = _mapper.Map<Laboratory>(dto);
 
         if (dto.ManagerId is int managerId)
             await VerifyManager(managerId);
 
-        entity = await _labRepo.AddAsync(entity);
-        await _labRepo.SaveChangesAsync();
+        entity = await _repo.AddAsync(entity);
+        await _repo.SaveChangesAsync();
         return entity;
     }
 
-    public async Task<IEnumerable<Laboratory>> GetAllAsync()
-        => await _labRepo.GetAllAsync();
-
-    public async Task<IEnumerable<Laboratory>> GetAllWithDetailsAsync()
-        => await _labRepo.GetAllWithDetailsAsync();
-
-    public async Task RemoveAsync(int id)
+    public override async Task UpdateAsync(int id, LaboratoryDTO dto)
     {
-        var entity = await _labRepo.GetByIdAsync(id)
-            ?? throw new KeyNotFoundException($"Nie znaleziono laboratorium z podanym identyfikatorem({id})");
-        _labRepo.Remove(entity);
-        await _labRepo.SaveChangesAsync();
-    }
-
-    public async Task UpdateAsync(int id, LaboratoryDTO dto)
-    {
-        var entity = await _labRepo.GetByIdAsync(id)
-            ?? throw new KeyNotFoundException($"Nie znaleziono laboratorium z podanym identyfikatorem({id})");
+        var entity = await GetByIdAsync(id);
 
         if (dto.ManagerId is int managerId)
             await VerifyManager(managerId, id);
 
         _mapper.Map(dto, entity);
-        await _labRepo.SaveChangesAsync();
+        await _repo.SaveChangesAsync();
     }
 
-    private async Task<User> GetValidManagerById(int id)
+    public override async Task RemoveAsync(int id)
     {
-        return await _userRepo.GetByIdAsync(id)
-            ?? throw new KeyNotFoundException("Nieprawidłowe id managera laboratorium");
+        var entity = await GetByIdAsync(id);
+        _repo.Remove(entity!);
+        await _repo.SaveChangesAsync();
     }
 
     private async Task VerifyManager(int managerId, int? currentLabId = null)
     {
-        var manager = await GetValidManagerById(managerId);
-        var alreadyManaging = await _labRepo.AnyAsync(l =>
+        var manager = await _userLookupService.GetByIdAsync(managerId);
+        var alreadyManaging = await _repo.AnyAsync(l =>
             l.ManagerId == managerId &&
             (currentLabId == null || l.Id != currentLabId));
         if (alreadyManaging)
             throw new InvalidOperationException("Ten kierownik zarządza już innym laboratorium");
     }
-    
 }

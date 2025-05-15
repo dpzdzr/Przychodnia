@@ -16,6 +16,14 @@ public class UserTypeService(IUserTypeRepository repo) : IUserTypeService
     public async Task<List<UserType>> GetAllAsync()
         => await _repo.GetAllAsync();
 
+    public async Task<UserType?> GetByIdAsync(int id)
+    {
+        var userType = await _repo.GetByIdAsync(id);
+        return userType is null ? 
+            throw new KeyNotFoundException($"Not found: {typeof(UserType).Name} with id: {id}") : userType;
+    }
+        
+
     public async Task<List<string>> GetNamesAsync()
         => await _repo.GetNamesAsync();
 }

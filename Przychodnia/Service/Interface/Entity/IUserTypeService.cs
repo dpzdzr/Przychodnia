@@ -11,4 +11,5 @@ public interface IUserTypeService
 {
     Task<List<string>> GetNamesAsync();
     Task<List<UserType>> GetAllAsync();
+    Task<UserType?> GetByIdAsync(int id);
 }

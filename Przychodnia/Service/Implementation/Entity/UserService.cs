@@ -12,12 +12,12 @@ using Przychodnia.Service.Interface.Entity;
 
 namespace Przychodnia.Service.Implementation.Entity;
 
-public class UserService(IUserRepository userRepo, ILaboratoryRepository labRepo,
-    IUserTypeRepository userTypeRepo, IMapper mapper)
-    : BaseService<User, UserDTO, IUserRepository>(userRepo, mapper), IUserService
+public class UserService(IUserRepository userRepo, ILaboratoryService labService,
+    IUserTypeService userTypeService, IMapper mapper)
+    : BaseService<User, UserDTO, IUserRepository>(userRepo, mapper), IUserService, IUserLookupService
 {
-    private readonly ILaboratoryRepository _labRepo = labRepo;
-    private readonly IUserTypeRepository _userTypeRepo = userTypeRepo;
+    private readonly ILaboratoryService _labService = labService;
+    private readonly IUserTypeService _userTypeService = userTypeService;
 
     public async Task<List<User>> GetAllWithDetailsAsync()
         => await _repo.GetAllWithDetailsAsync();
@@ -57,16 +57,9 @@ public class UserService(IUserRepository userRepo, ILaboratoryRepository labRepo
     {
         _mapper.Map(dto, targetUser);
 
-        targetUser.UserType = await _userTypeRepo.GetByIdAsync(dto.UserTypeId) ??
-            throw new KeyNotFoundException("Nieprawidłowy typ użytkownika");
+        targetUser.UserType = await _userTypeService.GetByIdAsync(dto.UserTypeId);
 
-        Laboratory? lab = null;
-        if (dto.LaboratoryId is not null)
-        {
-            lab = await _labRepo.GetByIdAsync(dto.LaboratoryId.Value) ??
-                throw new KeyNotFoundException("Nieprawidłowe laboratorium");
-        }
-        targetUser.Laboratory = lab;
+        if (dto.LaboratoryId is int labId)
+            targetUser.Laboratory = await _labService.GetByIdAsync(labId);
     }
-
 }
