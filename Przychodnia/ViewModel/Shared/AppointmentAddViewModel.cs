@@ -32,7 +32,7 @@ public partial class AppointmentAddViewModel(IDialogService dialogService, IUser
                 throw new ValidationException("Uzupełnij poprawnie wszystkie wymagane pola");
 
             var dto = _mapper.Map<AppointmentDTO>(FormData);
-            dto.PatientId = (await _patientService.GetByPeselAsync(FormData.EnteredPatientPesel!)).Id;
+            dto.PatientId = (await _patientService.GetByPeselAsync(FormData.EnteredPatientPesel))!.Id;
             await _appointmentService.CreateAsync(dto);
             ShowSucces("Pomyślnie dodano nową wizytę");
             ClearForm();

@@ -38,9 +38,11 @@ public class AppointmentService(IAppointmentRepository appointmentRepo, IMapper 
         _repo.Remove(entity!);
         await _repo.SaveChangesAsync();
     }
-    public override Task UpdateAsync(int id, AppointmentDTO dto)
+    public override async Task UpdateAsync(int id, AppointmentDTO dto)
     {
-        throw new NotImplementedException();
+        var entity = await GetByIdAsync(id);
+        _mapper.Map(dto, entity);
+        await _repo.SaveChangesAsync();
     }
 
     private async Task MapDtoAndResolveRelationsAsync(AppointmentDTO dto, Appointment target)

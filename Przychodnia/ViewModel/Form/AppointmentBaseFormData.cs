@@ -54,12 +54,6 @@ public abstract partial class AppointmentBaseFormData : ObservableValidator
 
     public void ClearAllErrors()
     {
-        //ClearErrors(nameof(EnteredPatientPesel));
-        //ClearErrors(nameof(SelectedDoctor));
-        //ClearErrors(nameof(Completed));
-        //ClearErrors(nameof(SelectedHour));
-        //ClearErrors(nameof(SelectedDate));
-
         var errorPropertyNames = GetErrors()
             .SelectMany(e => e.MemberNames)
             .Distinct()

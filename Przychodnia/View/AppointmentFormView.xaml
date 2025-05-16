@@ -55,23 +55,29 @@
                 <StackPanel Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Margin="0,30,50,0">
 
                     <StackPanel Margin="0,0,0,50">
-                        <TextBlock Text="PESEL pacjenta" Margin="0,0,0,5"/>
+                        <TextBlock Margin="0,0,0,5">
+                            <Run Text="PESEL pacjenta"/>
+                            <Run Text=" *" Foreground="OrangeRed" FontWeight="Bold"/>
+                        </TextBlock>
                         <TextBox x:Name="PeselBox"
                                  Text="{Binding FormData.EnteredPatientPesel,
                                                 ValidatesOnDataErrors=True,
                                                 NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
-                        <TextBlock Foreground="IndianRed" FontSize="11" Margin="0,5,0,0"
+                        <TextBlock Foreground="OrangeRed" FontSize="11" Margin="0,5,0,0"
                                    Text="{Binding ElementName=PeselBox, 
                                                   Path=(Validation.Errors)[0].ErrorContent}"
                                    Visibility="{Binding ElementName=PeselBox, 
                                                         Path=(Validation.HasError),
                                                         Converter={StaticResource BoolToHiddenConverter}}"/>
                     </StackPanel>
-                    <TextBlock Text="Data" Margin="0,0,0,5"/>
                     <StackPanel>
+                        <TextBlock Margin="0,0,0,5">
+                            <Run Text="Data"/>
+                            <Run Text=" *" Foreground="OrangeRed" FontWeight="Bold"/>
+                        </TextBlock>
                         <DatePicker x:Name="DatePicker" Height="40"
                                     SelectedDate="{Binding FormData.SelectedDate, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
-                        <TextBlock Foreground="IndianRed" FontSize="11" Margin="0,5,0,0"
+                        <TextBlock Foreground="OrangeRed" FontSize="11" Margin="0,5,0,0"
                                    Text="{Binding ElementName=DatePicker, 
                                                   Path=(Validation.Errors)[0].ErrorContent}"
                                    Visibility="{Binding ElementName=DatePicker, 
@@ -84,11 +90,14 @@
                             HorizontalAlignment="Left" Margin="50,30,0,0">
 
                     <StackPanel Margin="0,0,0,50">
-                        <TextBlock Text="Lekarz" Margin="0,0,0,5"/>
+                        <TextBlock Margin="0,0,0,5">
+                            <Run Text="Lekarz"/>
+                            <Run Text=" *" Foreground="OrangeRed" FontWeight="Bold"/>
+                        </TextBlock>
                         <ComboBox x:Name="DoctorBox" ItemsSource="{Binding Doctors}"
                                   SelectedItem="{Binding FormData.SelectedDoctor}"
                                   DisplayMemberPath="FullName" />
-                        <TextBlock Foreground="IndianRed" FontSize="11" Margin="0,5,0,0"
+                        <TextBlock Foreground="OrangeRed" FontSize="11" Margin="0,5,0,0"
                                    Text="{Binding ElementName=DoctorBox, 
                                                   Path=(Validation.Errors)[0].ErrorContent}"
                                    Visibility="{Binding ElementName=DoctorBox, 
@@ -98,7 +107,10 @@
 
 
                     <StackPanel Margin="0,0,0,50">
-                        <TextBlock Text="Godzina" Margin="0,0,0,5"/>
+                        <TextBlock Margin="0,0,0,5">
+                            <Run Text="Godzina"/>
+                            <Run Text=" *" Foreground="OrangeRed" FontWeight="Bold"/>
+                        </TextBlock>
                         <ComboBox x:Name="HourBox"
                                   ItemsSource="{Binding AvailableHours}"
                                   SelectedItem="{Binding FormData.SelectedHour}">
@@ -108,7 +120,7 @@
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
-                        <TextBlock Foreground="IndianRed" FontSize="11" Margin="0,5,0,0"
+                        <TextBlock Foreground="OrangeRed" FontSize="11" Margin="0,5,0,0"
                                    Text="{Binding ElementName=HourBox, 
                                                   Path=(Validation.Errors)[0].ErrorContent}"
                                    Visibility="{Binding ElementName=HourBox, 

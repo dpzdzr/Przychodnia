@@ -23,7 +23,7 @@
                             <MultiTrigger.Conditions>
                                 <Condition Property="Validation.HasError" Value="True"/>
                             </MultiTrigger.Conditions>
-                            <Setter TargetName="Bd" Property="BorderBrush"     Value="IndianRed"/>
+                            <Setter TargetName="Bd" Property="BorderBrush"     Value="OrangeRed"/>
                             <Setter TargetName="Bd" Property="BorderThickness" Value="0,0,0,1"/>
                         </MultiTrigger>
                     </ControlTemplate.Triggers>

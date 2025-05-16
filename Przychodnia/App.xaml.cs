@@ -43,7 +43,7 @@ namespace Przychodnia
             services.AddSingleton<IMessenger>(WeakReferenceMessenger.Default);
 
             // Mappers
-            services.AddAutoMapper(typeof(UserMappingProfile));
+            services.AddAutoMapper(typeof(AppointmentMappingProfile));
 
             // Repositories
             services.AddScoped<IUserRepository, UserRepository>();
@@ -82,6 +82,7 @@ namespace Przychodnia
             services.AddTransient<LaboratoryListViewModel>();
             services.AddTransient<AppointmentListViewModel>();
             services.AddTransient<AppointmentAddViewModel>();
+            services.AddTransient<AppointmentEditViewModel>();
         }
 
         protected override void OnStartup(StartupEventArgs e)

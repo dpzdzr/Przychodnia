@@ -76,6 +76,9 @@
                 </DataTemplate>                
                 <DataTemplate DataType="{x:Type sharedViewmodels:AppointmentAddViewModel}">
                     <views:AppointmentFormView/>
+                </DataTemplate>                
+                <DataTemplate DataType="{x:Type sharedViewmodels:AppointmentEditViewModel}">
+                    <views:AppointmentFormView/>
                 </DataTemplate>
 
             </ContentControl.Resources>

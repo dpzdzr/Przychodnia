@@ -30,10 +30,10 @@ public partial class PatientEditViewModel(IPatientService patientService, IDialo
     public async Task InitializeAsync(PatientWrapper wrapper)
     {
         EditPatientWrapper = wrapper;
-        _mapper.Map(EditPatientWrapper, FormData);
-        await base.InitializeFormDataAsync();
-        FormData.PostalCode = Cities.FirstOrDefault(c => c.Id == EditPatientWrapper.PostalCode?.Id);
         EnteredCode = FormData.PostalCode?.Code ?? string.Empty;
+        await base.InitializeFormDataAsync();
+        _mapper.Map(EditPatientWrapper, FormData);
+        FormData.PostalCode = Cities.FirstOrDefault(c => c.Id == EditPatientWrapper.PostalCode?.Id);
     }
 
     protected async override Task Submit()

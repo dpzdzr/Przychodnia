@@ -25,7 +25,7 @@ public abstract partial class AppointmentFormBaseViewModel<TForm> : BaseViewMode
     protected readonly IPatientService _patientService;
     protected readonly IMapper _mapper;
 
-    public TForm FormData { get; } = new();
+    public TForm FormData { get; set; } = new();
     [ObservableProperty] private ObservableCollection<UserWrapper> doctors = [];
     [ObservableProperty] private ObservableCollection<PatientWrapper> patients = [];
     [ObservableProperty] private ObservableCollection<TimeSpan> availableHours = [];
@@ -62,7 +62,7 @@ public abstract partial class AppointmentFormBaseViewModel<TForm> : BaseViewMode
 
     protected abstract Task Submit();
 
-    private async Task UpdateAvailableHours()
+    protected async Task UpdateAvailableHours()
     {
         if (FormData.SelectedDoctor?.Id is not int doctorId || FormData.SelectedDate is null)
         {
@@ -88,5 +88,10 @@ public abstract partial class AppointmentFormBaseViewModel<TForm> : BaseViewMode
     {
         if (e.PropertyName == nameof(FormData.SelectedDoctor) || e.PropertyName == nameof(FormData.SelectedDate))
             _ = UpdateAvailableHours();
+    }
+    protected void SortAvailableHours()
+    {
+        var sorted = AvailableHours.OrderBy(ts => ts).ToList();
+        AvailableHours = [.. sorted];
     }
 }

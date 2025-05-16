@@ -41,7 +41,8 @@ public partial class PatientListViewModel : BaseListViewModel<PatientWrapper>
 
     public override async Task InitializeAsync()
     {
-        _allItems = [.. (await _patientService.GetAllWithDetailsAsync()).Select(p => new PatientWrapper(p))];
+        var patients = await _patientService.GetAllWithDetailsAsync();
+        _allItems = [.. (patients).Select(p => new PatientWrapper(p))];
         Items = [.. _allItems];
     }
     protected override async Task Add()

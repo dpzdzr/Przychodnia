@@ -21,6 +21,8 @@ public partial class AppointmentWrapper : BaseWrapper
     [ObservableProperty] private UserWrapper? scheduledBy;
     [ObservableProperty] private UserWrapper? attendingDoctor;
     [ObservableProperty] private PatientWrapper? patient;
+
+    public AppointmentWrapper() { }
     public AppointmentWrapper(Appointment entity)
     {
         Id = entity.Id;

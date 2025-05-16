@@ -36,7 +36,7 @@ public partial class AppointmentListViewModel : BaseListViewModel<AppointmentWra
     protected override async Task Add()
     {
         var addVm = _serviceProvider.GetRequiredService<AppointmentAddViewModel>();
-        await addVm.InitializeFormDataAsync();
+        await addVm.InitializeAsync();
         _navigationService.NavigateTo(addVm);
     }
 
@@ -45,9 +45,11 @@ public partial class AppointmentListViewModel : BaseListViewModel<AppointmentWra
         throw new NotImplementedException();
     }
 
-    protected override Task Edit()
+    protected override async Task Edit()
     {
-        throw new NotImplementedException();
+        var editVm = _serviceProvider.GetRequiredService<AppointmentEditViewModel>();
+        await editVm.InitializeAsync(SelectedItem!);
+        _navigationService.NavigateTo(editVm);
     }
 
     protected override void Filter()
