@@ -9,11 +9,14 @@
              d:DataContext="{d:DesignInstance Type=shared:ExaminationListViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1400">
+    <UserControl.Resources>
+        <converter:ExaminationTypeToStringConverter x:Key="ExaminationTypeToStringConverter"/>
+    </UserControl.Resources>
     <Grid>
         <DataGrid ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}" ColumnWidth="*">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="0.25*"/>
-                <DataGridTextColumn Header="Typ Badania" Binding="{Binding ExaminationType.Value}"/>
+                <DataGridTextColumn Header="Typ Badania" Binding="{Binding ExaminationType, Converter={StaticResource ExaminationTypeToStringConverter}}"/>
                 <DataGridTextColumn Header="Pacjent" Binding="{Binding Patient.FullName}"/>
                 <DataGridTextColumn Header="Doktor Zlecający" Binding="{Binding OrderedBy.FullName}"/>
                 <DataGridTextColumn Header="Doktor Wykonujący" Binding="{Binding PerformingDoctor.FullName}"/>
