@@ -59,7 +59,7 @@
                         <TextBox x:Name="PeselBox"
                                  Text="{Binding FormData.EnteredPatientPesel,
                                                 ValidatesOnDataErrors=True,
-                                                NotifyOnValidationError=True}"/>
+                                                NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
                         <TextBlock Foreground="IndianRed" FontSize="11" Margin="0,5,0,0"
                                    Text="{Binding ElementName=PeselBox, 
                                                   Path=(Validation.Errors)[0].ErrorContent}"
@@ -74,7 +74,7 @@
                         <TextBlock Foreground="IndianRed" FontSize="11" Margin="0,5,0,0"
                                    Text="{Binding ElementName=DatePicker, 
                                                   Path=(Validation.Errors)[0].ErrorContent}"
-                                   Visibility="{Binding ElementName=PeselBox, 
+                                   Visibility="{Binding ElementName=DatePicker, 
                                                         Path=(Validation.HasError),
                                                         Converter={StaticResource BoolToHiddenConverter}}"/>
                     </StackPanel>
@@ -91,7 +91,7 @@
                         <TextBlock Foreground="IndianRed" FontSize="11" Margin="0,5,0,0"
                                    Text="{Binding ElementName=DoctorBox, 
                                                   Path=(Validation.Errors)[0].ErrorContent}"
-                                   Visibility="{Binding ElementName=PeselBox, 
+                                   Visibility="{Binding ElementName=DoctorBox, 
                                                         Path=(Validation.HasError),
                                                         Converter={StaticResource BoolToHiddenConverter}}"/>
                     </StackPanel>
@@ -111,7 +111,7 @@
                         <TextBlock Foreground="IndianRed" FontSize="11" Margin="0,5,0,0"
                                    Text="{Binding ElementName=HourBox, 
                                                   Path=(Validation.Errors)[0].ErrorContent}"
-                                   Visibility="{Binding ElementName=PeselBox, 
+                                   Visibility="{Binding ElementName=HourBox, 
                                                         Path=(Validation.HasError),
                                                         Converter={StaticResource BoolToHiddenConverter}}"/>
                     </StackPanel>
