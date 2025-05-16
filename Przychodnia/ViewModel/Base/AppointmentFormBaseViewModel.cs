@@ -70,7 +70,8 @@ public abstract partial class AppointmentFormBaseViewModel<TForm> : BaseViewMode
             return;
         }
 
-        var appointments = await _appointmentService.GetAppointmentsForDoctorOnDateAsync(doctorId, FormData.SelectedDate.Value.Date);
+        var appointments = 
+            await _appointmentService.GetAppointmentsForDoctorOnDateAsync(doctorId, FormData.SelectedDate.Value.Date);
 
         var booked = appointments.Select(a => a.Date.Value.TimeOfDay).ToHashSet();
 

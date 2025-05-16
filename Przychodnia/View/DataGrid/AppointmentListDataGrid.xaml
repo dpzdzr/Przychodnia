@@ -17,7 +17,7 @@
         <DataGrid ItemsSource="{Binding Items}" SelectedItem="{Binding SelectedItem}" ColumnWidth="*">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="0.25*"/>
-                <DataGridTextColumn Header="Data" Binding="{Binding OnlyDate}" Width="0.5*"/>
+                <DataGridTextColumn Header="Data" Binding="{Binding OnlyDate, StringFormat={}{0:dd\\/MM\\/yyyy}}" Width="0.5*"/>
                 <DataGridTextColumn Header="Godzina" Binding="{Binding OnlyTime, StringFormat={}{0:HH\\:mm}}" Width="0.5*"/>
                 <DataGridTextColumn Header="Zrealizowana" Binding="{Binding Completed, Converter={StaticResource BoolToYesNoConverter}}" Width="0.5*"/>
                 <DataGridTextColumn Header="Zarejestrowana przez" Binding="{Binding ScheduledBy.FullName}"/>

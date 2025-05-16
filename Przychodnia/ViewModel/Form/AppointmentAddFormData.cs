@@ -16,6 +16,8 @@ public class AppointmentAddFormData : AppointmentBaseFormData
         ScheduledBy = null;
         SelectedDoctor = null;
         SelectedPatient = null;
-    }
+        EnteredPatientPesel = string.Empty;
 
+        ClearAllErrors();
+    }
 }
