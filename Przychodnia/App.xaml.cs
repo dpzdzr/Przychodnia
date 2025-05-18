@@ -80,6 +80,7 @@ namespace Przychodnia
             services.AddTransient<LaboratoryListViewModel>();
             services.AddTransient<AppointmentListViewModel>();
             services.AddTransient<ExaminationListViewModel>();
+            services.AddTransient<ExaminationAddViewModel>();
         }
 
         protected override void OnStartup(StartupEventArgs e)

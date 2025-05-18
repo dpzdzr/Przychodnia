@@ -1,6 +1,8 @@
-﻿using Przychodnia.Service.Interface;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Przychodnia.Service.Interface;
 using Przychodnia.Service.Interface.Entity;
 using Przychodnia.ViewModel.Base;
+using Przychodnia.ViewModel.Form;
 using Przychodnia.ViewModel.Wrapper;
 
 namespace Przychodnia.ViewModel.Shared;
@@ -18,9 +20,11 @@ public class ExaminationListViewModel : BaseListViewModel<ExaminationWrapper>
         Items = [.. items.Select(e => new ExaminationWrapper(e))];
     }
 
-    protected override Task Add()
+    protected override async Task Add()
     {
-        throw new NotImplementedException();
+        var addVm = _serviceProvider.GetRequiredService<ExaminationAddViewModel>();
+        await addVm.InitializeAsync();
+        _navigationService.NavigateTo(addVm);
     }
 
     protected override void ClearFilter()

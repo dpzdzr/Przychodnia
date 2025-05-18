@@ -32,6 +32,14 @@ public class ExaminationService(IExaminationRepository exRepo, IMapper mapper, I
         await _exRepository.SaveChangesAsync();
     }
 
+    public async Task<Examination> CreateAsync(ExaminationDTO dto)
+    {
+        var examination = new Examination();
+        await _exRepository.AddAsync(examination);
+        await _exRepository.SaveChangesAsync();
+        return examination;
+    }
+
     public async Task UpdateAsync(int id, ExaminationDTO dto)
     {
         var entity = await _exRepository.GetByIdAsync(id)
