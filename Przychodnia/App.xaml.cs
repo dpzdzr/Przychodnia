@@ -26,6 +26,7 @@ using Przychodnia.Features.Login.ViewModels;
 using Przychodnia.Features.Login.Views;
 using Przychodnia.Features.Panels.Admin.ViewModels;
 using Przychodnia.Features.Panels.Admin.Views;
+using Przychodnia.Features.Panels.Doctor.ViewModels;
 using Przychodnia.Features.Panels.Receptionist.ViewModels;
 using Przychodnia.Shared.Services.CurrentUserService;
 using Przychodnia.Shared.Services.DialogService;
@@ -90,12 +91,15 @@ namespace Przychodnia
             services.AddTransient<IAppointmentService, AppointmentService>();
 
             // ViewModels
-            services.AddTransient<LoginViewModel>();
-            services.AddTransient<UserAddViewModel>();
+            // Panels
             services.AddSingleton<AdminPanelViewModel>();
             services.AddSingleton<ReceptionistPanelViewModel>();
-            services.AddTransient<UserListViewModel>();
+            services.AddSingleton<DoctorPanelViewModel>();
+            
             services.AddSingleton<HomePageViewModel>();
+            services.AddTransient<LoginViewModel>();
+            services.AddTransient<UserAddViewModel>();
+            services.AddTransient<UserListViewModel>();
             services.AddTransient<UserEditViewModel>();
             services.AddTransient<PostalCodeListViewModel>();
             services.AddTransient<PatientAddViewModel>();
@@ -108,7 +112,6 @@ namespace Przychodnia
 
             // Windows
             services.AddTransient<LoginWindow>();
-            services.AddTransient<AdminPanelWindow>();
         }
 
         protected override void OnStartup(StartupEventArgs e)

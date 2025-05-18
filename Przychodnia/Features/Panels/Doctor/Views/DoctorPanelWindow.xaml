@@ -1,39 +1,29 @@
-﻿<Window x:Class="Przychodnia.Features.Panels.Receptionist.Views.ReceptionistPanelWindow"
+﻿<Window x:Class="Przychodnia.Features.Panels.Doctor.Views.DoctorPanelWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Przychodnia.Features.Panels.Receptionist.Views"
+        xmlns:local="clr-namespace:Przychodnia.Features.Panels.Doctor.Views"
         mc:Ignorable="d"
         
-        xmlns:adminVMs="clr-namespace:Przychodnia.Features.Panels.Admin.ViewModels"
         xmlns:sharedViews="clr-namespace:Przychodnia.Shared.Views" 
         
         xmlns:homePageVMs="clr-namespace:Przychodnia.Features.HomePage.ViewModels"
-        xmlns:homePageViews="clr-namespace:Przychodnia.Features.HomePage.Views"        
-        
-        xmlns:postalCodeVMs="clr-namespace:Przychodnia.Features.Entities.PostalCodeFeature.ViewModels"
-        xmlns:postalCodeViews="clr-namespace:Przychodnia.Features.Entities.PostalCodeFeature.Views"
-        
-        xmlns:appointmentVMs="clr-namespace:Przychodnia.Features.Entities.AppointmentFeature.ViewModels"
-        xmlns:appointmentViews="clr-namespace:Przychodnia.Features.Entities.AppointmentFeature.Views"    
-        
-        xmlns:laboratoryVMs="clr-namespace:Przychodnia.Features.Entities.LaboratoryFeature.ViewModels"
-        xmlns:laboratoryViews="clr-namespace:Przychodnia.Features.Entities.LaboratoryFeature.Views"
-        
-        xmlns:userVMs="clr-namespace:Przychodnia.Features.Entities.UserFeature.ViewModels"
-        xmlns:userViews="clr-namespace:Przychodnia.Features.Entities.UserFeature.Views"
+        xmlns:homePageViews="clr-namespace:Przychodnia.Features.HomePage.Views"   
         
         xmlns:patientsVMs="clr-namespace:Przychodnia.Features.Entities.PatientFeature.ViewModels"
-        xmlns:patientsViews="clr-namespace:Przychodnia.Features.Entities.PatientFeature.Views" 
+        xmlns:patientsViews="clr-namespace:Przychodnia.Features.Entities.PatientFeature.Views"      
         
-        xmlns:viewmodels="clr-namespace:Przychodnia.Features.Panels.Receptionist.ViewModels" 
+        xmlns:appointmentVMs="clr-namespace:Przychodnia.Features.Entities.AppointmentFeature.ViewModels"
+        xmlns:appointmentViews="clr-namespace:Przychodnia.Features.Entities.AppointmentFeature.Views"   
+        
+        xmlns:viewmodels="clr-namespace:Przychodnia.Features.Panels.Doctor.ViewModels" 
  
-        d:DataContext="{d:DesignInstance Type=viewmodels:ReceptionistPanelViewModel}"
+        d:DataContext="{d:DesignInstance Type=viewmodels:DoctorPanelViewModel}"
         Icon="/Assets/icon.ico"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
-        Title="Panel rejestratora" Height="1000" Width="1700">
+        Title="Panel lekarza" Height="1000" Width="1700">
     
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
@@ -50,7 +40,6 @@
                     <Button Content="← Wstecz" Command="{Binding NavigateBackCommand}" IsEnabled="{Binding CanNavigateBack}" Margin="5,5,5,30" Width="160"/>
                     <StackPanel>
                         <Button Content="Pacjenci" Command="{Binding NavigateToPatientsListCommand}"/>
-                        <Button Content="Kody pocztowe" Command="{Binding NavigateToPostalCodesListCommand}"/>
                         <Button Content="Wizyty" Command="{Binding NavigateToAppointmentsListCommand}"/>
                     </StackPanel>
                     <Button Content="Zamknij aplikację" Background="IndianRed"  Command="{Binding CloseCommand}" Margin="5,30,5,5" Width="160"/>
@@ -74,11 +63,6 @@
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type appointmentVMs:AppointmentListViewModel}">
                     <sharedViews:BaseListView/>
-                </DataTemplate>
-
-                <!-- PostalCode -->
-                <DataTemplate DataType="{x:Type postalCodeVMs:PostalCodeListViewModel}">
-                    <postalCodeViews:PostalCodesListView/>
                 </DataTemplate>
 
                 <!-- Patient -->
