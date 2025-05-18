@@ -10,17 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="ViewModel\Interface\**" />
-    <Compile Remove="ViewModel\Navigation\**" />
-    <EmbeddedResource Remove="ViewModel\Interface\**" />
-    <EmbeddedResource Remove="ViewModel\Navigation\**" />
-    <None Remove="ViewModel\Interface\**" />
-    <None Remove="ViewModel\Navigation\**" />
-    <Page Remove="ViewModel\Interface\**" />
-    <Page Remove="ViewModel\Navigation\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Remove="Assets\icon.ico" />
   </ItemGroup>
 

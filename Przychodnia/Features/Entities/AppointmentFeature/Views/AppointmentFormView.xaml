@@ -1,0 +1,138 @@
+﻿<UserControl x:Class="Przychodnia.Features.Entities.AppointmentFeature.Views.AppointmentFormView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Przychodnia.Features.Entities.AppointmentFeature.Views"
+             xmlns:converter="clr-namespace:Przychodnia.Shared.Converters"
+             xmlns:appointmentVMs="clr-namespace:Przychodnia.Features.Entities.AppointmentFeature.ViewModels"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance Type=appointmentVMs:AppointmentAddViewModel}"
+             d:DesignHeight="900" d:DesignWidth="1200">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converter:BoolToHiddenConverter x:Key="BoolToHiddenConverter"/>
+
+        <Style TargetType="StackPanel">
+            <Setter Property="Width" Value="300"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Style.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Margin" Value="0,40,0,5"/>
+                    <Setter Property="FontSize" Value="15"/>
+                </Style>
+                <Style TargetType="ComboBox">
+                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                    <Setter Property="FontSize" Value="15"/>
+                </Style>
+            </Style.Resources>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid d:Background="Gray">
+        <Border CornerRadius="10" BorderThickness="2" BorderBrush="#FAFAFA" Background="#FAFAFA" Margin="150, 20, 150, 60" >
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="2*"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="1" Grid.ColumnSpan="2" Margin="20"
+                           Text="{Binding HeaderText}"  
+                           FontSize="25" FontWeight="DemiBold"
+                           d:Text="Dodaj nową wizytę" 
+                           VerticalAlignment="Center" HorizontalAlignment="Center"/>
+
+                <StackPanel Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Margin="0,30,50,0">
+
+                    <StackPanel Margin="0,0,0,50">
+                        <TextBlock Margin="0,0,0,5">
+                            <Run Text="PESEL pacjenta"/>
+                            <Run Text=" *" Foreground="OrangeRed" FontWeight="Bold"/>
+                        </TextBlock>
+                        <TextBox x:Name="PeselBox"
+                                 Text="{Binding FormData.EnteredPatientPesel,
+                                                ValidatesOnDataErrors=True,
+                                                NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock Foreground="OrangeRed" FontSize="11" Margin="0,5,0,0"
+                                   Text="{Binding ElementName=PeselBox, 
+                                                  Path=(Validation.Errors)[0].ErrorContent}"
+                                   Visibility="{Binding ElementName=PeselBox, 
+                                                        Path=(Validation.HasError),
+                                                        Converter={StaticResource BoolToHiddenConverter}}"/>
+                    </StackPanel>
+                    <StackPanel>
+                        <TextBlock Margin="0,0,0,5">
+                            <Run Text="Data"/>
+                            <Run Text=" *" Foreground="OrangeRed" FontWeight="Bold"/>
+                        </TextBlock>
+                        <DatePicker x:Name="DatePicker" Height="40"
+                                    SelectedDate="{Binding FormData.SelectedDate, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"/>
+                        <TextBlock Foreground="OrangeRed" FontSize="11" Margin="0,5,0,0"
+                                   Text="{Binding ElementName=DatePicker, 
+                                                  Path=(Validation.Errors)[0].ErrorContent}"
+                                   Visibility="{Binding ElementName=DatePicker, 
+                                                        Path=(Validation.HasError),
+                                                        Converter={StaticResource BoolToHiddenConverter}}"/>
+                    </StackPanel>
+
+                </StackPanel>
+                <StackPanel Grid.Row="2" Grid.Column="1" 
+                            HorizontalAlignment="Left" Margin="50,30,0,0">
+
+                    <StackPanel Margin="0,0,0,50">
+                        <TextBlock Margin="0,0,0,5">
+                            <Run Text="Lekarz"/>
+                            <Run Text=" *" Foreground="OrangeRed" FontWeight="Bold"/>
+                        </TextBlock>
+                        <ComboBox x:Name="DoctorBox" ItemsSource="{Binding Doctors}"
+                                  SelectedItem="{Binding FormData.SelectedDoctor}"
+                                  DisplayMemberPath="FullName" />
+                        <TextBlock Foreground="OrangeRed" FontSize="11" Margin="0,5,0,0"
+                                   Text="{Binding ElementName=DoctorBox, 
+                                                  Path=(Validation.Errors)[0].ErrorContent}"
+                                   Visibility="{Binding ElementName=DoctorBox, 
+                                                        Path=(Validation.HasError),
+                                                        Converter={StaticResource BoolToHiddenConverter}}"/>
+                    </StackPanel>
+
+
+                    <StackPanel Margin="0,0,0,50">
+                        <TextBlock Margin="0,0,0,5">
+                            <Run Text="Godzina"/>
+                            <Run Text=" *" Foreground="OrangeRed" FontWeight="Bold"/>
+                        </TextBlock>
+                        <ComboBox x:Name="HourBox"
+                                  ItemsSource="{Binding AvailableHours}"
+                                  SelectedItem="{Binding FormData.SelectedHour}">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding StringFormat={}{0:hh\\:mm}}"/>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <TextBlock Foreground="OrangeRed" FontSize="11" Margin="0,5,0,0"
+                                   Text="{Binding ElementName=HourBox, 
+                                                  Path=(Validation.Errors)[0].ErrorContent}"
+                                   Visibility="{Binding ElementName=HourBox, 
+                                                        Path=(Validation.HasError),
+                                                        Converter={StaticResource BoolToHiddenConverter}}"/>
+                    </StackPanel>
+                </StackPanel>
+                
+                <Button Grid.Row="3" Grid.ColumnSpan="2" Margin="0,30,0,0" IsDefault="True"
+                        Content="{Binding SubmitButtonText}" 
+                        Command="{Binding SubmitCommand}"/>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

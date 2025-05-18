@@ -5,17 +5,30 @@ using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Przychodnia.Data;
-using Przychodnia.MappingProfile;
-using Przychodnia.Repository.Implementation;
-using Przychodnia.Repository.Interface;
-using Przychodnia.Service.Implementation;
-using Przychodnia.Service.Implementation.Entity;
-using Przychodnia.Service.Interface;
-using Przychodnia.Service.Interface.Entity;
-using Przychodnia.View;
-using Przychodnia.ViewModel.Admin;
-using Przychodnia.ViewModel.Login;
-using Przychodnia.ViewModel.Shared;
+using Przychodnia.Features.Entities.AppointmentFeature.Mapping;
+using Przychodnia.Features.Entities.AppointmentFeature.Repositories;
+using Przychodnia.Features.Entities.AppointmentFeature.Services;
+using Przychodnia.Features.Entities.AppointmentFeature.ViewModels;
+using Przychodnia.Features.Entities.LaboratoryFeature.Repositories;
+using Przychodnia.Features.Entities.LaboratoryFeature.Services;
+using Przychodnia.Features.Entities.LaboratoryFeature.ViewModels;
+using Przychodnia.Features.Entities.PatientFeature.Repositories;
+using Przychodnia.Features.Entities.PatientFeature.Services;
+using Przychodnia.Features.Entities.PatientFeature.ViewModels;
+using Przychodnia.Features.Entities.PostalCodeFeature.Repositories;
+using Przychodnia.Features.Entities.PostalCodeFeature.Services;
+using Przychodnia.Features.Entities.PostalCodeFeature.ViewModels;
+using Przychodnia.Features.Entities.UserFeature.Repositories;
+using Przychodnia.Features.Entities.UserFeature.Services;
+using Przychodnia.Features.Entities.UserFeature.ViewModels;
+using Przychodnia.Features.Entities.UserTypesFeature.Repositories;
+using Przychodnia.Features.Entities.UserTypesFeature.Services;
+using Przychodnia.Features.HomePage.ViewModels;
+using Przychodnia.Features.Login.ViewModels;
+using Przychodnia.Features.Login.Views;
+using Przychodnia.Features.Panels.Admin.ViewModels;
+using Przychodnia.Features.Panels.Admin.Views;
+using Przychodnia.Shared.Services;
 
 namespace Przychodnia
 {
@@ -83,16 +96,22 @@ namespace Przychodnia
             services.AddTransient<AppointmentListViewModel>();
             services.AddTransient<AppointmentAddViewModel>();
             services.AddTransient<AppointmentEditViewModel>();
+
+            // Windows
+            services.AddTransient<LoginWindow>();
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            var proxy = _serviceProvider.GetRequiredService<NavigationServiceProxy>();
-            var mainViewModel = _serviceProvider.GetService<AdminPanelViewModel>();
-            proxy.Current = mainViewModel;
-            var mainView = new AdminPanelWindow(mainViewModel);
-            mainView.ShowDialog();
+            //var proxy = _serviceProvider.GetRequiredService<NavigationServiceProxy>();
+            //var mainViewModel = _serviceProvider.GetService<AdminPanelViewModel>();
+            //proxy.Current = mainViewModel;
+            //var mainView = new AdminPanelWindow(mainViewModel);
+            //mainView.ShowDialog();
+
+            var window = _serviceProvider.GetRequiredService<LoginWindow>();
+            window.Show();
         }
     }
 }

@@ -1,0 +1,94 @@
+﻿<UserControl x:Class="Przychodnia.Features.Entities.PatientFeature.Views.PatientFormView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Przychodnia.Features.Entities.PatientFeature.Views"
+             xmlns:converter="clr-namespace:Przychodnia.Shared.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="900" d:DesignWidth="1200">
+    
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converter:NullToStringConverter x:Key="NullToStringConverter"/>
+        <converter:SexToStringConverter x:Key="SexToStringConverter"/>
+        <Style TargetType="StackPanel">
+            <Setter Property="Width" Value="300"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Style.Resources>
+                <Style TargetType="TextBlock">
+                    <Setter Property="Margin" Value="0,40,0,5"/>
+                    <Setter Property="FontSize" Value="15"/>
+                </Style>
+                <Style TargetType="ComboBox">
+                    <Setter Property="Background" Value="#FAFAFA"/>
+                    <Setter Property="BorderThickness" Value="0,0,0,1"/>
+                    <Setter Property="FontSize" Value="15"/>
+                </Style>
+            </Style.Resources>
+        </Style>
+    </UserControl.Resources>
+    
+    <Grid d:Background="Gray">
+        <Border CornerRadius="10" BorderThickness="2" BorderBrush="#FAFAFA" Background="#FAFAFA" Margin="150, 20, 150, 60" >
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="2*"/>
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Row="1" d:Text="Edytuj wybranego pacjenta" Text="{Binding HeaderText}" Margin="20" Grid.ColumnSpan="2" 
+                   VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="40" FontWeight="DemiBold"/>
+
+                <StackPanel Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Margin="0,30,50,0">
+                    <TextBlock Margin="0,0,0,5">
+                        <Run Text="Imię "/>
+                        <Run Text="*" Foreground="Red"/>
+                    </TextBlock>  
+                    <TextBox d:Text="Jan" Text="{Binding FormData.FirstName}"/>
+                    <TextBlock>
+                        <Run Text="Nazwisko "/>
+                        <Run Text="*" Foreground="Red"/>
+                    </TextBlock>
+                    <TextBox Text="{Binding FormData.LastName}"/>
+                    <TextBlock>
+                        <Run Text="PESEL "/>
+                        <Run Text="*" Foreground="Red"/>
+                    </TextBlock>
+                    <TextBox Text="{Binding FormData.Pesel}"/>
+                    <TextBlock Text="Płeć"/>
+                    <ComboBox ItemsSource="{Binding SexDispDict}"
+                      DisplayMemberPath="Value"
+                      SelectedValuePath="Key"
+                      SelectedValue="{Binding FormData.Sex}"/>
+                </StackPanel>
+                
+                <StackPanel Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Margin="50,30,0,0">
+                    <TextBlock Text="Ulica" Margin="0,0,0,5"/>
+                    <TextBox Text="{Binding FormData.Street}"/>
+                    <TextBlock Text="Nr domu"/>
+                    <TextBox Text="{Binding FormData.HouseNumber}"/>
+                    <TextBlock Text="Nr mieszkania"/>
+                    <TextBox Text="{Binding FormData.ApartmentNumber}"/>
+                    <TextBlock Text="Kod pocztowy"/>
+                    <ComboBox ItemsSource="{Binding PostalCodes}" IsEditable="True" IsTextSearchEnabled="False" DisplayMemberPath="Code" Text="{Binding EnteredCode, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                    <TextBlock Text="Miasto"/>
+                    <ComboBox ItemsSource="{Binding Cities}"
+                      SelectedItem="{Binding FormData.PostalCode}"
+                      DisplayMemberPath="City"/>
+                </StackPanel>
+                
+                <Button Grid.Row="3" Grid.ColumnSpan="2" IsDefault="True"
+                        Content="{Binding SubmitButtonText}" Margin="0,40,0,0" Command="{Binding SubmitCommand}"/>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="Przychodnia.Features.Entities.UserFeature.Views.UserFilterView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Przychodnia.Features.Entities.UserFeature.Views" 
+             xmlns:userVMs="clr-namespace:Przychodnia.Features.Entities.UserFeature.ViewModels"
+             d:DataContext="{d:DesignInstance Type=userVMs:UserListViewModel}"
+             mc:Ignorable="d" 
+             d:DesignHeight="100" d:DesignWidth="1100">
+    
+    <Grid d:Background="Gray" d:Height="Auto">
+        <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,20,0,0" >
+            <StackPanel Width="170" Margin="10,0,0,10">
+                <TextBlock Text="Imię" FontSize="17" FontWeight="ExtraLight"/>
+                <TextBox Text="{Binding SelectedUserFirstName}"/>
+            </StackPanel>
+            <StackPanel Width="170" Margin="60,0,0,10">
+                <TextBlock Text="Nazwisko" FontSize="17" FontWeight="ExtraLight"/>
+                <TextBox Text="{Binding SelectedUserLastName}"/>
+            </StackPanel>
+            <StackPanel Width="170" Margin="60,0,0,10">
+                <TextBlock Text="Typ" FontSize="17" FontWeight="ExtraLight"/>
+                <ComboBox BorderThickness="0" Margin="0,10,0,0"
+                                      ItemsSource = "{Binding UserTypeNames}"
+                                      SelectedItem="{Binding SelectedUserTypeName}"/>
+            </StackPanel>
+            <Button Margin="60,0,0,0" Content="Filtruj"
+                                    Command="{Binding FilterCommand}"/>
+            <Button Margin="30,0,0,0" Content="Wyczyść" 
+                                    Command="{Binding ClearFilterCommand}"/>
+        </StackPanel>
+    </Grid>
+</UserControl>
