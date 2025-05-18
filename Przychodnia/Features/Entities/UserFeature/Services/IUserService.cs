@@ -4,7 +4,7 @@ using Przychodnia.Features.Entities.UserTypesFeature.Models;
 
 namespace Przychodnia.Features.Entities.UserFeature.Services;
 
-public interface IUserService : IBaseService<User, UserDTO>
+public interface IUserService : IBaseEntityService<User, UserDTO>
 {
     Task<List<User>> GetAllWithDetailsAsync();
     Task<List<User>> GetLabManagersWithoutLabAssignedAsync();

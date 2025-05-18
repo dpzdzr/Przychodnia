@@ -31,7 +31,7 @@ public class UserAddViewModel : UserFormBaseViewModel<UserAddFormData>
 
     public ICommand SaveUserCommand { get; }
 
-    public async Task InitializeAsync() => await InitializeFormDataAsync();
+    public override async Task InitializeAsync() => await InitializeFormDataAsync();
 
     private async Task AddUserAsync()
     {

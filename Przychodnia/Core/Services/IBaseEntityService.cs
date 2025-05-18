@@ -1,6 +1,6 @@
 ﻿namespace Przychodnia.Core.Services;
 
-public interface IBaseService<TEntity, TDto>
+public interface IBaseEntityService<TEntity, TDto>
 {
     Task<IEnumerable<TEntity>> GetAllAsync();
     Task<TEntity?> GetByIdAsync(int id);

@@ -4,8 +4,8 @@ using Przychodnia.Core.Repositories;
 
 namespace Przychodnia.Core.Services;
 
-public abstract class BaseService<TEntity, TDto, TRepository>(TRepository repository, IMapper mapper)
-    : IBaseService<TEntity, TDto>
+public abstract class BaseEntityService<TEntity, TDto, TRepository>(TRepository repository, IMapper mapper)
+    : IBaseEntityService<TEntity, TDto>
     where TEntity : class, IEntity, new()
     where TRepository : IBaseRepository<TEntity>
 {

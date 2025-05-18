@@ -3,6 +3,6 @@ using Przychodnia.Features.Entities.PostalCodeFeature.Models;
 
 namespace Przychodnia.Features.Entities.PostalCodeFeature.Services;
 
-public interface IPostalCodeService : IBaseService<PostalCode, PostalCodeDTO>
+public interface IPostalCodeService : IBaseEntityService<PostalCode, PostalCodeDTO>
 {
 }

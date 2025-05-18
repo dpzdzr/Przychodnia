@@ -45,8 +45,8 @@
                 </Border>
                 <Grid Grid.Row="2">
                     <StackPanel Orientation="Horizontal">
-                        <Button Content="Usuń" Command="{Binding RemoveButtonCommand}" HorizontalAlignment="Left" Margin="20,10,10,10"/>
-                        <Button Content="Anuluj" Command="{Binding CancelButtonCommand}"/>
+                        <Button Content="Anuluj" Command="{Binding CancelButtonCommand}" Margin="20,10,10,10"/>
+                        <Button Content="Usuń" Command="{Binding RemoveButtonCommand}" HorizontalAlignment="Left" Style="{StaticResource DangerButton}"/>
                     </StackPanel>
                 </Grid>
             </Grid>

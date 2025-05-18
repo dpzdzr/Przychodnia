@@ -18,7 +18,7 @@ public partial class AppointmentAddViewModel(IDialogService dialogService, IUser
     public static string HeaderText => "Dodaj nową wizytę";
     public static string SubmitButtonText => "Dodaj";
 
-    public async Task InitializeAsync() => await InitializeFormDataAsync();
+    public override async Task InitializeAsync() => await InitializeFormDataAsync();
 
     protected override async Task Submit()
     {

@@ -7,7 +7,7 @@ using Przychodnia.Features.Entities.UserFeature.Services;
 namespace Przychodnia.Features.Entities.LaboratoryFeature.Services;
 
 public class LaboratoryService(ILaboratoryRepository labRepo, IMapper mapper, IUserLookupService userLookupService)
-    : BaseService<Laboratory, LaboratoryDTO, ILaboratoryRepository>(labRepo, mapper), ILaboratoryService
+    : BaseEntityService<Laboratory, LaboratoryDTO, ILaboratoryRepository>(labRepo, mapper), ILaboratoryService
 {
     private readonly IUserLookupService _userLookupService = userLookupService;
 

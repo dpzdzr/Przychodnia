@@ -7,7 +7,7 @@ using Przychodnia.Features.Entities.PostalCodeFeature.Services;
 namespace Przychodnia.Features.Entities.PatientFeature.Services;
 
 public class PatientService(IPatientRepository patientRepo, IPostalCodeService postalCodeService, IMapper mapper)
-    : BaseService<Patient, PatientDTO, IPatientRepository>(patientRepo, mapper), IPatientService
+    : BaseEntityService<Patient, PatientDTO, IPatientRepository>(patientRepo, mapper), IPatientService
 {
     private readonly IPostalCodeService _postalCodeService = postalCodeService;
 

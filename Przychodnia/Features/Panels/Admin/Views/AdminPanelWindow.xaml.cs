@@ -5,9 +5,11 @@ namespace Przychodnia.Features.Panels.Admin.Views;
 
 public partial class AdminPanelWindow : Window
 {
-    public AdminPanelWindow(AdminPanelViewModel viewModel)
+    public AdminPanelWindow(AdminPanelViewModel vm)
     {
         InitializeComponent();
-        DataContext = viewModel;
+
+        vm.CloseApplicationEvent += Close;
+        DataContext = vm;
     }
 }

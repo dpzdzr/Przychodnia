@@ -3,7 +3,7 @@ using Przychodnia.Features.Entities.LaboratoryFeature.Models;
 
 namespace Przychodnia.Features.Entities.LaboratoryFeature.Services;
 
-public interface ILaboratoryService : IBaseService<Laboratory, LaboratoryDTO>
+public interface ILaboratoryService : IBaseEntityService<Laboratory, LaboratoryDTO>
 {
     Task<IEnumerable<Laboratory>> GetAllWithDetailsAsync();
 }

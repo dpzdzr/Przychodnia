@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Przychodnia.Features.Entities.UserTypesFeature.Models;
 using Przychodnia.Features.Panels.Admin.ViewModels;
+using Przychodnia.Features.Panels.Receptionist.ViewModels;
 using Przychodnia.Shared.Services.NavigationService;
 using Przychodnia.Shared.ViewModels;
 using System;
@@ -18,7 +19,11 @@ public class ViewModelFactory(IServiceProvider serviceProvider) : IViewModelFact
     {
         return userTypeId switch
         {
-            (int)UserTypeEnum.Admin => _services.GetRequiredService<AdminPanelViewModel>(),
+            (int)UserTypeEnum.Admin
+                => _services.GetRequiredService<AdminPanelViewModel>(),
+            (int)UserTypeEnum.Rejestrator 
+                => _services.GetRequiredService<ReceptionistPanelViewModel>(),
+            
             _ => throw new InvalidOperationException("Brak użytkownika takiego typu")
         };
     }

@@ -7,6 +7,10 @@ public abstract class BaseViewModel(IDialogService dialogService) : ObservableOb
 {
     protected readonly IDialogService _dialogService = dialogService;
 
+    public virtual Task InitializeAsync()
+    {
+        return Task.CompletedTask;
+    }
 
     protected bool Confirm(string title, string message)
         => _dialogService.Confirm(title, message);

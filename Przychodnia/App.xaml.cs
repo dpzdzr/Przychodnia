@@ -26,6 +26,7 @@ using Przychodnia.Features.Login.ViewModels;
 using Przychodnia.Features.Login.Views;
 using Przychodnia.Features.Panels.Admin.ViewModels;
 using Przychodnia.Features.Panels.Admin.Views;
+using Przychodnia.Features.Panels.Receptionist.ViewModels;
 using Przychodnia.Shared.Services.CurrentUserService;
 using Przychodnia.Shared.Services.DialogService;
 using Przychodnia.Shared.Services.NavigationService;
@@ -92,6 +93,7 @@ namespace Przychodnia
             services.AddTransient<LoginViewModel>();
             services.AddTransient<UserAddViewModel>();
             services.AddSingleton<AdminPanelViewModel>();
+            services.AddSingleton<ReceptionistPanelViewModel>();
             services.AddTransient<UserListViewModel>();
             services.AddSingleton<HomePageViewModel>();
             services.AddTransient<UserEditViewModel>();

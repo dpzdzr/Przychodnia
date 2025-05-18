@@ -6,7 +6,7 @@ using Przychodnia.Features.Entities.PostalCodeFeature.Repositories;
 namespace Przychodnia.Features.Entities.PostalCodeFeature.Services;
 
 public class PostalCodeService(IPostalCodeRepository repo, IMapper mapper)
-    : BaseService<PostalCode, PostalCodeDTO, IPostalCodeRepository>(repo, mapper), IPostalCodeService
+    : BaseEntityService<PostalCode, PostalCodeDTO, IPostalCodeRepository>(repo, mapper), IPostalCodeService
 {
     public override async Task<PostalCode> CreateAsync(PostalCodeDTO dto)
     {

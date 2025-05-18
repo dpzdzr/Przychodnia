@@ -44,7 +44,7 @@ public partial class PostalCodeListViewModel : BaseViewModel
     public IRelayCommand CancelCommand { get; }
     public IAsyncRelayCommand DeleteCommand { get; }
 
-    public async Task InitializeAsync()
+    public override async Task InitializeAsync()
     {
         var items = await _postalCodeService.GetAllAsync();
         PostalCodes = [.. items.Select(p => new PostalCodeWrapper(p))];

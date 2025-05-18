@@ -10,7 +10,7 @@ namespace Przychodnia.Features.Entities.UserFeature.Services;
 
 public class UserService(IUserRepository userRepo, ILaboratoryService labService,
     IUserTypeService userTypeService, IMapper mapper)
-    : BaseService<User, UserDTO, IUserRepository>(userRepo, mapper), IUserService, IUserLookupService
+    : BaseEntityService<User, UserDTO, IUserRepository>(userRepo, mapper), IUserService, IUserLookupService
 {
     private readonly ILaboratoryService _labService = labService;
     private readonly IUserTypeService _userTypeService = userTypeService;

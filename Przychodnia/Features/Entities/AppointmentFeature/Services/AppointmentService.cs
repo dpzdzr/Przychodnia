@@ -9,7 +9,7 @@ namespace Przychodnia.Features.Entities.AppointmentFeature.Services;
 
 public class AppointmentService(IAppointmentRepository appointmentRepo, IMapper mapper,
     IPatientService patientService, IUserService userService)
-    : BaseService<Appointment, AppointmentDTO, IAppointmentRepository>(appointmentRepo, mapper), IAppointmentService
+    : BaseEntityService<Appointment, AppointmentDTO, IAppointmentRepository>(appointmentRepo, mapper), IAppointmentService
 {
     private readonly IUserService _userService = userService;
     private readonly IPatientService _patientService = patientService;

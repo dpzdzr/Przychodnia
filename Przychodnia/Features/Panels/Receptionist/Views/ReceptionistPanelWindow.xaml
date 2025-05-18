@@ -1,8 +1,11 @@
-﻿<Window x:Class="Przychodnia.Features.Panels.Admin.Views.AdminPanelWindow"
+﻿<Window x:Class="Przychodnia.Features.Panels.Receptionist.Views.ReceptionistPanelWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Przychodnia.Features.Panels.Receptionist.Views"
+        mc:Ignorable="d"
+        
         xmlns:adminVMs="clr-namespace:Przychodnia.Features.Panels.Admin.ViewModels"
         xmlns:sharedViews="clr-namespace:Przychodnia.Shared.Views" 
         
@@ -22,19 +25,28 @@
         xmlns:userViews="clr-namespace:Przychodnia.Features.Entities.UserFeature.Views"
         
         xmlns:patientsVMs="clr-namespace:Przychodnia.Features.Entities.PatientFeature.ViewModels"
-        xmlns:patientsViews="clr-namespace:Przychodnia.Features.Entities.PatientFeature.Views"
+        xmlns:patientsViews="clr-namespace:Przychodnia.Features.Entities.PatientFeature.Views" 
         
+        xmlns:viewmodels="clr-namespace:Przychodnia.Features.Panels.Receptionist.ViewModels" 
+ 
+        d:DataContext="{d:DesignInstance Type=viewmodels:ReceptionistPanelViewModel}"
         Icon="/Assets/icon.ico"
-        d:DataContext="{d:DesignInstance Type=adminVMs:AdminPanelViewModel}"
-        mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
-        Title="Panel administratora" Height="1000" Width="1700">
+        Title="Przychodnia" Height="1000" Width="1700">
+    
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </Window.Resources>
 
     <DockPanel IsEnabled="{Binding IsBusy, Converter={StaticResource BooleanToVisibilityConverter}}" Background="#ededed">
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="Plik">
+                <MenuItem Header="Wyloguj"/>
+                <MenuItem Header="Zamknij"/>
+            </MenuItem>
+        </Menu>
+
         <Grid DockPanel.Dock="Left">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -44,19 +56,17 @@
                 <StackPanel Grid.Row="0" Orientation="Vertical" Margin="10"  Background="#d9d9d9" Width="175">
                     <Button Content="← Wstecz" Command="{Binding NavigateBackCommand}" IsEnabled="{Binding CanNavigateBack}" Margin="5,5,5,30" Width="160"/>
                     <StackPanel>
-                        <Button Content="Użytkownicy" Command="{Binding NavigateToUsersListCommand}" />
                         <Button Content="Pacjenci" Command="{Binding NavigateToPatientsListCommand}"/>
                         <Button Content="Kody pocztowe" Command="{Binding NavigateToPostalCodesListCommand}"/>
-                        <Button Content="Laboratoria" Command="{Binding NavigateToLaboratoriesListCommand}"/>
                         <Button Content="Wizyty" Command="{Binding NavigateToAppointmentsListCommand}"/>
                     </StackPanel>
-                    <Button Content="Zamknij aplikację" Command="{Binding CloseCommand}" Margin="5,30,5,5" Width="160" Style="{StaticResource DangerButton}"/>
+                    <Button Content="Zamknij aplikację" Background="IndianRed"  Command="{Binding CloseCommand}" Margin="5,30,5,5" Width="160"/>
                 </StackPanel>
             </Border>
         </Grid>
         <ContentControl Content="{Binding CurrentViewModel}">
             <ContentControl.Resources>
-                
+
                 <!-- HomePage -->
                 <DataTemplate DataType="{x:Type homePageVMs:HomePageViewModel}">
                     <homePageViews:HomePageView/>
@@ -73,27 +83,11 @@
                     <sharedViews:BaseListView/>
                 </DataTemplate>
 
-                <!-- Laboratory -->
-                <DataTemplate DataType="{x:Type laboratoryVMs:LaboratoryListViewModel}">
-                    <laboratoryViews:LaboratoryListView/>
-                </DataTemplate>
-
                 <!-- PostalCode -->
                 <DataTemplate DataType="{x:Type postalCodeVMs:PostalCodeListViewModel}">
                     <postalCodeViews:PostalCodesListView/>
                 </DataTemplate>
 
-                <!-- User -->
-                <DataTemplate DataType="{x:Type userVMs:UserAddViewModel}">
-                    <userViews:UserFormView/>
-                </DataTemplate>
-                <DataTemplate DataType="{x:Type userVMs:UserListViewModel}">
-                    <sharedViews:BaseListView/>
-                </DataTemplate>
-                <DataTemplate DataType="{x:Type userVMs:UserEditViewModel}">
-                    <userViews:UserFormView/>
-                </DataTemplate>
-                
                 <!-- Patient -->
                 <DataTemplate DataType="{x:Type patientsVMs:PatientListViewModel}">
                     <sharedViews:BaseListView/>

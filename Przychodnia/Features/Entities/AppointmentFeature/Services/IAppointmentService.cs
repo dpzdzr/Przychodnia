@@ -3,7 +3,7 @@ using Przychodnia.Features.Entities.AppointmentFeature.Models;
 
 namespace Przychodnia.Features.Entities.AppointmentFeature.Services;
 
-public interface IAppointmentService : IBaseService<Appointment, AppointmentDTO>
+public interface IAppointmentService : IBaseEntityService<Appointment, AppointmentDTO>
 {
     new Task<Appointment> CreateAsync(AppointmentDTO dto);
     Task<IEnumerable<Appointment>> GetAllWithDetailsAsync();

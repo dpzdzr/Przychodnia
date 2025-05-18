@@ -16,7 +16,7 @@ public class PatientAddViewModel(IPostalCodeService postalCodeService, IDialogSe
     public static string HeaderText => "Dodaj pacjenta";
     public static string SubmitButtonText => "Dodaj";
 
-    public async Task InitializeAsync() => await InitializeFormDataAsync();
+    public override async Task InitializeAsync() => await InitializeFormDataAsync();
 
     protected override async Task Submit()
     {

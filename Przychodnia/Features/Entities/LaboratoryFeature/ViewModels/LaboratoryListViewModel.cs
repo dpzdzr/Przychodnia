@@ -50,7 +50,7 @@ public partial class LaboratoryListViewModel : BaseViewModel
     public IAsyncRelayCommand RemoveButtonCommand { get; }
     public IRelayCommand CancelButtonCommand { get; }
 
-    public async Task InitializeAsync()
+    public override async Task InitializeAsync()
     {
         var labs = await _labService.GetAllWithDetailsAsync();
         Labs = [.. labs.Select(l => new LaboratoryWrapper(l, true, true))];

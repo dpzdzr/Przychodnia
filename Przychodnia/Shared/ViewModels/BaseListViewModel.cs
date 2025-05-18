@@ -45,8 +45,6 @@ public abstract partial class BaseListViewModel<TWrapper> : BaseViewModel
 
     public bool IsItemSelected => SelectedItem is not null;
 
-    public abstract Task InitializeAsync();
-
     protected abstract Task Add();
     protected abstract Task Edit();
     protected abstract Task Remove();

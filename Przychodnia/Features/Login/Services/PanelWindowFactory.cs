@@ -2,6 +2,8 @@
 using Przychodnia.Features.Entities.UserTypesFeature.Models;
 using Przychodnia.Features.Panels.Admin.ViewModels;
 using Przychodnia.Features.Panels.Admin.Views;
+using Przychodnia.Features.Panels.Receptionist.ViewModels;
+using Przychodnia.Features.Panels.Receptionist.Views;
 using Przychodnia.Shared.Services.NavigationService;
 using System;
 using System.Collections.Generic;
@@ -26,6 +28,7 @@ public class PanelWindowFactory(IServiceProvider serviceProvider, IViewModelFact
         return userTypeId switch
         {
             (int)UserTypeEnum.Admin => new AdminPanelWindow((AdminPanelViewModel)vm),
+            (int)UserTypeEnum.Rejestrator => new ReceptionistPanelWindow((ReceptionistPanelViewModel)vm),
             _ => throw new InvalidOperationException("Brak użytkownika takiego typu")
         };
     }
