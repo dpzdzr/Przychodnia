@@ -6,6 +6,7 @@ using Przychodnia.Features.Entities.PatientFeature.Services;
 using Przychodnia.Features.Entities.PatientFeature.ViewModels.FormData;
 using Przychodnia.Features.Entities.PostalCodeFeature.Services;
 using Przychodnia.Shared.Services.DialogService;
+using System.ComponentModel.DataAnnotations;
 
 namespace Przychodnia.Features.Entities.PatientFeature.ViewModels;
 
@@ -22,6 +23,9 @@ public class PatientAddViewModel(IPostalCodeService postalCodeService, IDialogSe
     {
         await TryExecuteAsync(async () =>
         {
+            if (!FormData.IsValid)
+                throw new ValidationException("Uzupełnij poprawnie wszystkie wymagane pola");
+
             var dto = _mapper.Map<PatientDTO>(FormData);
             var entity = await _patientService.CreateAsync(dto);
             NotifyPatientAdded(entity);

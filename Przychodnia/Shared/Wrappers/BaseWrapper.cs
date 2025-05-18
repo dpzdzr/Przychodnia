@@ -2,7 +2,7 @@
 
 namespace Przychodnia.ViewModel.Base;
 
-public abstract partial class BaseWrapper : ObservableObject
+public abstract partial class BaseWrapper : ObservableValidator
 {
     [ObservableProperty] protected int? id;
 

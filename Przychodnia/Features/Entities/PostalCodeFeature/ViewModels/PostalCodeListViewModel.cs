@@ -9,6 +9,7 @@ using Przychodnia.Features.Entities.PostalCodeFeature.Wrappers;
 using Przychodnia.Shared.Services.DialogService;
 using Przychodnia.Shared.ViewModels;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Przychodnia.Features.Entities.PostalCodeFeature.ViewModels;
 
@@ -81,6 +82,9 @@ public partial class PostalCodeListViewModel : BaseViewModel
     {
         try
         {
+            if (!EditPostalCode.IsValid)
+                throw new ValidationException("Uzupełnij poprawnie wszystkie wymagane pola");
+
             var dto = _mapper.Map<PostalCodeDTO>(EditPostalCode);
             if (EditPostalCode.Id is int id)
                 await _postalCodeService.UpdateAsync(id, dto);
@@ -98,6 +102,9 @@ public partial class PostalCodeListViewModel : BaseViewModel
     {
         try
         {
+            if (!EditPostalCode.IsValid)
+                throw new ValidationException("Uzupełnij poprawnie wszystkie wymagane pola");
+
             var dto = _mapper.Map<PostalCodeDTO>(EditPostalCode);
             var entity = await _postalCodeService.CreateAsync(dto);
             var wrapper = new PostalCodeWrapper(entity);

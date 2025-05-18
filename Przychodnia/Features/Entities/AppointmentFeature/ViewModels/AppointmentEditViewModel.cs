@@ -6,6 +6,7 @@ using Przychodnia.Features.Entities.AppointmentFeature.Wrappers;
 using Przychodnia.Features.Entities.PatientFeature.Services;
 using Przychodnia.Features.Entities.UserFeature.Services;
 using Przychodnia.Shared.Services.DialogService;
+using System.ComponentModel.DataAnnotations;
 
 namespace Przychodnia.Features.Entities.AppointmentFeature.ViewModels;
 
@@ -40,6 +41,9 @@ public partial class AppointmentEditViewModel(IDialogService dialogService, IUse
 
     protected override async Task Submit()
     {
+        if (!FormData.IsValid)
+            throw new ValidationException("Uzupełnij poprawnie wszystkie wymagane pola");
+
         _mapper.Map(FormData, appointmentWrapper);
         var dto = _mapper.Map<AppointmentDTO>(FormData);
         await _appointmentService.UpdateAsync(FormData.Id, dto);

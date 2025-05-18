@@ -6,12 +6,14 @@
         xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:Przychodnia.Features.Entities.PostalCodeFeature.Views" 
         xmlns:postalCodeVMs="clr-namespace:Przychodnia.Features.Entities.PostalCodeFeature.ViewModels" 
+        xmlns:converter="clr-namespace:Przychodnia.Shared.Converters"
         d:DataContext="{d:DesignInstance Type=postalCodeVMs:PostalCodeListViewModel}"
         mc:Ignorable="d"
        d:Width="1280" d:Height="720">
 
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converter:BoolToHiddenConverter x:Key="BoolToHiddenConverter"/>
     </UserControl.Resources>
 
 
@@ -62,6 +64,7 @@
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>
@@ -69,10 +72,20 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Row="0" Grid.Column="1" Text="Miasto" Margin="0,0,0,2" FontSize="15"/>
-                    <TextBox Grid.Row="1" Grid.Column="1" FontSize="18" Text="{Binding EditPostalCode.City}"/>
+                    <TextBox x:Name="MiastoBox" Grid.Row="1" Grid.Column="1" FontSize="18" Text="{Binding EditPostalCode.City,
+                        ValidatesOnDataErrors=True,
+                        NotifyOnValidationError=True, 
+                        UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Foreground="OrangeRed" Grid.Row="3" Grid.Column="1" FontSize="11" Margin="0,5,0,0"
+                        Text="{Binding ElementName=MiastoBox, 
+                            Path=(Validation.Errors)[0].ErrorContent}"
+                        Visibility="{Binding ElementName=MiastoBox, 
+                            Path=(Validation.HasError),
+                            Converter={StaticResource BoolToHiddenConverter}}"/>
                 </Grid>
                 <Grid Grid.Row="3" Margin="0,10,0,0">
                     <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
@@ -82,7 +95,17 @@
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.Row="0" Grid.Column="1" Text="Kod pocztowy" Margin="0,0,0,2" FontSize="15"/>
-                    <toolkit:MaskedTextBox Grid.Row="1" Grid.Column="1" FontSize="18" Mask="00-000" Text="{Binding EditPostalCode.Code}" Background="#FAFAFA" BorderThickness="0,0,0,1" BorderBrush="#808080" />
+                    <toolkit:MaskedTextBox x:Name="KodBox" Grid.Row="1" Grid.Column="1" FontSize="18" Mask="00-000" Text="{Binding EditPostalCode.Code,
+                        ValidatesOnDataErrors=True,
+                        NotifyOnValidationError=True, 
+                        UpdateSourceTrigger=PropertyChanged}"
+                    Background="#FAFAFA" BorderThickness="0,0,0,1" BorderBrush="#808080" />
+                    <TextBlock Foreground="OrangeRed" Grid.Row="4" Grid.Column="1" FontSize="11" Margin="0,5,0,0"
+                         Text="{Binding ElementName=KodBox, 
+                                          Path=(Validation.Errors)[0].ErrorContent}"
+                         Visibility="{Binding ElementName=KodBox, 
+                                         Path=(Validation.HasError),
+                                         Converter={StaticResource BoolToHiddenConverter}}"/>
                 </Grid>
                 <Grid Grid.Row="4" Margin="0,20,0,0">
                     <Button Grid.Row="0" IsDefault="True"

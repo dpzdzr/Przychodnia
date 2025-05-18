@@ -7,6 +7,7 @@ using Przychodnia.Features.Entities.PatientFeature.ViewModels.FormData;
 using Przychodnia.Features.Entities.PatientFeature.Wrappers;
 using Przychodnia.Features.Entities.PostalCodeFeature.Services;
 using Przychodnia.Shared.Services.DialogService;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace Przychodnia.Features.Entities.PatientFeature.ViewModels;
@@ -33,6 +34,9 @@ public partial class PatientEditViewModel(IPatientService patientService, IDialo
     {
         await TryExecuteAsync(async () =>
         {
+            if (!FormData.IsValid)
+                throw new ValidationException("Uzupełnij poprawnie wszystkie wymagane pola");
+
             _mapper.Map(FormData, EditPatientWrapper);
             if (FormData.PostalCode is not null && FormData.PostalCode.Id is null)
                 EditPatientWrapper!.PostalCode = null;
