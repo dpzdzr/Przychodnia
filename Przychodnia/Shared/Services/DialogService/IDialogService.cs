@@ -1,4 +1,4 @@
-﻿namespace Przychodnia.Shared.Services;
+﻿namespace Przychodnia.Shared.Services.DialogService;
 
 public interface IDialogService
 {

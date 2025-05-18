@@ -8,7 +8,7 @@ using Przychodnia.Features.Entities.PatientFeature.ViewModels.FormData;
 using Przychodnia.Features.Entities.PostalCodeFeature.Messages;
 using Przychodnia.Features.Entities.PostalCodeFeature.Services;
 using Przychodnia.Features.Entities.PostalCodeFeature.Wrappers;
-using Przychodnia.Shared.Services;
+using Przychodnia.Shared.Services.DialogService;
 using Przychodnia.Shared.ViewModels;
 using System.Collections.ObjectModel;
 

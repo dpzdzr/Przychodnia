@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Przychodnia.Shared.Services;
+using Przychodnia.Shared.Services.DialogService;
 
 namespace Przychodnia.Shared.ViewModels;
 
@@ -18,6 +18,10 @@ public abstract class BaseViewModel(IDialogService dialogService) : ObservableOb
         if (ex.InnerException is not null)
             message += $"\n{ex.InnerException.Message}";
         _dialogService.Error(errorTitle, $"{message}");
+    }
+    protected void ShowError(string message, string errorTitle = "Błąd")
+    {
+        _dialogService.Error(errorTitle, message);
     }
     protected async Task TryExecuteAsync(Func<Task> action, string errorTitle = "Błąd")
     {

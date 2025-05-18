@@ -7,7 +7,7 @@ using Przychodnia.Features.Entities.UserFeature.Models;
 using Przychodnia.Features.Entities.UserFeature.Services;
 using Przychodnia.Features.Entities.UserFeature.ViewModels.FormData;
 using Przychodnia.Features.Entities.UserTypesFeature.Services;
-using Przychodnia.Shared.Services;
+using Przychodnia.Shared.Services.DialogService;
 using System.Windows.Input;
 
 namespace Przychodnia.Features.Entities.UserFeature.ViewModels;

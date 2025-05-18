@@ -1,7 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Przychodnia.Features.Entities.AppointmentFeature.Services;
 using Przychodnia.Features.Entities.AppointmentFeature.Wrappers;
-using Przychodnia.Shared.Services;
+using Przychodnia.Shared.Services.DialogService;
+using Przychodnia.Shared.Services.NavigationService;
 using Przychodnia.Shared.ViewModels;
 
 namespace Przychodnia.Features.Entities.AppointmentFeature.ViewModels;

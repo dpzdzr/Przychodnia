@@ -1,5 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
-using Przychodnia.Shared.Services;
+using Przychodnia.Shared.Services.DialogService;
 
 namespace Przychodnia.Shared.ViewModels;
 

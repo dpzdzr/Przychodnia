@@ -6,7 +6,8 @@ using Przychodnia.Features.Entities.PatientFeature.ViewModels;
 using Przychodnia.Features.Entities.PostalCodeFeature.ViewModels;
 using Przychodnia.Features.Entities.UserFeature.ViewModels;
 using Przychodnia.Features.HomePage.ViewModels;
-using Przychodnia.Shared.Services;
+using Przychodnia.Shared.Services.DialogService;
+using Przychodnia.Shared.Services.NavigationService;
 using Przychodnia.Shared.ViewModels;
 using System.Windows.Input;
 

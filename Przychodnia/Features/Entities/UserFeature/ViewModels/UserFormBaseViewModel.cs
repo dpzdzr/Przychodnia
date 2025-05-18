@@ -5,7 +5,7 @@ using Przychodnia.Features.Entities.LaboratoryFeature.Wrappers;
 using Przychodnia.Features.Entities.UserFeature.ViewModels.FormData;
 using Przychodnia.Features.Entities.UserTypesFeature.Services;
 using Przychodnia.Features.Entities.UserTypesFeature.Wrappers;
-using Przychodnia.Shared.Services;
+using Przychodnia.Shared.Services.DialogService;
 using Przychodnia.Shared.ViewModels;
 using System.Collections.ObjectModel;
 using System.ComponentModel;

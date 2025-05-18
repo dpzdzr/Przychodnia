@@ -1,0 +1,32 @@
+﻿using Microsoft.Extensions.DependencyInjection;
+using Przychodnia.Features.Entities.UserTypesFeature.Models;
+using Przychodnia.Features.Panels.Admin.ViewModels;
+using Przychodnia.Features.Panels.Admin.Views;
+using Przychodnia.Shared.Services.NavigationService;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+
+namespace Przychodnia.Features.Login.Services;
+
+public class PanelWindowFactory(IServiceProvider serviceProvider, IViewModelFactory viewModelFactory, NavigationServiceProxy proxy) 
+    : IPanelWindowFactory
+{
+    private readonly IServiceProvider _services = serviceProvider;
+    private readonly NavigationServiceProxy _proxy = proxy;
+
+    public Window CreateFor(int userTypeId)
+    {
+        var vm = viewModelFactory.CreateFor(userTypeId);
+        _proxy.Current = vm;
+
+        return userTypeId switch
+        {
+            (int)UserTypeEnum.Admin => new AdminPanelWindow((AdminPanelViewModel)vm),
+            _ => throw new InvalidOperationException("Brak użytkownika takiego typu")
+        };
+    }
+}

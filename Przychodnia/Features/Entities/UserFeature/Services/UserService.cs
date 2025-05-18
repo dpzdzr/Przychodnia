@@ -27,6 +27,10 @@ public class UserService(IUserRepository userRepo, ILaboratoryService labService
     }
     public async Task<List<User>> GetLabManagersWithoutLabAssignedAsync()
         => await _repo.GetLabManagersWithoutManagedLabAsync();
+    public async Task<User?> GetByLogin(string username)
+    {
+        return await _repo.GetByLogin(username);
+    }
 
     public override async Task<User> CreateAsync(UserDTO dto)
     {

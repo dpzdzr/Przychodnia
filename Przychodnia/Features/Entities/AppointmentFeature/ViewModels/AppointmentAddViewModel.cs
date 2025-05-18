@@ -4,7 +4,7 @@ using Przychodnia.Features.Entities.AppointmentFeature.Services;
 using Przychodnia.Features.Entities.AppointmentFeature.ViewModels.FormData;
 using Przychodnia.Features.Entities.PatientFeature.Services;
 using Przychodnia.Features.Entities.UserFeature.Services;
-using Przychodnia.Shared.Services;
+using Przychodnia.Shared.Services.DialogService;
 using System.ComponentModel.DataAnnotations;
 
 namespace Przychodnia.Features.Entities.AppointmentFeature.ViewModels;

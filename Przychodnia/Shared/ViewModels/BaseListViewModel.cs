@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Przychodnia.Shared.Services;
+using Przychodnia.Shared.Services.DialogService;
+using Przychodnia.Shared.Services.NavigationService;
 using Przychodnia.ViewModel.Base;
 using System.Collections.ObjectModel;
 

@@ -6,7 +6,8 @@ using Przychodnia.Features.Entities.UserFeature.Services;
 using Przychodnia.Features.Entities.UserFeature.Wrappers;
 using Przychodnia.Features.Entities.UserTypesFeature.Services;
 using Przychodnia.Features.Entities.UserTypesFeature.Wrappers;
-using Przychodnia.Shared.Services;
+using Przychodnia.Shared.Services.DialogService;
+using Przychodnia.Shared.Services.NavigationService;
 using Przychodnia.Shared.ViewModels;
 using System.Collections.ObjectModel;
 

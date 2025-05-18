@@ -5,7 +5,7 @@ using Przychodnia.Features.Entities.PatientFeature.Models;
 using Przychodnia.Features.Entities.PatientFeature.Services;
 using Przychodnia.Features.Entities.PatientFeature.ViewModels.FormData;
 using Przychodnia.Features.Entities.PostalCodeFeature.Services;
-using Przychodnia.Shared.Services;
+using Przychodnia.Shared.Services.DialogService;
 
 namespace Przychodnia.Features.Entities.PatientFeature.ViewModels;
 

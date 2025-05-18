@@ -1,6 +1,6 @@
 ﻿using Przychodnia.Shared.ViewModels;
 
-namespace Przychodnia.Shared.Services;
+namespace Przychodnia.Shared.Services.NavigationService;
 
 public interface INavigationService
 {

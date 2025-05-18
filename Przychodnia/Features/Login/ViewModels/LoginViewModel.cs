@@ -1,28 +1,71 @@
-﻿using CommunityToolkit.Mvvm.Input;
-using Przychodnia.Shared.Services;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using Microsoft.Extensions.DependencyInjection;
+using Przychodnia.Features.Entities.UserTypesFeature.Models;
+using Przychodnia.Features.Login.Services;
+using Przychodnia.Features.Panels.Admin.ViewModels;
+using Przychodnia.Features.Panels.Admin.Views;
+using Przychodnia.Shared.Services.CurrentUserService;
+using Przychodnia.Shared.Services.DialogService;
+using Przychodnia.Shared.Services.NavigationService;
 using Przychodnia.Shared.ViewModels;
 using System.Security;
+using System.Windows;
+using System.Windows.Navigation;
 
 namespace Przychodnia.Features.Login.ViewModels;
 
-public class LoginViewModel : BaseViewModel
+public partial class LoginViewModel : BaseViewModel
 {
-    private readonly INavigationService _navigationService;
+    private readonly NavigationServiceProxy _navigationServiceProxy;
+    private readonly ILoginService _loginService;
+    private readonly IServiceProvider _serviceProvider;
+    private readonly IViewModelFactory _viewModelFactory;
 
-    public LoginViewModel(IDialogService dialogService, INavigationService navigationService)
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(LoginCommand))]
+    private string? inputLogin;
+    [ObservableProperty]
+    [NotifyCanExecuteChangedFor(nameof(LoginCommand))]
+    private SecureString? inputPassword;
+
+
+    public LoginViewModel(IDialogService dialogService, NavigationServiceProxy navigationServiceProxy, 
+        ILoginService loginService, IServiceProvider serviceProvider, IViewModelFactory viewModelFactory)
         : base(dialogService)
     {
-        _navigationService = navigationService;
+        _navigationServiceProxy = navigationServiceProxy;
+        _loginService = loginService;
+        _serviceProvider = serviceProvider;
+        _viewModelFactory = viewModelFactory;
 
-        CloseCommand = new RelayCommand(OnCloseRequested);
+        LoginCommand = new AsyncRelayCommand(TryLogin, () => CanLogin);
+        _viewModelFactory = viewModelFactory;
     }
 
-    public event Action? RequestClose;
-    public IRelayCommand CloseCommand { get; }
+    public event Action<int>? LoginSucceeded;
+    public IAsyncRelayCommand LoginCommand { get; }
     public SecureString? Password { private get; set; }
 
-    private void OnCloseRequested()
+    public bool CanLogin => IsLoginNotEmpty && IsPasswordNotEmpty;
+
+    private async Task TryLogin()
     {
-        RequestClose?.Invoke();
+        if (await _loginService.Authenticate(inputLogin, inputPassword))
+        {
+            var currentUser = _serviceProvider.GetRequiredService<ICurrentUserService>().GetUser();
+            LoginSucceeded?.Invoke(currentUser.UserTypeId);
+            DisposePassword();  
+        }
+        else
+            ShowError("Niepoprawne dane logowania");
+       
+    }
+    private bool IsPasswordNotEmpty => InputPassword is not null && InputPassword.Length > 0;
+    private bool IsLoginNotEmpty => !string.IsNullOrEmpty(InputLogin);
+    private void DisposePassword()
+    {
+        InputPassword?.Dispose();
+        InputPassword = null;
     }
 }

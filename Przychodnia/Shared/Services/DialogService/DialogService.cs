@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace Przychodnia.Shared.Services;
+namespace Przychodnia.Shared.Services.DialogService;
 
 public class DialogService : IDialogService
 {

@@ -21,10 +21,14 @@ using Przychodnia.Features.Entities.UserFeature.ViewModels;
 using Przychodnia.Features.Entities.UserTypesFeature.Repositories;
 using Przychodnia.Features.Entities.UserTypesFeature.Services;
 using Przychodnia.Features.HomePage.ViewModels;
+using Przychodnia.Features.Login.Services;
 using Przychodnia.Features.Login.ViewModels;
 using Przychodnia.Features.Login.Views;
 using Przychodnia.Features.Panels.Admin.ViewModels;
-using Przychodnia.Shared.Services;
+using Przychodnia.Features.Panels.Admin.Views;
+using Przychodnia.Shared.Services.CurrentUserService;
+using Przychodnia.Shared.Services.DialogService;
+using Przychodnia.Shared.Services.NavigationService;
 using System.Windows;
 
 namespace Przychodnia
@@ -68,6 +72,12 @@ namespace Przychodnia
             services.AddSingleton<NavigationServiceProxy>();
             services.AddSingleton<INavigationService>(provider
                 => provider.GetRequiredService<NavigationServiceProxy>());
+            services.AddSingleton<ICurrentUserService, CurrentUserService>();
+
+            // Login services
+            services.AddSingleton<ILoginService, LoginService>();
+            services.AddSingleton<IViewModelFactory, ViewModelFactory>();
+            services.AddSingleton<IPanelWindowFactory, PanelWindowFactory>();
 
             // Entities services
             services.AddTransient<IUserService, UserService>();
@@ -96,19 +106,20 @@ namespace Przychodnia
 
             // Windows
             services.AddTransient<LoginWindow>();
+            services.AddTransient<AdminPanelWindow>();
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            base.OnStartup(e);
+            //base.OnStartup(e);
             //var proxy = _serviceProvider.GetRequiredService<NavigationServiceProxy>();
             //var mainViewModel = _serviceProvider.GetService<AdminPanelViewModel>();
             //proxy.Current = mainViewModel;
             //var mainView = new AdminPanelWindow(mainViewModel);
             //mainView.ShowDialog();
 
-            var window = _serviceProvider.GetRequiredService<LoginWindow>();
-            window.Show();
+            var loginWindow = _serviceProvider.GetRequiredService<LoginWindow>();
+            loginWindow.Show();
         }
     }
 }

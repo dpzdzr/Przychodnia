@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:Przychodnia.Features.Login.Views" 
         xmlns:vm="clr-namespace:Przychodnia.Features.Login.ViewModels" 
         d:DataContext="{d:DesignInstance Type=vm:LoginViewModel}"
-        mc:Ignorable="d"
-        Title="LoginWindow" Height="450" Width="800"
+        mc:Ignorable="d" ResizeMode="NoResize"
+        Title="Przychodnia" Height="450" Width="800"
         WindowStartupLocation="CenterScreen">
 
     <Grid Background="#FAFAFA">
@@ -22,11 +22,11 @@
             <TextBlock Text="Zaloguj się" FontSize="20" FontWeight="Bold" Margin="0,0,0,20" TextAlignment="Center"/>
 
             <TextBlock Text="Login" Margin="0,0,0,5"/>
-            <TextBox x:Name="LoginTextBox" Margin="0,0,0,30"/>
+            <TextBox x:Name="LoginTextBox" Margin="0,0,0,30" Text="{Binding InputLogin, UpdateSourceTrigger=PropertyChanged}"/>
             <TextBlock Text="Hasło" Margin="0,0,0,5"/>
             <PasswordBox x:Name="PasswordBox" Margin="0,0,0,20" PasswordChanged="PasswordBox_PasswordChanged"/>
 
-            <Button Content="Zaloguj" HorizontalAlignment="Center" Command="{Binding CloseCommand}"/>
+            <Button Content="Zaloguj" HorizontalAlignment="Center" Command="{Binding LoginCommand}" IsDefault="True"/>
         </StackPanel>
 
     </Grid>

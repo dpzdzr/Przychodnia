@@ -10,7 +10,7 @@ public class UserMappingProfile : Profile
     public UserMappingProfile()
     {
         // user <-> dto
-        CreateMap<UserDTO, User>();
+        CreateMap<UserDTO, User>().ReverseMap();
 
         // wrapper <-> dto
         CreateMap<UserWrapper, UserDTO>();

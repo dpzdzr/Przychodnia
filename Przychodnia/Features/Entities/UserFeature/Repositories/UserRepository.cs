@@ -3,6 +3,7 @@ using Przychodnia.Core.Repositories;
 using Przychodnia.Data;
 using Przychodnia.Features.Entities.UserFeature.Models;
 using Przychodnia.Features.Entities.UserTypesFeature.Models;
+using System.Security;
 
 namespace Przychodnia.Features.Entities.UserFeature.Repositories;
 
@@ -10,10 +11,14 @@ public class UserRepository(AppDbContext context)
     : BaseRepository<User, AppDbContext>(context), IUserRepository
 {
     public async Task<List<User>> GetUsersByTypeAsync(UserTypeEnum type)
-        => await _dbSet.Where(u => u.UserType.Id == (int)type).ToListAsync();
+    {
+        return await _dbSet.Where(u => u.UserType.Id == (int)type).ToListAsync();
+    }
 
     public async Task<List<User>> GetAllWithDetailsAsync()
-        => await _dbSet.Include(u => u.UserType).Include(u => u.Laboratory).ToListAsync();
+    { 
+        return await _dbSet.Include(u => u.UserType).Include(u => u.Laboratory).ToListAsync(); 
+    }
 
     public async Task<List<User>> GetLabManagersWithoutManagedLabAsync()
     {
@@ -30,5 +35,12 @@ public class UserRepository(AppDbContext context)
             .Include(u => u.UserType)
             .Include(u => u.Laboratory)
             .FirstOrDefaultAsync();
+    }
+
+    public async Task<User?> GetByLogin(string login)
+    {
+        return await _dbSet
+            .Include(u => u.UserType)
+            .FirstOrDefaultAsync(u => u.Login == login);
     }
 }
