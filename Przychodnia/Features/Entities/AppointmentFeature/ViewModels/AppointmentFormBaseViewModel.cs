@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Przychodnia.Features.Entities.AppointmentFeature.Services;
@@ -17,6 +10,8 @@ using Przychodnia.Features.Entities.UserFeature.Wrappers;
 using Przychodnia.Features.Entities.UserTypesFeature.Models;
 using Przychodnia.Shared.Services;
 using Przychodnia.Shared.ViewModels;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace Przychodnia.Features.Entities.AppointmentFeature.ViewModels;
 
@@ -32,10 +27,10 @@ public abstract partial class AppointmentFormBaseViewModel<TForm> : BaseViewMode
     [ObservableProperty] private ObservableCollection<UserWrapper> doctors = [];
     [ObservableProperty] private ObservableCollection<PatientWrapper> patients = [];
     [ObservableProperty] private ObservableCollection<TimeSpan> availableHours = [];
-    
 
-    public AppointmentFormBaseViewModel(IDialogService dialogService, IUserService userService, 
-        IPatientService patientService, IMapper mapper, IAppointmentService appointmentService) 
+
+    public AppointmentFormBaseViewModel(IDialogService dialogService, IUserService userService,
+        IPatientService patientService, IMapper mapper, IAppointmentService appointmentService)
         : base(dialogService)
     {
         _userService = userService;
@@ -73,7 +68,7 @@ public abstract partial class AppointmentFormBaseViewModel<TForm> : BaseViewMode
             return;
         }
 
-        var appointments = 
+        var appointments =
             await _appointmentService.GetAppointmentsForDoctorOnDateAsync(doctorId, FormData.SelectedDate.Value.Date);
 
         var booked = appointments.Select(a => a.Date.Value.TimeOfDay).ToHashSet();

@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using AutoMapper;
+﻿using AutoMapper;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Przychodnia.Features.Entities.LaboratoryFeature.Services;
 using Przychodnia.Features.Entities.LaboratoryFeature.Wrappers;
@@ -15,6 +7,8 @@ using Przychodnia.Features.Entities.UserTypesFeature.Services;
 using Przychodnia.Features.Entities.UserTypesFeature.Wrappers;
 using Przychodnia.Shared.Services;
 using Przychodnia.Shared.ViewModels;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace Przychodnia.Features.Entities.UserFeature.ViewModels;
 
@@ -33,7 +27,7 @@ public abstract partial class UserFormBaseViewModel<TForm> : BaseViewModel
     {
         _mapper = mapper;
         _userTypeService = userTypeService;
-        _labService = laboratoryService;    
+        _labService = laboratoryService;
         FormData.PropertyChanged += OnFormDataPropertyChanged;
     }
 

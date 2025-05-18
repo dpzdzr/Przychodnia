@@ -1,11 +1,5 @@
 ﻿using Przychodnia.Core.Interfaces;
 using Przychodnia.Features.Entities.UserFeature.Models;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Przychodnia.Features.Entities.LaboratoryFeature.Models;
 public class Laboratory : IEntity

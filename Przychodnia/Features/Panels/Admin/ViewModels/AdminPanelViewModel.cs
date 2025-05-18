@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using CommunityToolkit.Mvvm.Input;
-using Microsoft.EntityFrameworkCore.Query;
+﻿using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.DependencyInjection;
 using Przychodnia.Features.Entities.AppointmentFeature.ViewModels;
 using Przychodnia.Features.Entities.LaboratoryFeature.ViewModels;
@@ -15,6 +8,7 @@ using Przychodnia.Features.Entities.UserFeature.ViewModels;
 using Przychodnia.Features.HomePage.ViewModels;
 using Przychodnia.Shared.Services;
 using Przychodnia.Shared.ViewModels;
+using System.Windows.Input;
 
 namespace Przychodnia.Features.Panels.Admin.ViewModels;
 public class AdminPanelViewModel : BaseNavigableViewModel, INavigationService
@@ -30,7 +24,7 @@ public class AdminPanelViewModel : BaseNavigableViewModel, INavigationService
 
         NavigateToUsersListCommand = new AsyncRelayCommand
             (() => NavigateToAsync<UserListViewModel>(vm => vm.InitializeAsync()));
-        
+
         NavigateToPostalCodesListCommand = new AsyncRelayCommand
             (() => NavigateToAsync<PostalCodeListViewModel>(vm => vm.InitializeAsync()));
 
@@ -46,9 +40,9 @@ public class AdminPanelViewModel : BaseNavigableViewModel, INavigationService
         NavigateBackCommand = new RelayCommand(NavigateBack);
     }
 
-    public new void NavigateTo(BaseViewModel viewModel) 
+    public new void NavigateTo(BaseViewModel viewModel)
         => base.NavigateTo(viewModel);
-    public new void NavigateBack() 
+    public new void NavigateBack()
         => base.NavigateBack();
 
     public IAsyncRelayCommand NavigateToUsersListCommand { get; }

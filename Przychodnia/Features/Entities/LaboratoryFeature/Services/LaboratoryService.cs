@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Przychodnia.Core.Services;
 using Przychodnia.Features.Entities.LaboratoryFeature.Models;
 using Przychodnia.Features.Entities.LaboratoryFeature.Repositories;
@@ -14,7 +9,7 @@ namespace Przychodnia.Features.Entities.LaboratoryFeature.Services;
 public class LaboratoryService(ILaboratoryRepository labRepo, IMapper mapper, IUserLookupService userLookupService)
     : BaseService<Laboratory, LaboratoryDTO, ILaboratoryRepository>(labRepo, mapper), ILaboratoryService
 {
-    private readonly IUserLookupService _userLookupService = userLookupService; 
+    private readonly IUserLookupService _userLookupService = userLookupService;
 
     public async Task<IEnumerable<Laboratory>> GetAllWithDetailsAsync()
         => await _repo.GetAllWithDetailsAsync();

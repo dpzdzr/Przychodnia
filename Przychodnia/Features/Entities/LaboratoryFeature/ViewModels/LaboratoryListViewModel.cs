@@ -10,12 +10,7 @@ using Przychodnia.Features.Entities.UserFeature.Wrappers;
 using Przychodnia.Features.Entities.UserTypesFeature.Models;
 using Przychodnia.Shared.Services;
 using Przychodnia.Shared.ViewModels;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Przychodnia.Features.Entities.LaboratoryFeature.ViewModels;
 

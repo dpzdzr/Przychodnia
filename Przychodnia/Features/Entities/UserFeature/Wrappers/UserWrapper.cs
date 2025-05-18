@@ -3,11 +3,6 @@ using Przychodnia.Features.Entities.LaboratoryFeature.Wrappers;
 using Przychodnia.Features.Entities.UserFeature.Models;
 using Przychodnia.Features.Entities.UserTypesFeature.Wrappers;
 using Przychodnia.ViewModel.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Przychodnia.Features.Entities.UserFeature.Wrappers;
 
@@ -28,7 +23,7 @@ public partial class UserWrapper : BaseWrapper
     {
         if (user is null)
         {
-            if(!createDummy)
+            if (!createDummy)
                 throw new ArgumentNullException(nameof(user), "Użytkownik nie może być null, chyba że jawnie tworzysz obiekt dummy.");
 
             Id = null;

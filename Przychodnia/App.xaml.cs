@@ -1,7 +1,4 @@
-﻿using System.Configuration;
-using System.Data;
-using System.Windows;
-using CommunityToolkit.Mvvm.Messaging;
+﻿using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Przychodnia.Data;
@@ -27,8 +24,8 @@ using Przychodnia.Features.HomePage.ViewModels;
 using Przychodnia.Features.Login.ViewModels;
 using Przychodnia.Features.Login.Views;
 using Przychodnia.Features.Panels.Admin.ViewModels;
-using Przychodnia.Features.Panels.Admin.Views;
 using Przychodnia.Shared.Services;
+using System.Windows;
 
 namespace Przychodnia
 {
@@ -69,7 +66,7 @@ namespace Przychodnia
             // Services
             services.AddSingleton<IDialogService, DialogService>();
             services.AddSingleton<NavigationServiceProxy>();
-            services.AddSingleton<INavigationService>(provider 
+            services.AddSingleton<INavigationService>(provider
                 => provider.GetRequiredService<NavigationServiceProxy>());
 
             // Entities services

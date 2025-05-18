@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Przychodnia.Features.Entities.PatientFeature.Models;
 using Przychodnia.Features.Entities.PostalCodeFeature.Wrappers;
 

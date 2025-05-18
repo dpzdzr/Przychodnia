@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Przychodnia.Features.Entities.PatientFeature.Wrappers;
 using Przychodnia.Features.Entities.UserFeature.Wrappers;
+using System.ComponentModel.DataAnnotations;
 
 namespace Przychodnia.Features.Entities.AppointmentFeature.ViewModels.FormData;
 

@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using AutoMapper;
+﻿using AutoMapper;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -17,6 +10,7 @@ using Przychodnia.Features.Entities.PostalCodeFeature.Services;
 using Przychodnia.Features.Entities.PostalCodeFeature.Wrappers;
 using Przychodnia.Shared.Services;
 using Przychodnia.Shared.ViewModels;
+using System.Collections.ObjectModel;
 
 namespace Przychodnia.Features.Entities.PatientFeature.ViewModels;
 

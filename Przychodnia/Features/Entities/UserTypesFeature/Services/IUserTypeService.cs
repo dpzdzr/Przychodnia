@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Przychodnia.Features.Entities.UserTypesFeature.Models;
+﻿using Przychodnia.Features.Entities.UserTypesFeature.Models;
 
 namespace Przychodnia.Features.Entities.UserTypesFeature.Services;
 

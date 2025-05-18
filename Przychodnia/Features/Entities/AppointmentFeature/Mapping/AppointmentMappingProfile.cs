@@ -2,11 +2,6 @@
 using Przychodnia.Features.Entities.AppointmentFeature.Models;
 using Przychodnia.Features.Entities.AppointmentFeature.ViewModels.FormData;
 using Przychodnia.Features.Entities.AppointmentFeature.Wrappers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Przychodnia.Features.Entities.AppointmentFeature.Mapping;
 

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Przychodnia.Features.Entities.UserFeature.Models;
+﻿namespace Przychodnia.Features.Entities.UserFeature.Models;
 
 public record UserDTO
 {

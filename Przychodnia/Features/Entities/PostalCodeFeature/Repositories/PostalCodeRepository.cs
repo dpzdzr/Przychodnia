@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using Przychodnia.Core.Repositories;
+﻿using Przychodnia.Core.Repositories;
 using Przychodnia.Data;
 using Przychodnia.Features.Entities.PostalCodeFeature.Models;
 

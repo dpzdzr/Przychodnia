@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 using Przychodnia.Features.Entities.UserFeature.Messages;
@@ -16,7 +8,7 @@ using Przychodnia.Features.Entities.UserTypesFeature.Services;
 using Przychodnia.Features.Entities.UserTypesFeature.Wrappers;
 using Przychodnia.Shared.Services;
 using Przychodnia.Shared.ViewModels;
-using Przychodnia.ViewModel.Base;
+using System.Collections.ObjectModel;
 
 namespace Przychodnia.Features.Entities.UserFeature.ViewModels;
 
@@ -97,7 +89,7 @@ public partial class UserListViewModel : BaseListViewModel<UserWrapper>
         SelectedUserTypeName = UserTypeNames.First();
         SelectedUserFirstName = string.Empty;
         SelectedUserLastName = string.Empty;
-        
+
         Items = [.. _allItems];
     }
 

@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security;
-using System.Text;
-using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.Input;
 using Przychodnia.Shared.Services;
 using Przychodnia.Shared.ViewModels;
+using System.Security;
 
 namespace Przychodnia.Features.Login.ViewModels;
 

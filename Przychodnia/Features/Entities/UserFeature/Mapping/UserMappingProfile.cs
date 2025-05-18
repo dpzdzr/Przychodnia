@@ -2,11 +2,6 @@
 using Przychodnia.Features.Entities.UserFeature.Models;
 using Przychodnia.Features.Entities.UserFeature.ViewModels.FormData;
 using Przychodnia.Features.Entities.UserFeature.Wrappers;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Przychodnia.Features.Entities.UserFeature.Mapping;
 

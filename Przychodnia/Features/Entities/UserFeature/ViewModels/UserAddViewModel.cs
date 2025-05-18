@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-using AutoMapper;
+﻿using AutoMapper;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Przychodnia.Features.Entities.LaboratoryFeature.Services;
@@ -16,7 +8,7 @@ using Przychodnia.Features.Entities.UserFeature.Services;
 using Przychodnia.Features.Entities.UserFeature.ViewModels.FormData;
 using Przychodnia.Features.Entities.UserTypesFeature.Services;
 using Przychodnia.Shared.Services;
-using Przychodnia.ViewModel.Base;
+using System.Windows.Input;
 
 namespace Przychodnia.Features.Entities.UserFeature.ViewModels;
 

@@ -2,12 +2,7 @@
 using Przychodnia.Features.Entities.LaboratoryFeature.Models;
 using Przychodnia.Features.Entities.PatientFeature.Models;
 using Przychodnia.Features.Entities.UserFeature.Models;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Przychodnia.Features.Entities.ExaminationFeature.Models;
 

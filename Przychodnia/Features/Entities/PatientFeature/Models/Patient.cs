@@ -1,16 +1,11 @@
 ﻿using Przychodnia.Core.Interfaces;
 using Przychodnia.Features.Entities.PostalCodeFeature.Models;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Przychodnia.Features.Entities.PatientFeature.Models;
 public class Patient : IEntity
 {
-    
+
     public int Id { get; set; }
     [Required]
     [StringLength(11)]
@@ -20,7 +15,7 @@ public class Patient : IEntity
     [Required]
     public string LastName { get; set; }
     public int? PostalCodeId { get; set; }
-    public PostalCode? PostalCode {  get; set; }
+    public PostalCode? PostalCode { get; set; }
     public string? Street { get; set; }
     public string? HouseNumber { get; set; }
     public string? ApartmentNumber { get; set; }

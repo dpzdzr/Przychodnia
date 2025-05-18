@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Przychodnia.Core.Services;
 using Przychodnia.Features.Entities.AppointmentFeature.Models;
 using Przychodnia.Features.Entities.AppointmentFeature.Repositories;

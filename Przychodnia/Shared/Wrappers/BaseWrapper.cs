@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using CommunityToolkit.Mvvm.ComponentModel;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Przychodnia.ViewModel.Base;
 
-public abstract partial class BaseWrapper : ObservableObject 
+public abstract partial class BaseWrapper : ObservableObject
 {
     [ObservableProperty] protected int? id;
 

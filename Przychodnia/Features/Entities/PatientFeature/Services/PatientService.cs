@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Przychodnia.Core.Services;
 using Przychodnia.Features.Entities.PatientFeature.Models;
 using Przychodnia.Features.Entities.PatientFeature.Repositories;
@@ -11,7 +6,7 @@ using Przychodnia.Features.Entities.PostalCodeFeature.Services;
 
 namespace Przychodnia.Features.Entities.PatientFeature.Services;
 
-public class PatientService(IPatientRepository patientRepo, IPostalCodeService postalCodeService, IMapper mapper) 
+public class PatientService(IPatientRepository patientRepo, IPostalCodeService postalCodeService, IMapper mapper)
     : BaseService<Patient, PatientDTO, IPatientRepository>(patientRepo, mapper), IPatientService
 {
     private readonly IPostalCodeService _postalCodeService = postalCodeService;

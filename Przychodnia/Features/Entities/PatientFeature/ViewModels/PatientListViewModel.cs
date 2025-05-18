@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 using Przychodnia.Features.Entities.PatientFeature.Messages;
@@ -14,7 +6,6 @@ using Przychodnia.Features.Entities.PatientFeature.Services;
 using Przychodnia.Features.Entities.PatientFeature.Wrappers;
 using Przychodnia.Shared.Services;
 using Przychodnia.Shared.ViewModels;
-using Przychodnia.ViewModel.Base;
 
 namespace Przychodnia.Features.Entities.PatientFeature.ViewModels;
 

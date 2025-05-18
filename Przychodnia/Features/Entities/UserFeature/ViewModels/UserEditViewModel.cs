@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using AutoMapper;
+﻿using AutoMapper;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Przychodnia.Features.Entities.LaboratoryFeature.Services;
@@ -14,7 +8,6 @@ using Przychodnia.Features.Entities.UserFeature.ViewModels.FormData;
 using Przychodnia.Features.Entities.UserFeature.Wrappers;
 using Przychodnia.Features.Entities.UserTypesFeature.Services;
 using Przychodnia.Shared.Services;
-using Przychodnia.ViewModel.Base;
 
 namespace Przychodnia.Features.Entities.UserFeature.ViewModels;
 
@@ -24,7 +17,7 @@ public partial class UserEditViewModel : UserFormBaseViewModel<UserEditFormData>
 
     [ObservableProperty] private UserWrapper? editUserWrapper;
 
-    public UserEditViewModel(IDialogService dialogService, ILaboratoryService labService, IUserTypeService userTypeService, IUserService userService, IMapper mapper) 
+    public UserEditViewModel(IDialogService dialogService, ILaboratoryService labService, IUserTypeService userTypeService, IUserService userService, IMapper mapper)
         : base(userTypeService, labService, dialogService, mapper)
     {
         _userService = userService;
@@ -46,7 +39,7 @@ public partial class UserEditViewModel : UserFormBaseViewModel<UserEditFormData>
 
     private async Task EditUserAsync()
     {
-        if(EditUserWrapper?.Id is int userId)
+        if (EditUserWrapper?.Id is int userId)
         {
             _mapper.Map(FormData, EditUserWrapper);
             await _userService.UpdateAsync(userId, _mapper.Map<UserDTO>(EditUserWrapper));

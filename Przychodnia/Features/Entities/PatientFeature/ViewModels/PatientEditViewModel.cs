@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using AutoMapper;
+﻿using AutoMapper;
 using CommunityToolkit.Mvvm.ComponentModel;
-using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Przychodnia.Features.Entities.PatientFeature.Models;
 using Przychodnia.Features.Entities.PatientFeature.Services;
@@ -14,13 +7,12 @@ using Przychodnia.Features.Entities.PatientFeature.ViewModels.FormData;
 using Przychodnia.Features.Entities.PatientFeature.Wrappers;
 using Przychodnia.Features.Entities.PostalCodeFeature.Services;
 using Przychodnia.Shared.Services;
-using Przychodnia.ViewModel.Base;
 
 
 namespace Przychodnia.Features.Entities.PatientFeature.ViewModels;
 
 public partial class PatientEditViewModel(IPatientService patientService, IDialogService dialogService,
-    IPostalCodeService postalCodeService, IMapper mapper, IMessenger messenger) 
+    IPostalCodeService postalCodeService, IMapper mapper, IMessenger messenger)
     : PatientFormBaseViewModel<PatientEditFormData>(postalCodeService, dialogService, mapper, messenger, patientService)
 {
     [ObservableProperty] private PatientWrapper? _editPatientWrapper;
