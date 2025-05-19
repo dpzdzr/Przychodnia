@@ -18,8 +18,8 @@ public partial class UserEditViewModel : UserFormBaseViewModel<UserEditFormData>
 
     [ObservableProperty] private UserWrapper? editUserWrapper;
 
-    public UserEditViewModel(IDialogService dialogService, ILaboratoryService labService, IUserTypeService userTypeService, 
-        IUserService userService, IMapper mapper, IMessenger messenger)
+    public UserEditViewModel(IDialogService dialogService, ILaboratoryService labService, 
+        IUserTypeService userTypeService, IUserService userService, IMapper mapper, IMessenger messenger)
         : base(userTypeService, labService, dialogService, mapper, messenger)
     {
         _userService = userService;
@@ -33,19 +33,25 @@ public partial class UserEditViewModel : UserFormBaseViewModel<UserEditFormData>
 
     public async Task InitializeAsync(UserWrapper wrapper)
     {
-        EditUserWrapper = wrapper;
-        await InitializeFormDataAsync();
-        _mapper.Map(EditUserWrapper, FormData);
-        FormData.SelectedUserType = UserTypes.FirstOrDefault(ut => ut.Id == FormData.SelectedUserType!.Id);
+        await TryExecuteAsync(async () =>
+        {
+            EditUserWrapper = wrapper;
+            await InitializeFormDataAsync();
+            _mapper.Map(EditUserWrapper, FormData);
+            FormData.SelectedUserType = UserTypes.FirstOrDefault(ut => ut.Id == FormData.SelectedUserType!.Id);
+        });
     }
 
     private async Task EditUserAsync()
     {
         if (EditUserWrapper?.Id is int userId)
         {
-            _mapper.Map(FormData, EditUserWrapper);
-            await _userService.UpdateAsync(userId, _mapper.Map<UserDTO>(EditUserWrapper));
-            _dialogService.Show("Sukces", "Pomyślnie edytowano użytkownika");
+            await TryExecuteAsync(async () =>
+            {
+                _mapper.Map(FormData, EditUserWrapper);
+                await _userService.UpdateAsync(userId, _mapper.Map<UserDTO>(EditUserWrapper));
+                _dialogService.Show("Sukces", "Pomyślnie edytowano użytkownika");
+            });
         }
     }
 }

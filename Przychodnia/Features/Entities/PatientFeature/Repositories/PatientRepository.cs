@@ -14,6 +14,10 @@ public class PatientRepository(AppDbContext context)
         return patients;
     }
 
+    public async Task<bool> ExistsByPeselAsync(string pesel)
+    {
+        return await _dbSet.AnyAsync(p => p.Pesel == pesel);
+    }
 
     public async Task<Patient?> GetByPesel(string pesel)
         => await _dbSet.FirstOrDefaultAsync(p => p.Pesel == pesel);

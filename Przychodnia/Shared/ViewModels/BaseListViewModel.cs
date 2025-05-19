@@ -61,7 +61,7 @@ public abstract partial class BaseListViewModel<TWrapper> : BaseViewModel
         var pattern = filter.Trim();
 
         return source.Where(u => !string.IsNullOrWhiteSpace(selector(u)) &&
-                            selector(u)!.StartsWith(pattern, StringComparison.OrdinalIgnoreCase));
+                            selector(u)!.Contains(pattern, StringComparison.OrdinalIgnoreCase));
     }
 
     private void Cancel() => SelectedItem = null;

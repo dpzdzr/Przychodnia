@@ -11,11 +11,11 @@
         <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,20,0,0" >
             <StackPanel Width="170" Margin="10,0,0,10">
                 <TextBlock Text="Lekarz realizujacy" FontSize="17" FontWeight="ExtraLight" Margin="0,0,0,5"/>
-                <TextBox Text="{Binding PatientFullNameFilter}"/>
+                <TextBox Text="{Binding DoctorFullNameFilter}"/>
             </StackPanel>
             <StackPanel Width="170" Margin="60,0,0,10">
                 <TextBlock Text="Nazwisko pacjenta" FontSize="17" FontWeight="ExtraLight" Margin="0,0,0,5"/>
-                <TextBox Text="{Binding DoctorFullNameFilter}"/>
+                <TextBox Text="{Binding PatientFullNameFilter}"/>
             </StackPanel>
             <StackPanel Width="170" Margin="60,0,0,10">
                 <TextBlock Text="PESEL pacjenta" FontSize="17" FontWeight="ExtraLight" Margin="0,0,0,5"/>

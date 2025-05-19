@@ -7,4 +7,6 @@ public interface IPatientRepository : IBaseRepository<Patient>
 {
     Task<IEnumerable<Patient>> GetAllWithDetailsAsync();
     Task<Patient?> GetByPesel(string pesel);
+    Task<bool> ExistsByPeselAsync(string pesel);
+
 }

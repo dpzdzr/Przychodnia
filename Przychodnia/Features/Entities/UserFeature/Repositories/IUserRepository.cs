@@ -12,4 +12,6 @@ public interface IUserRepository : IBaseRepository<User>
     Task<List<User>> GetAllWithDetailsAsync();
     Task<List<User>> GetLabManagersWithoutManagedLabAsync();
     Task<User?> GetByLogin(string username);
+    Task<bool> ExistsByLicenseNumberAsync(string licenseNumber);
+    Task<User?> GetByLicenseNumberAsync(string licenseNumber);
 }

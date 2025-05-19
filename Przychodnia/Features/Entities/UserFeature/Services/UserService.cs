@@ -34,6 +34,13 @@ public class UserService(IUserRepository userRepo, ILaboratoryService labService
 
     public override async Task<User> CreateAsync(UserDTO dto)
     {
+        if (dto.LicenseNumber is not null)
+        {
+            var exists = await _repo.ExistsByLicenseNumberAsync(dto.LicenseNumber);
+            if (exists)
+                throw new InvalidOperationException("Użytkownik z podanym numerem licencji jest już w bazie");
+        }
+
         var user = new User();
         await MapDtoAndResolveRelationsAsync(dto, user);
         user = await _repo.AddAsync(user);
@@ -42,6 +49,17 @@ public class UserService(IUserRepository userRepo, ILaboratoryService labService
     }
     public override async Task UpdateAsync(int id, UserDTO dto)
     {
+        if (dto.LicenseNumber is string licenseNum)
+        {
+            var exists = await _repo.ExistsByLicenseNumberAsync(licenseNum);
+            if (exists)
+            {
+                var existing = await _repo.GetByLicenseNumberAsync(licenseNum);
+                if (existing!.Id != id)
+                    throw new InvalidOperationException("Użytkownik z podanym numerem licencji jest już w bazie");
+            }
+        }
+
         var user = await GetByIdAsync(id);
         await MapDtoAndResolveRelationsAsync(dto, user!);
         await _repo.SaveChangesAsync();

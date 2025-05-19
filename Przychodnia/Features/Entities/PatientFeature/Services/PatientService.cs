@@ -16,19 +16,32 @@ public class PatientService(IPatientRepository patientRepo, IPostalCodeService p
     public async Task<Patient?> GetByPeselAsync(string pesel)
     {
         return await _repo.GetByPesel(pesel) ??
-            throw new InvalidOperationException($"Patient with PESEL: {pesel} not found");
+            throw new InvalidOperationException($"Nie znaleziono pacjenta z numerem PESEL: {pesel} ");
     }
 
     public override async Task<Patient> CreateAsync(PatientDTO dto)
     {
+        var exists = await _repo.ExistsByPeselAsync(dto.Pesel);
+        if (exists)
+            throw new InvalidOperationException("Pacjent z danym numerem PESEL jest już w bazie");
+
         var patient = new Patient();
         await MapDtoAndResolveRelationsAsync(dto, patient);
         await _repo.AddAsync(patient);
         await _repo.SaveChangesAsync();
         return patient;
     }
+
     public override async Task UpdateAsync(int id, PatientDTO dto)
     {
+        var exists = await _repo.ExistsByPeselAsync(dto.Pesel);
+        if (exists)
+        {
+            var existing = GetByPeselAsync(dto.Pesel);
+            if (existing.Id != id)
+                throw new InvalidOperationException("Pacjent z danym numerem PESEL jest już w bazie");
+        }
+
         var patient = await GetByIdAsync(id);
         await MapDtoAndResolveRelationsAsync(dto, patient!);
         await _repo.SaveChangesAsync();

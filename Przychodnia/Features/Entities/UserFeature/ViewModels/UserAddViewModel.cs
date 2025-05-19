@@ -33,18 +33,14 @@ public class UserAddViewModel : UserFormBaseViewModel<UserAddFormData>
 
     private async Task AddUserAsync()
     {
-        try
+        await TryExecuteAsync(async () =>
         {
             var dto = _mapper.Map<UserDTO>(FormData);
             var entity = await _userService.CreateAsync(dto);
             NotifyUserAdded(entity);
             _dialogService.Show("Sukces", "Pomyślnie dodano nowego użytkownika");
-        }
-        catch (Exception ex)
-        {
-            _dialogService.Show("Błąd", $"{ex.Message}\n{ex.InnerException}");
-        }
-        ClearForm();
+            ClearForm();
+        });
     }
     private void ClearForm() => FormData.ClearForm();
     private void NotifyUserAdded(User user)

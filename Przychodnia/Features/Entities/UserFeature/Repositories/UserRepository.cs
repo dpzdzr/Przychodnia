@@ -43,4 +43,14 @@ public class UserRepository(AppDbContext context)
             .Include(u => u.UserType)
             .FirstOrDefaultAsync(u => u.Login == login);
     }
+
+    public async Task<bool> ExistsByLicenseNumberAsync(string licenseNumber)
+    {
+        return await _dbSet.AnyAsync(p => p.LicenseNumber == licenseNumber);
+    }
+
+    public async Task<User?> GetByLicenseNumberAsync(string licenseNumber)
+    {
+        return await _dbSet.FirstOrDefaultAsync(p => p.LicenseNumber == licenseNumber);
+    }
 }
