@@ -1,7 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 using Przychodnia.Features.HomePage.ViewModels;
+using Przychodnia.Features.Login.Services;
+using Przychodnia.Shared.Messages;
 using Przychodnia.Shared.Services.DialogService;
 using System.Windows.Controls;
 
@@ -10,6 +13,8 @@ namespace Przychodnia.Shared.ViewModels;
 public abstract partial class BaseNavigableViewModel : BaseViewModel
 {
     private readonly Stack<BaseViewModel> _navigationStack = new();
+    private readonly ILogoutService _logoutService;
+
     protected readonly IServiceProvider _services;
 
     [ObservableProperty] private BaseViewModel? currentViewModel;
@@ -18,18 +23,22 @@ public abstract partial class BaseNavigableViewModel : BaseViewModel
     private readonly string _homePageCaption = string.Empty;
 
     public BaseNavigableViewModel(IDialogService dialogService, IServiceProvider services,
-        string homePageCaption)
+        string homePageCaption, ILogoutService logoutService)
         : base(dialogService)
     {
         _homePageCaption = homePageCaption ?? string.Empty;
         _services = services;
+        _logoutService = logoutService;
+
         NavigateBackCommand = new RelayCommand(NavigateBack);
-        CloseCommand = new RelayCommand(CloseApplication);
+        CloseCommand = new RelayCommand(CloseWindow);
+        LogoutCommand = new RelayCommand(Logout);
     }
 
-    public event Action? CloseApplicationEvent;
+    public event Action? CloseWindowEvent;
     public IRelayCommand NavigateBackCommand { get; }
     public IRelayCommand CloseCommand { get; }
+    public IRelayCommand LogoutCommand { get; }
 
     public void NavigateTo(BaseViewModel viewModel)
     {
@@ -47,7 +56,7 @@ public abstract partial class BaseNavigableViewModel : BaseViewModel
     }
 
     protected IAsyncRelayCommand CreateNavigationCommand<TViewModel>()
-    where TViewModel : BaseViewModel
+        where TViewModel : BaseViewModel
     {
         return new AsyncRelayCommand(() => NavigateToAsync<TViewModel>(vm => vm.InitializeAsync()));
     }
@@ -81,8 +90,13 @@ public abstract partial class BaseNavigableViewModel : BaseViewModel
     {
         CanNavigateBack = _navigationStack.Count > 0;
     }
-    private void CloseApplication()
+    private void CloseWindow()
     {
-        CloseApplicationEvent?.Invoke();
+        CloseWindowEvent?.Invoke();
     }
+    private void Logout()
+    {
+        _logoutService.Logout();
+        CloseWindow();
+    }    
 }

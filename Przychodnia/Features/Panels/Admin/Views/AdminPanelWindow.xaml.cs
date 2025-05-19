@@ -9,7 +9,7 @@ public partial class AdminPanelWindow : Window
     {
         InitializeComponent();
 
-        vm.CloseApplicationEvent += Close;
+        vm.CloseWindowEvent += Close;
         DataContext = vm;
     }
 }

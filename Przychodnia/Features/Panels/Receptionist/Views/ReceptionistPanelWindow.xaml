@@ -53,7 +53,8 @@
                         <Button Content="Kody pocztowe" Command="{Binding NavigateToPostalCodesListCommand}"/>
                         <Button Content="Wizyty" Command="{Binding NavigateToAppointmentsListCommand}"/>
                     </StackPanel>
-                    <Button Content="Zamknij aplikację" Background="IndianRed"  Command="{Binding CloseCommand}" Margin="5,30,5,5" Width="160"/>
+                    <Button Content="Wyloguj" Command="{Binding LogoutCommand}" Margin="5,30,5,5" Width="160" Style="{StaticResource LogoutButton}"/>
+                    <Button Content="Zamknij aplikację" Background="IndianRed"  Command="{Binding CloseCommand}" Margin="5,10,5,5" Width="160"/>
                 </StackPanel>
             </Border>
         </Grid>

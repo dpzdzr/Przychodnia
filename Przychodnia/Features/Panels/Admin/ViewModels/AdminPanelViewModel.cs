@@ -6,6 +6,7 @@ using Przychodnia.Features.Entities.PatientFeature.ViewModels;
 using Przychodnia.Features.Entities.PostalCodeFeature.ViewModels;
 using Przychodnia.Features.Entities.UserFeature.ViewModels;
 using Przychodnia.Features.HomePage.ViewModels;
+using Przychodnia.Features.Login.Services;
 using Przychodnia.Shared.Services.DialogService;
 using Przychodnia.Shared.Services.NavigationService;
 using Przychodnia.Shared.ViewModels;
@@ -14,8 +15,9 @@ using System.Windows.Input;
 namespace Przychodnia.Features.Panels.Admin.ViewModels;
 public class AdminPanelViewModel : BaseNavigableViewModel, INavigationService
 {
-    public AdminPanelViewModel(IServiceProvider serviceProvider, IDialogService dialogService)
-        : base(dialogService, serviceProvider, "Panel administratora")
+    public AdminPanelViewModel(IServiceProvider serviceProvider, IDialogService dialogService, 
+        ILogoutService logoutService)
+        : base(dialogService, serviceProvider, "Panel administratora", logoutService)
     {
         InitializeHomePage();
 

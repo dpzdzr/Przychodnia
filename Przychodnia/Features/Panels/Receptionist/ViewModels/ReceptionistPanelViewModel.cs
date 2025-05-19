@@ -6,6 +6,7 @@ using Przychodnia.Features.Entities.PatientFeature.ViewModels;
 using Przychodnia.Features.Entities.PostalCodeFeature.ViewModels;
 using Przychodnia.Features.Entities.UserFeature.ViewModels;
 using Przychodnia.Features.HomePage.ViewModels;
+using Przychodnia.Features.Login.Services;
 using Przychodnia.Shared.Services.DialogService;
 using Przychodnia.Shared.Services.NavigationService;
 using Przychodnia.Shared.ViewModels;
@@ -19,8 +20,9 @@ namespace Przychodnia.Features.Panels.Receptionist.ViewModels;
 
 public class ReceptionistPanelViewModel : BaseNavigableViewModel, INavigationService
 {
-    public ReceptionistPanelViewModel(IServiceProvider serviceProvider, IDialogService dialogService)
-        : base(dialogService, serviceProvider, "Panel rejestratora")
+    public ReceptionistPanelViewModel(IServiceProvider serviceProvider, IDialogService dialogService,
+        ILogoutService logoutService)
+        : base(dialogService, serviceProvider, "Panel rejestratora", logoutService)
     {
         InitializeHomePage();
 

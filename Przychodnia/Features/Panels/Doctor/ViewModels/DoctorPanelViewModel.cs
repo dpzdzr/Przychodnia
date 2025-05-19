@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.Input;
 using Przychodnia.Features.Entities.AppointmentFeature.ViewModels;
 using Przychodnia.Features.Entities.PatientFeature.ViewModels;
+using Przychodnia.Features.Login.Services;
 using Przychodnia.Shared.Services.DialogService;
 using Przychodnia.Shared.Services.NavigationService;
 using Przychodnia.Shared.ViewModels;
@@ -14,8 +15,8 @@ namespace Przychodnia.Features.Panels.Doctor.ViewModels;
 
 public class DoctorPanelViewModel : BaseNavigableViewModel, INavigationService
 {
-    public DoctorPanelViewModel(IDialogService dialogService, IServiceProvider services)
-        : base(dialogService, services, "Panel lekarza")
+    public DoctorPanelViewModel(IDialogService dialogService, IServiceProvider services, ILogoutService logoutService)
+        : base(dialogService, services, "Panel lekarza", logoutService)
     {
         InitializeHomePage();
 

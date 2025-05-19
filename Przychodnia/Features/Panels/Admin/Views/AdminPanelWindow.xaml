@@ -50,7 +50,8 @@
                         <Button Content="Laboratoria" Command="{Binding NavigateToLaboratoriesListCommand}"/>
                         <Button Content="Wizyty" Command="{Binding NavigateToAppointmentsListCommand}"/>
                     </StackPanel>
-                    <Button Content="Zamknij aplikację" Command="{Binding CloseCommand}" Margin="5,30,5,5" Width="160" Style="{StaticResource DangerButton}"/>
+                    <Button Content="Wyloguj" Command="{Binding LogoutCommand}" Margin="5,30,5,5" Width="160" Style="{StaticResource LogoutButton}"/>
+                    <Button Content="Zamknij aplikację" Command="{Binding CloseCommand}" Margin="5,10,5,5" Width="160" Style="{StaticResource DangerButton}"/>
                 </StackPanel>
             </Border>
         </Grid>

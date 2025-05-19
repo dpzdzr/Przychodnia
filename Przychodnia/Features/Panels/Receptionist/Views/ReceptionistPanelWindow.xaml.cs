@@ -23,7 +23,7 @@ namespace Przychodnia.Features.Panels.Receptionist.Views
         public ReceptionistPanelWindow(ReceptionistPanelViewModel vm)
         {
             InitializeComponent();
-            vm.CloseApplicationEvent += Close;
+            vm.CloseWindowEvent += Close;
             DataContext = vm;
         }
     }

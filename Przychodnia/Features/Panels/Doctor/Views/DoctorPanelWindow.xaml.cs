@@ -23,7 +23,7 @@ namespace Przychodnia.Features.Panels.Doctor.Views
         public DoctorPanelWindow(DoctorPanelViewModel vm)
         {
             InitializeComponent();
-            vm.CloseApplicationEvent += Close;
+            vm.CloseWindowEvent += Close;
             DataContext = vm;
         }
     }

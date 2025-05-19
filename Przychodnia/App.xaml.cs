@@ -80,6 +80,7 @@ namespace Przychodnia
             services.AddSingleton<ILoginService, LoginService>();
             services.AddSingleton<IViewModelFactory, ViewModelFactory>();
             services.AddSingleton<IPanelWindowFactory, PanelWindowFactory>();
+            services.AddSingleton<ILogoutService, LogoutService>();
 
             // Entities services
             services.AddTransient<IUserService, UserService>();
@@ -90,12 +91,12 @@ namespace Przychodnia
             services.AddTransient<IPatientService, PatientService>();
             services.AddTransient<IAppointmentService, AppointmentService>();
 
-            // ViewModels
-            // Panels
+            // Panels viewModels
             services.AddSingleton<AdminPanelViewModel>();
             services.AddSingleton<ReceptionistPanelViewModel>();
             services.AddSingleton<DoctorPanelViewModel>();
             
+            // Viewmodels
             services.AddSingleton<HomePageViewModel>();
             services.AddTransient<LoginViewModel>();
             services.AddTransient<UserAddViewModel>();
