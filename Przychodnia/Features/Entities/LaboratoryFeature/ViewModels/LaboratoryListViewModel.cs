@@ -11,6 +11,7 @@ using Przychodnia.Features.Entities.UserTypesFeature.Models;
 using Przychodnia.Shared.Services.DialogService;
 using Przychodnia.Shared.ViewModels;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Przychodnia.Features.Entities.LaboratoryFeature.ViewModels;
 
@@ -87,6 +88,9 @@ public partial class LaboratoryListViewModel : BaseViewModel
         {
             if (EditLab.Id is int id)
             {
+                if (!EditLab.IsValid)
+                    throw new ValidationException("Uzupełnij poprawnie wszystkie wymagane pola");
+
                 var dto = _mapper.Map<LaboratoryDTO>(EditLab);
                 await _labService.UpdateAsync(id, dto);
             }
@@ -103,6 +107,9 @@ public partial class LaboratoryListViewModel : BaseViewModel
     {
         await TryExecuteAsync(async () =>
         {
+            if(!EditLab.IsValid)
+                throw new ValidationException("Uzupełnij poprawnie wszystkie wymagane pola");
+
             var dto = _mapper.Map<LaboratoryDTO>(EditLab);
             var entity = await _labService.CreateAsync(dto);
             Labs.Add(new LaboratoryWrapper(entity, includeManager: true, includeWorkers: true));

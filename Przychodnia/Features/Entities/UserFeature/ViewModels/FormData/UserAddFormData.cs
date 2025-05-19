@@ -13,5 +13,7 @@ public class UserAddFormData : UserBaseFormData
         SelectedUserType = null;
         SelectedLaboratory = null;
         ManagedLaboratory = null;
+
+        ClearAllErrors();
     }
 }

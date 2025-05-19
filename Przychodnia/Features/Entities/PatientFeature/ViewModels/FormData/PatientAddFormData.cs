@@ -12,5 +12,7 @@ public class PatientAddFormData : PatientBaseFormData
         ApartmentNumber = string.Empty;
         PostalCode = null;
         Sex = default;
+
+        ClearAllErrors();
     }
 }

@@ -8,6 +8,7 @@ using Przychodnia.Features.Entities.UserFeature.ViewModels.FormData;
 using Przychodnia.Features.Entities.UserFeature.Wrappers;
 using Przychodnia.Features.Entities.UserTypesFeature.Services;
 using Przychodnia.Shared.Services.DialogService;
+using System.ComponentModel.DataAnnotations;
 
 namespace Przychodnia.Features.Entities.UserFeature.ViewModels;
 
@@ -39,11 +40,17 @@ public partial class UserEditViewModel : UserFormBaseViewModel<UserEditFormData>
 
     private async Task EditUserAsync()
     {
-        if (EditUserWrapper?.Id is int userId)
+        await TryExecuteAsync(async () =>
         {
-            _mapper.Map(FormData, EditUserWrapper);
-            await _userService.UpdateAsync(userId, _mapper.Map<UserDTO>(EditUserWrapper));
-            _dialogService.Show("Sukces", "Pomyślnie edytowano użytkownika");
-        }
+        if (!FormData.IsValid)
+            throw new ValidationException("Uzupełnij poprawnie wszystkie wymagane pola");
+
+            if (EditUserWrapper?.Id is int userId)
+            {
+                _mapper.Map(FormData, EditUserWrapper);
+                await _userService.UpdateAsync(userId, _mapper.Map<UserDTO>(EditUserWrapper));
+                _dialogService.Show("Sukces", "Pomyślnie edytowano użytkownika");
+            }
+        });
     }
 }

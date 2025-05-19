@@ -5,11 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Przychodnia.Features.Entities.UserFeature.Views"
         xmlns:userVMs="clr-namespace:Przychodnia.Features.Entities.UserFeature.ViewModels"
+        xmlns:converter="clr-namespace:Przychodnia.Shared.Converters"
         d:DataContext="{d:DesignInstance Type=userVMs:UserAddViewModel}"
         mc:Ignorable="d" 
         d:Width="1200" d:Height="900">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converter:BoolToHiddenConverter x:Key="BoolToHiddenConverter"/>
         <Style TargetType="StackPanel">
             <Setter Property="Width" Value="300"/>
             <Setter Property="VerticalAlignment" Value="Top"/>
@@ -56,19 +58,41 @@
                         <Run Text="Login"/>
                         <Run Text="*" Foreground="Red"/>
                     </TextBlock>
-                    <TextBox Text="{Binding FormData.Login}"/>
+                    <TextBox x:Name="loginBox" Text="{Binding FormData.Login,
+                        ValidatesOnDataErrors=True,
+                        NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Foreground="OrangeRed" FontSize="11" Margin="0,5,0,0"
+                         Text="{Binding ElementName=loginBox, 
+                                          Path=(Validation.Errors)[0].ErrorContent}"
+                         Visibility="{Binding ElementName=loginBox, 
+                                         Path=(Validation.HasError),
+                                         Converter={StaticResource BoolToHiddenConverter}}"/>
                     <TextBlock>
                         <Run Text="Hasło"/>
                         <Run Text="*" Foreground="Red"/>
                     </TextBlock>
-                    <TextBox Text="{Binding FormData.PasswordHash}"/>
+                    <TextBox x:Name="hasloBox" Text="{Binding FormData.PasswordHash, 
+                            ValidatesOnDataErrors=True,
+                            NotifyOnValidationError=True, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Foreground="OrangeRed" FontSize="11" Margin="0,5,0,0"
+                             Text="{Binding ElementName=hasloBox, 
+                                              Path=(Validation.Errors)[0].ErrorContent}"
+                             Visibility="{Binding ElementName=hasloBox, 
+                                             Path=(Validation.HasError),
+                                             Converter={StaticResource BoolToHiddenConverter}}"/>
                 </StackPanel>
                 <StackPanel Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Margin="50,30,0,0">
                     <TextBlock Text="Rola" Margin="0,0,0,5"/>
-                    <ComboBox ItemsSource="{Binding UserTypes}"
+                    <ComboBox x:Name="rolaBox" ItemsSource="{Binding UserTypes}"
                               SelectedItem="{Binding FormData.SelectedUserType, Mode=TwoWay}"
                               DisplayMemberPath="Name"
                               />
+                    <TextBlock Foreground="OrangeRed" FontSize="11" Margin="0,5,0,0"
+                         Text="{Binding ElementName=rolaBox, 
+                                          Path=(Validation.Errors)[0].ErrorContent}"
+                         Visibility="{Binding ElementName=rolaBox, 
+                                         Path=(Validation.HasError),
+                                         Converter={StaticResource BoolToHiddenConverter}}"/>
                     <TextBlock Text="Numer licencji"
                        Visibility="{Binding HasLicenseNumber, Converter={StaticResource BoolToVisibilityConverter}}"/>
                     <TextBox Text="{Binding FormData.LicenseNumber}" 

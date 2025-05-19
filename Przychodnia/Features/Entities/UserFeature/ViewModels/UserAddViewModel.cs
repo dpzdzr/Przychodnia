@@ -8,6 +8,7 @@ using Przychodnia.Features.Entities.UserFeature.Services;
 using Przychodnia.Features.Entities.UserFeature.ViewModels.FormData;
 using Przychodnia.Features.Entities.UserTypesFeature.Services;
 using Przychodnia.Shared.Services.DialogService;
+using System.ComponentModel.DataAnnotations;
 using System.Windows.Input;
 
 namespace Przychodnia.Features.Entities.UserFeature.ViewModels;
@@ -37,6 +38,9 @@ public class UserAddViewModel : UserFormBaseViewModel<UserAddFormData>
     {
         try
         {
+            if (!FormData.IsValid)
+                throw new ValidationException("Uzupełnij poprawnie wszystkie wymagane pola");
+
             var dto = _mapper.Map<UserDTO>(FormData);
             var entity = await _userService.CreateAsync(dto);
             NotifyUserAdded(entity);
