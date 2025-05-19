@@ -31,8 +31,8 @@ public partial class UserListViewModel : BaseListViewModel<UserWrapper>
 
     public UserListViewModel(IDialogService dialogService, IUserService userService,
     INavigationService navigationService, IServiceProvider serviceProvider,
-    IUserTypeService userTypeService)
-        : base(dialogService, navigationService, serviceProvider)
+    IUserTypeService userTypeService, IMessenger messenger)
+        : base(dialogService, navigationService, serviceProvider, messenger)
     {
         _userService = userService;
         _userTypeService = userTypeService;

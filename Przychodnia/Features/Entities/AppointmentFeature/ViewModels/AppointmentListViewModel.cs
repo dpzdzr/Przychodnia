@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using CommunityToolkit.Mvvm.Messaging;
+using Microsoft.Extensions.DependencyInjection;
 using Przychodnia.Features.Entities.AppointmentFeature.Services;
 using Przychodnia.Features.Entities.AppointmentFeature.Wrappers;
 using Przychodnia.Shared.Services.DialogService;
@@ -12,8 +13,8 @@ public partial class AppointmentListViewModel : BaseListViewModel<AppointmentWra
     private readonly IAppointmentService _appointmentService;
 
     public AppointmentListViewModel(IAppointmentService appointmentService, IDialogService dialogService,
-        INavigationService navigationService, IServiceProvider serviceProvider)
-        : base(dialogService, navigationService, serviceProvider)
+        INavigationService navigationService, IServiceProvider serviceProvider, IMessenger messenger)
+        : base(dialogService, navigationService, serviceProvider, messenger)
     {
         _appointmentService = appointmentService;
     }

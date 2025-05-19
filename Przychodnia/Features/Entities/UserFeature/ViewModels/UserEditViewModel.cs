@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Przychodnia.Features.Entities.LaboratoryFeature.Services;
 using Przychodnia.Features.Entities.UserFeature.Models;
 using Przychodnia.Features.Entities.UserFeature.Services;
@@ -17,8 +18,9 @@ public partial class UserEditViewModel : UserFormBaseViewModel<UserEditFormData>
 
     [ObservableProperty] private UserWrapper? editUserWrapper;
 
-    public UserEditViewModel(IDialogService dialogService, ILaboratoryService labService, IUserTypeService userTypeService, IUserService userService, IMapper mapper)
-        : base(userTypeService, labService, dialogService, mapper)
+    public UserEditViewModel(IDialogService dialogService, ILaboratoryService labService, IUserTypeService userTypeService, 
+        IUserService userService, IMapper mapper, IMessenger messenger)
+        : base(userTypeService, labService, dialogService, mapper, messenger)
     {
         _userService = userService;
         SaveUserCommand = new AsyncRelayCommand(EditUserAsync);

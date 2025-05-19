@@ -17,8 +17,8 @@ public partial class PatientListViewModel : BaseListViewModel<PatientWrapper>
     [ObservableProperty] private string selectedPatientLastName = string.Empty;
     [ObservableProperty] private string selectedPatientPesel = string.Empty;
     public PatientListViewModel(IPatientService patientService, INavigationService navigationService,
-        IServiceProvider serviceProvider, IDialogService dialogService)
-        : base(dialogService, navigationService, serviceProvider)
+        IServiceProvider serviceProvider, IDialogService dialogService, IMessenger messenger)
+        : base(dialogService, navigationService, serviceProvider, messenger)
     {
         _patientService = patientService;
 

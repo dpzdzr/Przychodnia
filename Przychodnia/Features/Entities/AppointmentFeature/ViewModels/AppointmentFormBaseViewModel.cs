@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Przychodnia.Features.Entities.AppointmentFeature.Services;
 using Przychodnia.Features.Entities.AppointmentFeature.ViewModels.FormData;
 using Przychodnia.Features.Entities.PatientFeature.Services;
@@ -30,8 +31,9 @@ public abstract partial class AppointmentFormBaseViewModel<TForm> : BaseViewMode
 
 
     public AppointmentFormBaseViewModel(IDialogService dialogService, IUserService userService,
-        IPatientService patientService, IMapper mapper, IAppointmentService appointmentService)
-        : base(dialogService)
+        IPatientService patientService, IMapper mapper, IAppointmentService appointmentService,
+        IMessenger messenger)
+        : base(dialogService, messenger)
     {
         _userService = userService;
         _patientService = patientService;

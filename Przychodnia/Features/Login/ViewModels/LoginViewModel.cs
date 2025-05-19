@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 using Przychodnia.Features.Entities.UserTypesFeature.Models;
 using Przychodnia.Features.Login.Services;
@@ -31,8 +32,9 @@ public partial class LoginViewModel : BaseViewModel
 
 
     public LoginViewModel(IDialogService dialogService, NavigationServiceProxy navigationServiceProxy, 
-        ILoginService loginService, IServiceProvider serviceProvider, IViewModelFactory viewModelFactory)
-        : base(dialogService)
+        ILoginService loginService, IServiceProvider serviceProvider, IViewModelFactory viewModelFactory, 
+        IMessenger messenger)
+        : base(dialogService, messenger)
     {
         _navigationServiceProxy = navigationServiceProxy;
         _loginService = loginService;
@@ -51,7 +53,7 @@ public partial class LoginViewModel : BaseViewModel
 
     private async Task TryLogin()
     {
-        if (await _loginService.Authenticate(inputLogin, inputPassword))
+        if (await _loginService.Authenticate(InputLogin!, InputPassword!))
         {
             var currentUser = _serviceProvider.GetRequiredService<ICurrentUserService>().GetUser();
             LoginSucceeded?.Invoke(currentUser.UserTypeId);

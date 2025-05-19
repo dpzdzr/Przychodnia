@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Przychodnia.Shared.Services.DialogService;
 using Przychodnia.Shared.Services.NavigationService;
 using Przychodnia.ViewModel.Base;
@@ -23,7 +24,8 @@ public abstract partial class BaseListViewModel<TWrapper> : BaseViewModel
     protected List<TWrapper> _allItems = [];
 
     public BaseListViewModel(IDialogService dialogService, INavigationService navigationService,
-        IServiceProvider serviceProvider) : base(dialogService)
+        IServiceProvider serviceProvider, IMessenger messenger) 
+        : base(dialogService, messenger)
     {
         _navigationService = navigationService;
         _serviceProvider = serviceProvider;

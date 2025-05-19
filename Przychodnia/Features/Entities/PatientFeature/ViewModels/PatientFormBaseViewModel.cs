@@ -8,6 +8,7 @@ using Przychodnia.Features.Entities.PatientFeature.ViewModels.FormData;
 using Przychodnia.Features.Entities.PostalCodeFeature.Messages;
 using Przychodnia.Features.Entities.PostalCodeFeature.Services;
 using Przychodnia.Features.Entities.PostalCodeFeature.Wrappers;
+using Przychodnia.Shared.Messages;
 using Przychodnia.Shared.Services.DialogService;
 using Przychodnia.Shared.ViewModels;
 using System.Collections.ObjectModel;
@@ -19,29 +20,25 @@ public abstract partial class PatientFormBaseViewModel<TForm> : BaseViewModel
 {
     protected readonly IPatientService _patientService;
     protected readonly IMapper _mapper;
-    protected readonly IMessenger _messenger;
     private readonly IPostalCodeService _postalCodeService;
+    private readonly PostalCodeWrapper DummyPostalCode = new(null, createDummy: true) { City = "brak", Code = "brak" };
 
     private List<PostalCodeWrapper> _allPostalCodes = [];
-    [ObservableProperty]
-    private PostalCodeWrapper dummyPostalCode = new(null, createDummy: true) { City = "brak", Code = "brak" };
     [ObservableProperty] private string enteredCode = string.Empty;
     [ObservableProperty] private ObservableCollection<PostalCodeWrapper> cities = [];
     [ObservableProperty] private ObservableCollection<PostalCodeWrapper> postalCodes = [];
 
     public PatientFormBaseViewModel(IPostalCodeService postalCodeService, IDialogService dialogService,
         IMapper mapper, IMessenger messenger, IPatientService patientService)
-        : base(dialogService)
+        : base(dialogService, messenger)
     {
         _mapper = mapper;
         _postalCodeService = postalCodeService;
-        _messenger = messenger;
         _patientService = patientService;
 
         SubmitCommand = new AsyncRelayCommand(Submit);
 
-        _messenger.Register<PostalCodeAltered>(this, HandlePostalCodeMessage);
-        _patientService = patientService;
+        _messenger.Register<PostalCodeChanged>(this, (r, m) => _ = HandlePostalCodeMessage(m));
     }
 
     public IAsyncRelayCommand SubmitCommand { get; }
@@ -53,19 +50,6 @@ public abstract partial class PatientFormBaseViewModel<TForm> : BaseViewModel
         {Sex.Female, "Kobieta" }
     };
 
-    public void HandlePostalCodeMessage(object recipient, PostalCodeAltered message)
-    {
-        var wrapper = message.Value;
-        var existing = _allPostalCodes.FirstOrDefault(pc => pc.Id == wrapper.Id);
-
-        if (existing is not null)
-            _mapper.Map(wrapper, existing);
-        else
-            _allPostalCodes.Add(wrapper);
-
-        FilterCodes();
-    }
-
     protected async Task InitializeFormDataAsync()
     {
         _allPostalCodes = [.. (await _postalCodeService.GetAllAsync()).Select(pc => new PostalCodeWrapper(pc))];
@@ -73,10 +57,34 @@ public abstract partial class PatientFormBaseViewModel<TForm> : BaseViewModel
     }
     protected abstract Task Submit();
 
+    private async Task HandlePostalCodeMessage(BaseEntityChangedMessage message)
+    {
+        switch (message.Value.Action)
+        {
+            case EntityChangedAction.Added:
+                await HandleAdded(message.Value.Id);
+                break;
+            case EntityChangedAction.Edited:
+                await HandleEdited(message.Value.Id);
+                break;
+        }
+        FilterCodes();
+    }
+    private async Task HandleEdited(int id)
+    {
+        var current = _allPostalCodes.Find(pc => pc.Id == id);
+        var edited = await _postalCodeService.GetByIdAsync(id);
+        _mapper.Map(edited, current);
+    }
+    private async Task HandleAdded(int id)
+    {
+        var added = await _postalCodeService.GetByIdAsync(id);
+        _allPostalCodes.Add(new(added));
+    }
     private void FilterCodes()
     {
         var filteredCities = _allPostalCodes
-            .Where(pc => string.IsNullOrEmpty(EnteredCode) || pc.Code.StartsWith(EnteredCode))
+            .Where(pc => string.IsNullOrEmpty(EnteredCode) || pc.Code!.StartsWith(EnteredCode))
             .OrderBy(k => k.Code).ToList();
         filteredCities.Insert(0, DummyPostalCode);
         Cities = [.. filteredCities];

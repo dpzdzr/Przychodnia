@@ -23,8 +23,8 @@ public abstract partial class BaseNavigableViewModel : BaseViewModel
     private readonly string _homePageCaption = string.Empty;
 
     public BaseNavigableViewModel(IDialogService dialogService, IServiceProvider services,
-        string homePageCaption, ILogoutService logoutService)
-        : base(dialogService)
+        string homePageCaption, ILogoutService logoutService, IMessenger messenger)
+        : base(dialogService, messenger)
     {
         _homePageCaption = homePageCaption ?? string.Empty;
         _services = services;
@@ -51,7 +51,21 @@ public abstract partial class BaseNavigableViewModel : BaseViewModel
     public void NavigateBack()
     {
         if (_navigationStack.Count > 0)
+        {
+            CurrentViewModel.Dispose();
             CurrentViewModel = _navigationStack.Pop();
+        }
+        UpdateNavigationState();
+    }
+    public void ClearNavigation()
+    {
+        CurrentViewModel?.Dispose();    
+        CurrentViewModel = null;
+        while (_navigationStack.Count > 0)
+        {
+            var vm = _navigationStack.Pop();
+            vm.Dispose();
+        }
         UpdateNavigationState();
     }
 
@@ -92,11 +106,12 @@ public abstract partial class BaseNavigableViewModel : BaseViewModel
     }
     private void CloseWindow()
     {
+        ClearNavigation();
         CloseWindowEvent?.Invoke();
     }
     private void Logout()
     {
         _logoutService.Logout();
         CloseWindow();
-    }    
+    }
 }

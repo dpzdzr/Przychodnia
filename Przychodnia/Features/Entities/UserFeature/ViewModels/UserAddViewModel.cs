@@ -15,14 +15,12 @@ namespace Przychodnia.Features.Entities.UserFeature.ViewModels;
 public class UserAddViewModel : UserFormBaseViewModel<UserAddFormData>
 {
     private readonly IUserService _userService;
-    private readonly IMessenger _messenger;
 
     public UserAddViewModel(IUserService userService, IUserTypeService userTypeService,
         ILaboratoryService labService, IDialogService dialogService, IMapper mapper, IMessenger messenger)
-        : base(userTypeService, labService, dialogService, mapper)
+        : base(userTypeService, labService, dialogService, mapper, messenger)
     {
         _userService = userService;
-        _messenger = messenger;
         SaveUserCommand = new AsyncRelayCommand(AddUserAsync);
     }
 

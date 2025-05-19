@@ -6,6 +6,7 @@ using Przychodnia.Features.Entities.PostalCodeFeature.Messages;
 using Przychodnia.Features.Entities.PostalCodeFeature.Models;
 using Przychodnia.Features.Entities.PostalCodeFeature.Services;
 using Przychodnia.Features.Entities.PostalCodeFeature.Wrappers;
+using Przychodnia.Shared.Messages;
 using Przychodnia.Shared.Services.DialogService;
 using Przychodnia.Shared.ViewModels;
 using System.Collections.ObjectModel;
@@ -16,18 +17,18 @@ public partial class PostalCodeListViewModel : BaseViewModel
 {
     private readonly IPostalCodeService _postalCodeService;
     private readonly IMapper _mapper;
-    private readonly IMessenger _messenger;
 
     [ObservableProperty] private bool isEditMode;
     [ObservableProperty] private PostalCodeWrapper editPostalCode;
     [ObservableProperty] private PostalCodeWrapper? selectedPostalCode;
     [ObservableProperty] private ObservableCollection<PostalCodeWrapper> postalCodes = [];
 
-    public PostalCodeListViewModel(IPostalCodeService postalCodeService, IDialogService dialogService, IMapper mapper, IMessenger messenger) : base(dialogService)
+    public PostalCodeListViewModel(IPostalCodeService postalCodeService, IDialogService dialogService, 
+        IMapper mapper, IMessenger messenger) 
+        : base(dialogService, messenger)
     {
         _postalCodeService = postalCodeService;
         _mapper = mapper;
-        _messenger = messenger;
 
         SaveCommand = new AsyncRelayCommand(SubmitPostalCodeAsync);
         CancelCommand = new RelayCommand(ClearForm, () => IsEditMode);
@@ -52,23 +53,16 @@ public partial class PostalCodeListViewModel : BaseViewModel
 
     private async Task DeletePostalCode()
     {
-        if (_dialogService.Confirm("Potwierdzenie usunięcia",
-            "Czy na pewno chcesz usunąć wybrany kod pocztowy?"))
+        await TryExecuteAsync(async () =>
         {
-            try
+            if (SelectedPostalCode is not null &&
+            _dialogService.Confirm("Potwierdzenie usunięcia", "Czy na pewno chcesz usunąć wybrany kod pocztowy?"))
             {
-                if (SelectedPostalCode is not null)
-                {
-                    if (SelectedPostalCode.Id is int id)
-                        await _postalCodeService.RemoveAsync(id);
-                    PostalCodes.Remove(SelectedPostalCode);
-                }
+                if (SelectedPostalCode.Id is int id)
+                    await _postalCodeService.RemoveAsync(id);
+                PostalCodes.Remove(SelectedPostalCode);
             }
-            catch (Exception ex)
-            {
-                _dialogService.Error("Błąd", $"{ex.Message}");
-            }
-        }
+        });
     }
     private async Task SubmitPostalCodeAsync()
     {
@@ -79,37 +73,32 @@ public partial class PostalCodeListViewModel : BaseViewModel
     }
     private async Task UpdatePostalCodeAsync()
     {
-        try
+        await TryExecuteAsync(async () =>
         {
             var dto = _mapper.Map<PostalCodeDTO>(EditPostalCode);
             if (EditPostalCode.Id is int id)
+            {
                 await _postalCodeService.UpdateAsync(id, dto);
-            _dialogService.Show("Sukces", "Pomyślnie zaktualizowano kod pocztowy");
-            _mapper.Map(EditPostalCode, SelectedPostalCode);
-            if (SelectedPostalCode is not null)
-                _messenger.Send(new PostalCodeAltered(SelectedPostalCode));
-        }
-        catch (Exception ex)
-        {
-            _dialogService.Error("Błąd", $"{ex.Message}");
-        }
+                _dialogService.Show("Sukces", "Pomyślnie zaktualizowano kod pocztowy");
+                _mapper.Map(EditPostalCode, SelectedPostalCode);
+                _messenger.Send(new PostalCodeChanged(new(id, EntityChangedAction.Edited)));
+            }
+        });
     }
     private async Task AddPostalCodeAsync()
     {
-        try
+        await TryExecuteAsync(async () =>
         {
             var dto = _mapper.Map<PostalCodeDTO>(EditPostalCode);
             var entity = await _postalCodeService.CreateAsync(dto);
-            var wrapper = new PostalCodeWrapper(entity);
-            PostalCodes.Add(wrapper);
-            _messenger.Send(new PostalCodeAltered(wrapper));
+            PostalCodes.Add(new(entity));
+
+            if (entity.Id is int id)
+                _messenger.Send(new PostalCodeChanged(new(id, EntityChangedAction.Added)));
             _dialogService.Show("Sukces", "Pomyślnie dodano kod pocztowy");
+
             ClearForm();
-        }
-        catch (Exception ex)
-        {
-            _dialogService.Error("Błąd", $"{ex.Message}");
-        }
+        });
     }
     private void ClearForm()
     {

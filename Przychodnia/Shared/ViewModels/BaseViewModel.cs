@@ -1,12 +1,14 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
 using Przychodnia.Shared.Services.DialogService;
 
 namespace Przychodnia.Shared.ViewModels;
 
-public abstract class BaseViewModel(IDialogService dialogService) : ObservableObject
+public abstract class BaseViewModel(IDialogService dialogService, IMessenger messenger) 
+    : ObservableObject, IDisposable
 {
     protected readonly IDialogService _dialogService = dialogService;
-
+    protected readonly IMessenger _messenger = messenger;
     public virtual Task InitializeAsync()
     {
         return Task.CompletedTask;
@@ -38,4 +40,25 @@ public abstract class BaseViewModel(IDialogService dialogService) : ObservableOb
             ShowError(ex, errorTitle);
         }
     }
+
+    #region Dispose pattern
+    private bool _disposed;
+    public virtual void Dispose()
+    {
+        Dispose(true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (_disposed) return;
+        if(disposing)
+        {
+            _messenger.UnregisterAll(this);
+        }
+        _disposed = true;
+    }
+
+    ~BaseViewModel() => Dispose(false);
+    #endregion
 }

@@ -19,7 +19,6 @@ public partial class LaboratoryListViewModel : BaseViewModel
     private readonly ILaboratoryService _labService;
     private readonly IUserService _userService;
     private readonly IMapper _mapper;
-    private readonly IMessenger _messenger;
 
     [ObservableProperty] private bool isEditMode;
     [ObservableProperty] private LaboratoryWrapper editLab;
@@ -29,12 +28,12 @@ public partial class LaboratoryListViewModel : BaseViewModel
     [ObservableProperty] private ObservableCollection<LaboratoryWrapper> labs = [];
 
     public LaboratoryListViewModel(IDialogService dialogService, ILaboratoryService labService,
-        IUserService userService, IMapper mapper, IMessenger messenger) : base(dialogService)
+        IUserService userService, IMapper mapper, IMessenger messenger) 
+        : base(dialogService, messenger)
     {
         _labService = labService;
         _userService = userService;
         _mapper = mapper;
-        _messenger = messenger;
 
         ActionButtonCommand = new AsyncRelayCommand(SubmitLaboratoryAsync);
         CancelButtonCommand = new RelayCommand(ClearForm, () => IsEditMode);

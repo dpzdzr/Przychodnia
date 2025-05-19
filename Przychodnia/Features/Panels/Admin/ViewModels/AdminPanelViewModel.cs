@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 using Przychodnia.Features.Entities.AppointmentFeature.ViewModels;
 using Przychodnia.Features.Entities.LaboratoryFeature.ViewModels;
@@ -16,8 +17,8 @@ namespace Przychodnia.Features.Panels.Admin.ViewModels;
 public class AdminPanelViewModel : BaseNavigableViewModel, INavigationService
 {
     public AdminPanelViewModel(IServiceProvider serviceProvider, IDialogService dialogService, 
-        ILogoutService logoutService)
-        : base(dialogService, serviceProvider, "Panel administratora", logoutService)
+        ILogoutService logoutService, IMessenger messenger)
+        : base(dialogService, serviceProvider, "Panel administratora", logoutService, messenger)
     {
         InitializeHomePage();
 

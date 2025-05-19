@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Messaging;
 using Przychodnia.Features.Entities.LaboratoryFeature.Services;
 using Przychodnia.Features.Entities.LaboratoryFeature.Wrappers;
 using Przychodnia.Features.Entities.UserFeature.ViewModels.FormData;
@@ -22,8 +23,9 @@ public abstract partial class UserFormBaseViewModel<TForm> : BaseViewModel
     [ObservableProperty] private ObservableCollection<UserTypeWrapper> userTypes = [];
     [ObservableProperty] private ObservableCollection<LaboratoryWrapper> laboratories = [];
 
-    public UserFormBaseViewModel(IUserTypeService userTypeService, ILaboratoryService laboratoryService, IDialogService dialogService, IMapper mapper)
-        : base(dialogService)
+    public UserFormBaseViewModel(IUserTypeService userTypeService, ILaboratoryService laboratoryService, 
+        IDialogService dialogService, IMapper mapper, IMessenger messenger)
+        : base(dialogService, messenger)
     {
         _mapper = mapper;
         _userTypeService = userTypeService;

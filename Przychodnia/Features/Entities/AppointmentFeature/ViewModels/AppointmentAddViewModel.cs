@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CommunityToolkit.Mvvm.Messaging;
 using Przychodnia.Features.Entities.AppointmentFeature.Models;
 using Przychodnia.Features.Entities.AppointmentFeature.Services;
 using Przychodnia.Features.Entities.AppointmentFeature.ViewModels.FormData;
@@ -10,9 +11,9 @@ using System.ComponentModel.DataAnnotations;
 namespace Przychodnia.Features.Entities.AppointmentFeature.ViewModels;
 
 public partial class AppointmentAddViewModel(IDialogService dialogService, IUserService userService,
-    IPatientService patientService, IMapper mapper, IAppointmentService appointmentService)
-    : AppointmentFormBaseViewModel<AppointmentAddFormData>(dialogService, userService, patientService,
-        mapper, appointmentService)
+    IPatientService patientService, IMapper mapper, IAppointmentService appointmentService, IMessenger messenger)
+    : AppointmentFormBaseViewModel<AppointmentAddFormData>
+    (dialogService, userService, patientService, mapper, appointmentService, messenger)
 {
 
     public static string HeaderText => "Dodaj nową wizytę";

@@ -1,4 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 using Przychodnia.Features.Entities.AppointmentFeature.ViewModels;
 using Przychodnia.Features.Entities.LaboratoryFeature.ViewModels;
@@ -21,8 +22,8 @@ namespace Przychodnia.Features.Panels.Receptionist.ViewModels;
 public class ReceptionistPanelViewModel : BaseNavigableViewModel, INavigationService
 {
     public ReceptionistPanelViewModel(IServiceProvider serviceProvider, IDialogService dialogService,
-        ILogoutService logoutService)
-        : base(dialogService, serviceProvider, "Panel rejestratora", logoutService)
+        ILogoutService logoutService, IMessenger messenger)
+        : base(dialogService, serviceProvider, "Panel rejestratora", logoutService, messenger)
     {
         InitializeHomePage();
 
