@@ -32,7 +32,7 @@ public abstract partial class AppointmentBaseFormData : ObservableValidator
     private UserWrapper? selectedDoctor;
 
     [ObservableProperty]
-    private bool? completed;
+    private bool? completed = false;
 
     public PatientWrapper? SelectedPatient { get; set; }
     public DateTime? FullDate =>

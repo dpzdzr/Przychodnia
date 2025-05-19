@@ -126,9 +126,13 @@
                                    Visibility="{Binding ElementName=HourBox, 
                                                         Path=(Validation.HasError),
                                                         Converter={StaticResource BoolToHiddenConverter}}"/>
+
+                            <TextBlock Text="Zrealizowana"/>
+                            <CheckBox VerticalAlignment="Bottom" Margin="0,5,0,0" IsChecked="{Binding FormData.Completed}"/>
+ 
                     </StackPanel>
                 </StackPanel>
-                
+
                 <Button Grid.Row="3" Grid.ColumnSpan="2" Margin="0,30,0,0" IsDefault="True"
                         Content="{Binding SubmitButtonText}" 
                         Command="{Binding SubmitCommand}"/>

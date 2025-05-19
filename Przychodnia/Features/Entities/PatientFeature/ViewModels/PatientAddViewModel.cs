@@ -24,14 +24,14 @@ public class PatientAddViewModel(IPostalCodeService postalCodeService, IDialogSe
         {
             var dto = _mapper.Map<PatientDTO>(FormData);
             var entity = await _patientService.CreateAsync(dto);
-            NotifyPatientAdded(entity);
+            //NotifyPatientAdded(entity);
             _dialogService.Show("Sukces", "Pomyślnie dodano nowego pacjenta");
             ClearForm();
         });
     }
 
-    private void NotifyPatientAdded(Patient entity)
-        => _messenger.Send(new PatientAddedMessage(entity));
+    //private void NotifyPatientAdded(Patient entity)
+    //    => _messenger.Send(new PatientAddedMessage(entity));
     private void ClearForm()
     {
         EnteredCode = string.Empty;

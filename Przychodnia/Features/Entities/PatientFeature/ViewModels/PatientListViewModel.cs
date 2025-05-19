@@ -22,10 +22,11 @@ public partial class PatientListViewModel : BaseListViewModel<PatientWrapper>
     {
         _patientService = patientService;
 
-        WeakReferenceMessenger.Default.Register<PatientAddedMessage>(this, (r, m) =>
-        {
-            Items.Add(new PatientWrapper(m.Value));
-        });
+
+        //WeakReferenceMessenger.Default.Register<PatientAddedMessage>(this, (r, m) =>
+        //{
+        //    Items.Add(new PatientWrapper(m.Value));
+        //});
     }
 
     public static string HeaderText => "Pacjenci";
