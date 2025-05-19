@@ -45,7 +45,7 @@
                     <ContentControl Content="{Binding}">
                         <ContentControl.Resources>
                             <DataTemplate DataType="{x:Type appointmentVMs:AppointmentListViewModel}">
-                                
+                                <appointmentViews:AppointmentFilterView/>
                             </DataTemplate>
                             <DataTemplate DataType="{x:Type userVMs:UserListViewModel}">
                                 <userViews:UserFilterView/>

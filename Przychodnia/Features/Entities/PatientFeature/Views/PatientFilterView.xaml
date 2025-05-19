@@ -10,15 +10,15 @@
     <Grid d:Background="Gray" d:Height="Auto">
         <StackPanel HorizontalAlignment="Left" Orientation="Horizontal" Margin="0,20,0,0" >
             <StackPanel Width="170" Margin="10,0,0,10">
-                <TextBlock Text="Imię" FontSize="17" FontWeight="ExtraLight"/>
+                <TextBlock Text="Imię" FontSize="17" FontWeight="ExtraLight" Margin="0,0,0,5"/>
                 <TextBox Text="{Binding SelectedPatientFirstName}"/>
             </StackPanel>
             <StackPanel Width="170" Margin="60,0,0,10">
-                <TextBlock Text="Nazwisko" FontSize="17" FontWeight="ExtraLight"/>
+                <TextBlock Text="Nazwisko" FontSize="17" FontWeight="ExtraLight" Margin="0,0,0,5"/>
                 <TextBox Text="{Binding SelectedPatientLastName}"/>
             </StackPanel>            
             <StackPanel Width="170" Margin="60,0,0,10">
-                <TextBlock Text="PESEL" FontSize="17" FontWeight="ExtraLight"/>
+                <TextBlock Text="PESEL" FontSize="17" FontWeight="ExtraLight" Margin="0,0,0,5"/>
                 <TextBox Text="{Binding SelectedPatientPesel}"/>
             </StackPanel>
 

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 using Przychodnia.Features.Entities.AppointmentFeature.Messages;
@@ -16,6 +17,12 @@ public partial class AppointmentListViewModel : BaseListViewModel<AppointmentWra
 {
     private readonly IAppointmentService _appointmentService;
     private readonly IMapper _mapper;
+    private List<AppointmentWrapper> _allAppointments = [];
+
+    [ObservableProperty] private string patientFullNameFilter = string.Empty;
+    [ObservableProperty] private string doctorFullNameFilter = string.Empty;
+    [ObservableProperty] private string patientPeselFilter = string.Empty;
+    [ObservableProperty] private DateTime? dateFilter;
 
     public AppointmentListViewModel(IAppointmentService appointmentService, IDialogService dialogService,
         INavigationService navigationService, IServiceProvider serviceProvider, IMessenger messenger,
@@ -26,6 +33,51 @@ public partial class AppointmentListViewModel : BaseListViewModel<AppointmentWra
         _mapper = mapper;
 
         _messenger.Register<AppointmentChangedMessage>(this, (r, m) => _ = HandleAppointmentChangedMessage(m));
+    }
+
+    public static string HeaderText => "Wizyty";
+
+    public override async Task InitializeAsync()
+    {
+        var items = await _appointmentService.GetAllWithDetailsAsync();
+        _allAppointments = [.. items.Select(a => new AppointmentWrapper(a))];
+        Items = [.. _allAppointments];
+    }
+
+    protected override async Task Add()
+    {
+        var addVm = _serviceProvider.GetRequiredService<AppointmentAddViewModel>();
+        await addVm.InitializeAsync();
+        _navigationService.NavigateTo(addVm);
+    }
+    protected override void ClearFilter()
+    {
+        Items = [.. _allAppointments];
+        DoctorFullNameFilter = string.Empty;
+        PatientPeselFilter = string.Empty;
+        PatientFullNameFilter = string.Empty;
+        DateFilter = null;
+    }
+    protected override async Task Edit()
+    {
+        var editVm = _serviceProvider.GetRequiredService<AppointmentEditViewModel>();
+        await editVm.InitializeAsync(SelectedItem!);
+        _navigationService.NavigateTo(editVm);
+    }
+    protected override void Filter() => Items = [.. ApplyFilters()];
+    protected async override Task Remove()
+    {
+        await TryExecuteAsync(async () =>
+        {
+            if (Confirm("Potwierdzenie usunięcia", "Czy na pewno chcesz usunąć wybraną wizytę?"))
+            {
+                if (SelectedItem is null || SelectedItem.Id is not int id)
+                    throw new InvalidOperationException("Nie można usunąć wizyty bez ID");
+
+                await _appointmentService.RemoveAsync(id);
+                Items.Remove(SelectedItem);
+            }
+        });
     }
 
     private async Task HandleAppointmentChangedMessage(AppointmentChangedMessage message)
@@ -40,64 +92,29 @@ public partial class AppointmentListViewModel : BaseListViewModel<AppointmentWra
                 break;
         }
     }
-
     private async Task HandleEdited(int id)
     {
         var current = Items.First(a => a.Id == id);
         var edited = await _appointmentService.GetByIdAsync(id);
         _mapper.Map(edited, current);
     }
-
     private async Task HandleAdded(int id)
     {
         var added = await _appointmentService.GetByIdAsync(id);
         Items.Add(new(added));
     }
 
-    public static string HeaderText => "Wizyty";
-
-    public override async Task InitializeAsync()
+    private IEnumerable<AppointmentWrapper> ApplyFilters()
     {
-        var items = await _appointmentService.GetAllWithDetailsAsync();
-        Items = [.. items.Select(a => new AppointmentWrapper(a))];
-    }
+        var query = _allAppointments?.AsEnumerable() ?? [];
 
-    protected override async Task Add()
-    {
-        var addVm = _serviceProvider.GetRequiredService<AppointmentAddViewModel>();
-        await addVm.InitializeAsync();
-        _navigationService.NavigateTo(addVm);
-    }
+        query = FilterByStringAttribute(query, a => a.AttendingDoctor.FullName, DoctorFullNameFilter);
+        query = FilterByStringAttribute(query, a => a.Patient.FullName, PatientFullNameFilter);
+        query = FilterByStringAttribute(query, a => a.Patient.Pesel, PatientPeselFilter);
 
-    protected override void ClearFilter()
-    {
-        throw new NotImplementedException();
-    }
+        if (DateFilter is DateTime dt)
+            query = query.Where(a => a.OnlyDate == DateOnly.FromDateTime(dt));
 
-    protected override async Task Edit()
-    {
-        var editVm = _serviceProvider.GetRequiredService<AppointmentEditViewModel>();
-        await editVm.InitializeAsync(SelectedItem!);
-        _navigationService.NavigateTo(editVm);
-    }
-
-    protected override void Filter()
-    {
-        throw new NotImplementedException();
-    }
-
-    protected async override Task Remove()
-    {
-        await TryExecuteAsync(async () =>
-        {
-            if (Confirm("Potwierdzenie usunięcia", "Czy na pewno chcesz usunąć wybraną wizytę?"))
-            {
-                if (SelectedItem is null || SelectedItem.Id is not int id)
-                    throw new InvalidOperationException("Nie można usunąć wizyty bez ID");
-
-                await _appointmentService.RemoveAsync(id);
-                Items.Remove(SelectedItem);
-            }
-        });
+        return query;
     }
 }
