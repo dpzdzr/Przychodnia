@@ -1,22 +1,57 @@
-﻿using CommunityToolkit.Mvvm.Messaging;
+﻿using AutoMapper;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.DependencyInjection;
+using Przychodnia.Features.Entities.AppointmentFeature.Messages;
 using Przychodnia.Features.Entities.AppointmentFeature.Services;
 using Przychodnia.Features.Entities.AppointmentFeature.Wrappers;
+using Przychodnia.Shared.Messages;
 using Przychodnia.Shared.Services.DialogService;
 using Przychodnia.Shared.Services.NavigationService;
 using Przychodnia.Shared.ViewModels;
+using System.Threading.Tasks;
 
 namespace Przychodnia.Features.Entities.AppointmentFeature.ViewModels;
 
 public partial class AppointmentListViewModel : BaseListViewModel<AppointmentWrapper>
 {
     private readonly IAppointmentService _appointmentService;
+    private readonly IMapper _mapper;
 
     public AppointmentListViewModel(IAppointmentService appointmentService, IDialogService dialogService,
-        INavigationService navigationService, IServiceProvider serviceProvider, IMessenger messenger)
+        INavigationService navigationService, IServiceProvider serviceProvider, IMessenger messenger,
+        IMapper mapper)
         : base(dialogService, navigationService, serviceProvider, messenger)
     {
         _appointmentService = appointmentService;
+        _mapper = mapper;
+
+        _messenger.Register<AppointmentChangedMessage>(this, (r, m) => _ = HandleAppointmentChangedMessage(m));
+    }
+
+    private async Task HandleAppointmentChangedMessage(AppointmentChangedMessage message)
+    {
+        switch (message.Value.Action)
+        {
+            case EntityChangedAction.Added:
+                await HandleAdded(message.Value.Id);
+                break;
+            case EntityChangedAction.Edited:
+                await HandleEdited(message.Value.Id);
+                break;
+        }
+    }
+
+    private async Task HandleEdited(int id)
+    {
+        var current = Items.First(a => a.Id == id);
+        var edited = await _appointmentService.GetByIdAsync(id);
+        _mapper.Map(edited, current);
+    }
+
+    private async Task HandleAdded(int id)
+    {
+        var added = await _appointmentService.GetByIdAsync(id);
+        Items.Add(new(added));
     }
 
     public static string HeaderText => "Wizyty";

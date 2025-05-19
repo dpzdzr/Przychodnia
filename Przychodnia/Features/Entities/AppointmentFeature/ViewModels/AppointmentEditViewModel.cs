@@ -1,11 +1,14 @@
 ﻿using AutoMapper;
 using CommunityToolkit.Mvvm.Messaging;
+using Przychodnia.Core.Interfaces;
+using Przychodnia.Features.Entities.AppointmentFeature.Messages;
 using Przychodnia.Features.Entities.AppointmentFeature.Models;
 using Przychodnia.Features.Entities.AppointmentFeature.Services;
 using Przychodnia.Features.Entities.AppointmentFeature.ViewModels.FormData;
 using Przychodnia.Features.Entities.AppointmentFeature.Wrappers;
 using Przychodnia.Features.Entities.PatientFeature.Services;
 using Przychodnia.Features.Entities.UserFeature.Services;
+using Przychodnia.Shared.Messages;
 using Przychodnia.Shared.Services.DialogService;
 using System.ComponentModel.DataAnnotations;
 
@@ -46,7 +49,9 @@ public partial class AppointmentEditViewModel(IDialogService dialogService, IUse
 
             _mapper.Map(FormData, appointmentWrapper);
             var dto = _mapper.Map<AppointmentDTO>(FormData);
-            await _appointmentService.UpdateAsync(FormData.Id, dto);
+            var id = FormData.Id;
+            await _appointmentService.UpdateAsync(id, dto);
+            _messenger.Send<AppointmentChangedMessage>(new(new(id, EntityChangedAction.Edited)));
             ShowSucces("Pomyślnie edytowano wizytę");
         });
     }

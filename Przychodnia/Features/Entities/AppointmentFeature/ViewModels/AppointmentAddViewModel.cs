@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using CommunityToolkit.Mvvm.Messaging;
+using Przychodnia.Features.Entities.AppointmentFeature.Messages;
 using Przychodnia.Features.Entities.AppointmentFeature.Models;
 using Przychodnia.Features.Entities.AppointmentFeature.Services;
 using Przychodnia.Features.Entities.AppointmentFeature.ViewModels.FormData;
 using Przychodnia.Features.Entities.PatientFeature.Services;
 using Przychodnia.Features.Entities.UserFeature.Services;
+using Przychodnia.Shared.Messages;
 using Przychodnia.Shared.Services.DialogService;
 using System.ComponentModel.DataAnnotations;
 
@@ -30,8 +32,9 @@ public partial class AppointmentAddViewModel(IDialogService dialogService, IUser
 
             var dto = _mapper.Map<AppointmentDTO>(FormData);
             dto.PatientId = (await _patientService.GetByPeselAsync(FormData.EnteredPatientPesel))!.Id;
-            await _appointmentService.CreateAsync(dto);
+            var entity = await _appointmentService.CreateAsync(dto);
             ShowSucces("Pomyślnie dodano nową wizytę");
+            _messenger.Send<AppointmentChangedMessage>(new(new(entity.Id, EntityChangedAction.Added)));
             ClearForm();
         });
     }
