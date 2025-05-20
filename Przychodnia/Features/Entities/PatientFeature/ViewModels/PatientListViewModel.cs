@@ -1,9 +1,12 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using AutoMapper;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 using Przychodnia.Features.Entities.PatientFeature.Messages;
+using Przychodnia.Features.Entities.PatientFeature.Models;
 using Przychodnia.Features.Entities.PatientFeature.Services;
 using Przychodnia.Features.Entities.PatientFeature.Wrappers;
+using Przychodnia.Shared.Messages;
 using Przychodnia.Shared.Services.DialogService;
 using Przychodnia.Shared.Services.NavigationService;
 using Przychodnia.Shared.ViewModels;
@@ -13,20 +16,25 @@ namespace Przychodnia.Features.Entities.PatientFeature.ViewModels;
 public partial class PatientListViewModel : BaseListViewModel<PatientWrapper>
 {
     private readonly IPatientService _patientService;
+    private readonly IMapper _mapper;
+
     [ObservableProperty] private string selectedPatientFirstName = string.Empty;
     [ObservableProperty] private string selectedPatientLastName = string.Empty;
     [ObservableProperty] private string selectedPatientPesel = string.Empty;
-    public PatientListViewModel(IPatientService patientService, INavigationService navigationService,
-        IServiceProvider serviceProvider, IDialogService dialogService, IMessenger messenger)
+
+    public PatientListViewModel(
+        IPatientService patientService, 
+        INavigationService navigationService,
+        IServiceProvider serviceProvider, 
+        IDialogService dialogService, 
+        IMessenger messenger,
+        IMapper mapper)
         : base(dialogService, navigationService, serviceProvider, messenger)
     {
         _patientService = patientService;
+        _mapper = mapper;
 
-
-        //WeakReferenceMessenger.Default.Register<PatientAddedMessage>(this, (r, m) =>
-        //{
-        //    Items.Add(new PatientWrapper(m.Value));
-        //});
+        _messenger.Register<PatientChangedMessage>(this, (r, m) => HandlePatientChangedMessage(m));
     }
 
     public static string HeaderText => "Pacjenci";
@@ -37,6 +45,7 @@ public partial class PatientListViewModel : BaseListViewModel<PatientWrapper>
         _allItems = [.. patients.Select(p => new PatientWrapper(p))];
         Items = [.. _allItems];
     }
+
     protected override async Task Add()
     {
         var addVm = _serviceProvider.GetRequiredService<PatientAddViewModel>();
@@ -73,6 +82,27 @@ public partial class PatientListViewModel : BaseListViewModel<PatientWrapper>
         });
     }
 
+    private void HandlePatientChangedMessage(PatientChangedMessage message)
+    {
+        switch (message.Value.Action)
+        { 
+            case EntityChangedAction.Added:
+                HandleAdded((Patient)message.Value.Entity);
+                break;            
+            case EntityChangedAction.Edited:
+                HandleEdited((Patient)message.Value.Entity);
+                break;
+        }
+    }
+    private void HandleAdded(Patient entity)
+    {
+        Items.Add(new(entity));
+    }
+    private void HandleEdited(Patient entity)
+    {
+        var current = Items.First(p => p.Id == entity.Id);
+        _mapper.Map(entity, current);
+    }
     private IEnumerable<PatientWrapper> ApplyFilters()
     {
         var query = _allItems?.AsEnumerable() ?? [];

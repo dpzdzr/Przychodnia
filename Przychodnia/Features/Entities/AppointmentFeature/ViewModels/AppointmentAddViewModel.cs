@@ -34,7 +34,7 @@ public partial class AppointmentAddViewModel(IDialogService dialogService, IUser
             dto.PatientId = (await _patientService.GetByPeselAsync(FormData.EnteredPatientPesel))!.Id;
             var entity = await _appointmentService.CreateAsync(dto);
             ShowSucces("Pomyślnie dodano nową wizytę");
-            _messenger.Send<AppointmentChangedMessage>(new(new(entity.Id, EntityChangedAction.Added)));
+            _messenger.Send<AppointmentChangedMessage>(new(new(entity, EntityChangedAction.Added)));
             ClearForm();
         });
     }

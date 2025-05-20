@@ -8,7 +8,7 @@ using Przychodnia.Features.Entities.UserTypesFeature.Services;
 
 namespace Przychodnia.Features.Entities.UserFeature.Services;
 
-public class UserService(IUserRepository userRepo, ILaboratoryService labService,
+public class UserService(IUserRepository userRepo, ILaboratoryService labService, 
     IUserTypeService userTypeService, IMapper mapper)
     : BaseEntityService<User, UserDTO, IUserRepository>(userRepo, mapper), IUserService, IUserLookupService
 {

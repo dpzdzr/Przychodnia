@@ -23,8 +23,8 @@ public partial class PostalCodeListViewModel : BaseViewModel
     [ObservableProperty] private PostalCodeWrapper? selectedPostalCode;
     [ObservableProperty] private ObservableCollection<PostalCodeWrapper> postalCodes = [];
 
-    public PostalCodeListViewModel(IPostalCodeService postalCodeService, IDialogService dialogService, 
-        IMapper mapper, IMessenger messenger) 
+    public PostalCodeListViewModel(IPostalCodeService postalCodeService, IDialogService dialogService,
+        IMapper mapper, IMessenger messenger)
         : base(dialogService, messenger)
     {
         _postalCodeService = postalCodeService;
@@ -81,7 +81,9 @@ public partial class PostalCodeListViewModel : BaseViewModel
                 await _postalCodeService.UpdateAsync(id, dto);
                 _dialogService.Show("Sukces", "Pomyślnie zaktualizowano kod pocztowy");
                 _mapper.Map(EditPostalCode, SelectedPostalCode);
-                _messenger.Send(new PostalCodeChanged(new(id, EntityChangedAction.Edited)));
+
+                var entity = await _postalCodeService.GetByIdAsync(id);
+                _messenger.Send(new PostalCodeChanged(new(entity!, EntityChangedAction.Edited)));
             }
         });
     }
@@ -93,8 +95,7 @@ public partial class PostalCodeListViewModel : BaseViewModel
             var entity = await _postalCodeService.CreateAsync(dto);
             PostalCodes.Add(new(entity));
 
-            if (entity.Id is int id)
-                _messenger.Send(new PostalCodeChanged(new(id, EntityChangedAction.Added)));
+            _messenger.Send(new PostalCodeChanged(new(entity, EntityChangedAction.Added)));
             _dialogService.Show("Sukces", "Pomyślnie dodano kod pocztowy");
 
             ClearForm();

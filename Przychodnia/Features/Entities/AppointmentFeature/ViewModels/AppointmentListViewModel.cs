@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.DependencyInjection;
 using Przychodnia.Features.Entities.AppointmentFeature.Messages;
+using Przychodnia.Features.Entities.AppointmentFeature.Models;
 using Przychodnia.Features.Entities.AppointmentFeature.Services;
 using Przychodnia.Features.Entities.AppointmentFeature.Wrappers;
 using Przychodnia.Shared.Messages;
@@ -24,15 +25,19 @@ public partial class AppointmentListViewModel : BaseListViewModel<AppointmentWra
     [ObservableProperty] private string patientPeselFilter = string.Empty;
     [ObservableProperty] private DateTime? dateFilter;
 
-    public AppointmentListViewModel(IAppointmentService appointmentService, IDialogService dialogService,
-        INavigationService navigationService, IServiceProvider serviceProvider, IMessenger messenger,
+    public AppointmentListViewModel(
+        IAppointmentService appointmentService, 
+        IDialogService dialogService,
+        INavigationService navigationService, 
+        IServiceProvider serviceProvider, 
+        IMessenger messenger,
         IMapper mapper)
         : base(dialogService, navigationService, serviceProvider, messenger)
     {
         _appointmentService = appointmentService;
         _mapper = mapper;
 
-        _messenger.Register<AppointmentChangedMessage>(this, (r, m) => _ = HandleAppointmentChangedMessage(m));
+        _messenger.Register<AppointmentChangedMessage>(this, (r, m) => HandleAppointmentChangedMessage(m));
     }
 
     public static string HeaderText => "Wizyty";
@@ -80,28 +85,26 @@ public partial class AppointmentListViewModel : BaseListViewModel<AppointmentWra
         });
     }
 
-    private async Task HandleAppointmentChangedMessage(AppointmentChangedMessage message)
+    private void HandleAppointmentChangedMessage(AppointmentChangedMessage message)
     {
         switch (message.Value.Action)
         {
             case EntityChangedAction.Added:
-                await HandleAdded(message.Value.Id);
+                HandleAdded((Appointment)message.Value.Entity);
                 break;
             case EntityChangedAction.Edited:
-                await HandleEdited(message.Value.Id);
+                HandleEdited((Appointment)message.Value.Entity);
                 break;
         }
     }
-    private async Task HandleEdited(int id)
+    private void HandleEdited(Appointment entity)
     {
-        var current = Items.First(a => a.Id == id);
-        var edited = await _appointmentService.GetByIdAsync(id);
-        _mapper.Map(edited, current);
+        var current = Items.First(a => a.Id == entity.Id);
+        _mapper.Map(entity, current);
     }
-    private async Task HandleAdded(int id)
+    private void HandleAdded(Appointment entity)
     {
-        var added = await _appointmentService.GetByIdAsync(id);
-        Items.Add(new(added));
+        Items.Add(new(entity));
     }
 
     private IEnumerable<AppointmentWrapper> ApplyFilters()

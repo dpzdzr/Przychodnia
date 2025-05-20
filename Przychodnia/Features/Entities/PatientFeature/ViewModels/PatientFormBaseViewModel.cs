@@ -6,6 +6,7 @@ using Przychodnia.Features.Entities.PatientFeature.Models;
 using Przychodnia.Features.Entities.PatientFeature.Services;
 using Przychodnia.Features.Entities.PatientFeature.ViewModels.FormData;
 using Przychodnia.Features.Entities.PostalCodeFeature.Messages;
+using Przychodnia.Features.Entities.PostalCodeFeature.Models;
 using Przychodnia.Features.Entities.PostalCodeFeature.Services;
 using Przychodnia.Features.Entities.PostalCodeFeature.Wrappers;
 using Przychodnia.Shared.Messages;
@@ -38,7 +39,7 @@ public abstract partial class PatientFormBaseViewModel<TForm> : BaseViewModel
 
         SubmitCommand = new AsyncRelayCommand(Submit);
 
-        _messenger.Register<PostalCodeChanged>(this, (r, m) => _ = HandlePostalCodeMessage(m));
+        _messenger.Register<PostalCodeChanged>(this, (r, m) => HandlePostalCodeMessage(m));
     }
 
     public IAsyncRelayCommand SubmitCommand { get; }
@@ -57,29 +58,27 @@ public abstract partial class PatientFormBaseViewModel<TForm> : BaseViewModel
     }
     protected abstract Task Submit();
 
-    private async Task HandlePostalCodeMessage(BaseEntityChangedMessage message)
+    private void HandlePostalCodeMessage(BaseEntityChangedMessage message)
     {
         switch (message.Value.Action)
         {
             case EntityChangedAction.Added:
-                await HandleAdded(message.Value.Id);
+                HandleAdded((PostalCode)message.Value.Entity);
                 break;
             case EntityChangedAction.Edited:
-                await HandleEdited(message.Value.Id);
+                HandleEdited((PostalCode)message.Value.Entity);
                 break;
         }
         FilterCodes();
     }
-    private async Task HandleEdited(int id)
+    private void HandleEdited(PostalCode entity)
     {
-        var current = _allPostalCodes.Find(pc => pc.Id == id);
-        var edited = await _postalCodeService.GetByIdAsync(id);
-        _mapper.Map(edited, current);
+        var current = _allPostalCodes.Find(pc => pc.Id == entity.Id);
+        _mapper.Map(entity, current);
     }
-    private async Task HandleAdded(int id)
+    private void HandleAdded(PostalCode entity)
     {
-        var added = await _postalCodeService.GetByIdAsync(id);
-        _allPostalCodes.Add(new(added));
+        _allPostalCodes.Add(new(entity));
     }
     private void FilterCodes()
     {

@@ -25,7 +25,7 @@ public class LoginService(IUserLookupService userLookupService, IServiceProvider
     {
         var user = await _userLookupService.GetByLogin(login);
 
-        if (user is not null && VerifyPassword(user.PasswordHash, inputPassword))
+        if (user is not null && user.IsActive && VerifyPassword(user.PasswordHash, inputPassword))
         {
             var dto = _mapper.Map<UserDTO>(user);
             _serviceProvider.GetRequiredService<ICurrentUserService>().SetUser(dto);

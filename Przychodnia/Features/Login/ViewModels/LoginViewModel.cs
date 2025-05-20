@@ -60,7 +60,7 @@ public partial class LoginViewModel : BaseViewModel
             DisposePassword();  
         }
         else
-            ShowError("Niepoprawne dane logowania");
+            ShowError("Niepoprawne dane logowania lub użytkownik nieaktywny.");
        
     }
     private bool IsPasswordNotEmpty => InputPassword is not null && InputPassword.Length > 0;

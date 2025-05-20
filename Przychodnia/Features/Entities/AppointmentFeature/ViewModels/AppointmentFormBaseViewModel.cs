@@ -30,8 +30,12 @@ public abstract partial class AppointmentFormBaseViewModel<TForm> : BaseViewMode
     [ObservableProperty] private ObservableCollection<TimeSpan> availableHours = [];
 
 
-    public AppointmentFormBaseViewModel(IDialogService dialogService, IUserService userService,
-        IPatientService patientService, IMapper mapper, IAppointmentService appointmentService,
+    public AppointmentFormBaseViewModel(
+        IDialogService dialogService, 
+        IUserService userService,
+        IPatientService patientService, 
+        IMapper mapper, 
+        IAppointmentService appointmentService,
         IMessenger messenger)
         : base(dialogService, messenger)
     {
@@ -50,12 +54,20 @@ public abstract partial class AppointmentFormBaseViewModel<TForm> : BaseViewMode
     public async Task InitializeFormDataAsync()
     {
         var doctors = (await _userService.GetAllWithDetailsAsync())
-            .Where(u => u.UserTypeId == (int)UserTypeEnum.Lekarz);
-        Doctors = [.. doctors.Select(u => new UserWrapper(u)).ToList()];
-        FormData.SelectedDoctor = Doctors.First();
+            .Where(u => u.IsActive == true && u.UserTypeId == (int)UserTypeEnum.Lekarz);
+
+        if (doctors.Any())
+        {
+            Doctors = [.. doctors.Select(u => new UserWrapper(u)).ToList()];
+            FormData.SelectedDoctor = Doctors.First();
+        }
 
         var patients = await _patientService.GetAllWithDetailsAsync();
-        Patients = [.. patients.Select(u => new PatientWrapper(u)).ToList()];
+
+        if (patients.Any())
+        {
+            Patients = [.. patients.Select(u => new PatientWrapper(u)).ToList()];
+        }
 
         await UpdateAvailableHours();
     }

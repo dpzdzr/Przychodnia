@@ -14,8 +14,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Przychodnia.Features.Entities.AppointmentFeature.ViewModels;
 
-public partial class AppointmentEditViewModel(IDialogService dialogService, IUserService userService,
-    IPatientService patientService, IAppointmentService appointmentService, IMapper mapper, IMessenger messenger)
+public partial class AppointmentEditViewModel(
+    IDialogService dialogService, 
+    IUserService userService,
+    IPatientService patientService, 
+    IAppointmentService appointmentService, 
+    IMapper mapper, 
+    IMessenger messenger)
     : AppointmentFormBaseViewModel<AppointmentEditFormData>
     (dialogService, userService, patientService, mapper, appointmentService, messenger)
 {
@@ -51,7 +56,8 @@ public partial class AppointmentEditViewModel(IDialogService dialogService, IUse
             var dto = _mapper.Map<AppointmentDTO>(FormData);
             var id = FormData.Id;
             await _appointmentService.UpdateAsync(id, dto);
-            _messenger.Send<AppointmentChangedMessage>(new(new(id, EntityChangedAction.Edited)));
+            var entity = await _appointmentService.GetByIdAsync(id);
+            _messenger.Send<AppointmentChangedMessage>(new(new(entity!, EntityChangedAction.Edited)));
             ShowSucces("Pomyślnie edytowano wizytę");
         });
     }
