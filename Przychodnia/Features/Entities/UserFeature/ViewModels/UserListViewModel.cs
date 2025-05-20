@@ -24,8 +24,6 @@ public partial class UserListViewModel : BaseListViewModel<UserWrapper>
     private readonly IUserTypeService _userTypeService;
     private readonly IMapper _mapper;
 
-
-
     private List<UserTypeWrapper> userTypes = [];
     [ObservableProperty]
     private ObservableCollection<string> userTypeNames = [];
@@ -54,7 +52,7 @@ public partial class UserListViewModel : BaseListViewModel<UserWrapper>
     public override async Task InitializeAsync()
     {
         _allItems = [.. (await _userService.GetAllWithDetailsAsync())
-            .Select(u => new UserWrapper(u))];
+            .Select(u => new UserWrapper(u, true))];
         Items = [.. _allItems];
 
         var names = await _userTypeService.GetNamesAsync();

@@ -8,7 +8,7 @@ using Przychodnia.Features.Entities.UserTypesFeature.Services;
 
 namespace Przychodnia.Features.Entities.UserFeature.Services;
 
-public class UserService(IUserRepository userRepo, ILaboratoryService labService, 
+public class UserService(IUserRepository userRepo, ILaboratoryService labService,
     IUserTypeService userTypeService, IMapper mapper)
     : BaseEntityService<User, UserDTO, IUserRepository>(userRepo, mapper), IUserService, IUserLookupService
 {
@@ -60,7 +60,8 @@ public class UserService(IUserRepository userRepo, ILaboratoryService labService
     }
     public override async Task RemoveAsync(int id)
     {
-        var entity = await GetByIdAsync(id);
+        var entity = await GetByIdWithDetailsAsync(id);
+        EnsureCanBeRemoved(entity);
         _repo.Remove(entity!);
         await _repo.SaveChangesAsync();
     }
@@ -91,4 +92,26 @@ public class UserService(IUserRepository userRepo, ILaboratoryService labService
                 throw new InvalidOperationException("Użytkownik z podanym loginem jest już w bazie");
         }
     }
+    private static void EnsureCanBeRemoved(User user)
+    {
+        switch (user.UserTypeId)
+        {
+            case (int)UserTypeEnum.Lekarz:
+                if (user.AttendedAppointments.Count > 0)
+                    throw new InvalidOperationException("Nie można usunąć lekarza z przypisanymi wizytami.");
+                break;
+
+            case (int)UserTypeEnum.Rejestrator:
+                if (user.ScheduledAppointments.Count > 0)
+                    throw new InvalidOperationException("Nie można usunąć rejestratora z przypisanymi wizytami.");
+                break;
+
+            case (int)UserTypeEnum.KierownikLaboratorium:
+                if (user.ManagedLaboratory != null)
+                    throw new InvalidOperationException("Nie można usunąć kierownika laboratorium zarządzającego jednostką.");
+                break;
+                // brak default – inne typy użytkowników nie są sprawdzane
+        }
+    }
+
 }

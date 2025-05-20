@@ -17,7 +17,12 @@ public class UserRepository(AppDbContext context)
 
     public async Task<List<User>> GetAllWithDetailsAsync()
     { 
-        return await _dbSet.Include(u => u.UserType).Include(u => u.Laboratory).ToListAsync(); 
+        return await _dbSet.Include(u => u.UserType)
+            .Include(u => u.Laboratory)
+            .Include(u => u.ManagedLaboratory)
+            .Include(u => u.AttendedAppointments)
+            .Include(u => u.ScheduledAppointments)
+            .ToListAsync(); 
     }
 
     public async Task<List<User>> GetLabManagersWithoutManagedLabAsync()
@@ -34,6 +39,9 @@ public class UserRepository(AppDbContext context)
         return await _dbSet.Where(u => u.Id == id)
             .Include(u => u.UserType)
             .Include(u => u.Laboratory)
+            .Include(u => u.ManagedLaboratory)
+            .Include(u => u.AttendedAppointments)
+            .Include(u => u.ScheduledAppointments)
             .FirstOrDefaultAsync();
     }
 
