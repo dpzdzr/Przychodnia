@@ -6,7 +6,7 @@ public class AppointmentAddFormData : AppointmentBaseFormData
     {
         SelectedDate = null;
         SelectedHour = null;
-        Completed = null;
+        Completed = false;
         ScheduledBy = null;
         SelectedDoctor = null;
         SelectedPatient = null;

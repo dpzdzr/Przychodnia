@@ -99,12 +99,15 @@ public partial class AppointmentListViewModel : BaseListViewModel<AppointmentWra
     }
     private void HandleEdited(Appointment entity)
     {
-        var current = Items.First(a => a.Id == entity.Id);
+
+        var current = _allAppointments.First(a => a.Id == entity.Id);
         _mapper.Map(entity, current);
+        Filter();
     }
     private void HandleAdded(Appointment entity)
     {
-        Items.Add(new(entity));
+        _allAppointments.Add(new(entity));
+        Filter();
     }
 
     private IEnumerable<AppointmentWrapper> ApplyFilters()
