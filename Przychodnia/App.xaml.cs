@@ -90,6 +90,7 @@ namespace Przychodnia
             services.AddTransient<IPostalCodeService, PostalCodeService>();
             services.AddTransient<IPatientService, PatientService>();
             services.AddTransient<IAppointmentService, AppointmentService>();
+            services.AddTransient<IAppointmentLookupService, AppointmentLookupService>();
 
             // Panels viewModels
             services.AddSingleton<AdminPanelViewModel>();

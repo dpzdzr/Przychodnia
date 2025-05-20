@@ -17,6 +17,11 @@ public class AppointmentRepository(AppDbContext context)
             .ToListAsync();
     }
 
+    public async Task<IEnumerable<Appointment>> GetAllForPatientAsync(int patientId)
+    {
+        return await _dbSet.Where(a => a.PatientId == patientId).ToListAsync();
+    }
+
     public async Task<IEnumerable<Appointment>> GetAllWithDetailsAsync()
     {
         return await _dbSet
@@ -24,5 +29,10 @@ public class AppointmentRepository(AppDbContext context)
             .Include(a => a.Patient)
             .Include(a => a.ScheduledBy)
             .ToListAsync();
+    }
+
+    public async Task<bool> HasAppointmentsForPatient(int patientId)
+    {
+        return await _dbSet.AnyAsync(p => p.PatientId == patientId);
     }
 }

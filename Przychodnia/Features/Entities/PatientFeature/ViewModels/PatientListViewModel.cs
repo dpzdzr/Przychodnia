@@ -2,6 +2,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.DependencyInjection;
+using Przychodnia.Features.Entities.AppointmentFeature.Services;
 using Przychodnia.Features.Entities.PatientFeature.Messages;
 using Przychodnia.Features.Entities.PatientFeature.Models;
 using Przychodnia.Features.Entities.PatientFeature.Services;
@@ -16,6 +17,7 @@ namespace Przychodnia.Features.Entities.PatientFeature.ViewModels;
 public partial class PatientListViewModel : BaseListViewModel<PatientWrapper>
 {
     private readonly IPatientService _patientService;
+    private readonly IAppointmentService _appointmentService;
     private readonly IMapper _mapper;
 
     [ObservableProperty] private string selectedPatientFirstName = string.Empty;
@@ -23,14 +25,16 @@ public partial class PatientListViewModel : BaseListViewModel<PatientWrapper>
     [ObservableProperty] private string selectedPatientPesel = string.Empty;
 
     public PatientListViewModel(
-        IPatientService patientService, 
+        IAppointmentService appointmentService,
         INavigationService navigationService,
-        IServiceProvider serviceProvider, 
-        IDialogService dialogService, 
+        IServiceProvider serviceProvider,
+        IPatientService patientService,
+        IDialogService dialogService,
         IMessenger messenger,
         IMapper mapper)
         : base(dialogService, navigationService, serviceProvider, messenger)
     {
+        _appointmentService = appointmentService;
         _patientService = patientService;
         _mapper = mapper;
 
@@ -76,6 +80,11 @@ public partial class PatientListViewModel : BaseListViewModel<PatientWrapper>
             {
                 if (SelectedItem is null || SelectedItem.Id is not int id)
                     throw new InvalidOperationException("Nie można usunąć pacjenta bez ID");
+                if (await _appointmentService.HasAppointmentsForPatient(id) &&
+                    Confirm("Podejmij działanie", "Wybrany pacjent ma przypisane wizyty. " +
+                    "Czy chcesz je usunąć razem z pacjentem?"))
+                    await _appointmentService.RemoveAllForPatient(id);
+
                 await _patientService.RemoveAsync(id);
                 Items.Remove(SelectedItem);
             }
@@ -85,10 +94,10 @@ public partial class PatientListViewModel : BaseListViewModel<PatientWrapper>
     private void HandlePatientChangedMessage(PatientChangedMessage message)
     {
         switch (message.Value.Action)
-        { 
+        {
             case EntityChangedAction.Added:
                 HandleAdded((Patient)message.Value.Entity);
-                break;            
+                break;
             case EntityChangedAction.Edited:
                 HandleEdited((Patient)message.Value.Entity);
                 break;

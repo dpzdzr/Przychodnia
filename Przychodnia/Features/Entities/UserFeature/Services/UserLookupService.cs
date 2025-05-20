@@ -11,19 +11,14 @@ public class UserLookupService(IUserRepository repo) : IUserLookupService
     public async Task<bool> ExistsByIdAsync(int id)
         => await _repo.ExistsByIdAsync(id);
 
-    public async Task<User?> GetByLogin(string username)
-    {
-        return await _repo.GetByLogin(username);
-    }
+    public async Task<User?> GetByLogin(string username)    
+        => await _repo.GetByLogin(username);
 
     public async Task<User?> GetByIdAsync(int id)
         => await _repo.GetByIdAsync(id) ??
         throw new KeyNotFoundException($"{nameof(User)} not found with id: {id}");
 
     public async Task<User?> GetByIdWithDetailsAsync(int id)
-    {
-        var user = await _repo.GetByIdWithDetailsAsync(id);
-        return user is null ?
-            throw new KeyNotFoundException($"Not found: {typeof(User).Name} with id: {id}") : user;
-    }
+        => await _repo.GetByIdWithDetailsAsync(id) ??
+            throw new KeyNotFoundException($"Not found: {typeof(User).Name} with id: {id}");
 }

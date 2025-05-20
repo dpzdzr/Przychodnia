@@ -7,8 +7,11 @@ using Przychodnia.Features.Entities.UserFeature.Services;
 
 namespace Przychodnia.Features.Entities.AppointmentFeature.Services;
 
-public class AppointmentService(IAppointmentRepository appointmentRepo, IMapper mapper,
-    IPatientService patientService, IUserService userService)
+public class AppointmentService(
+    IAppointmentRepository appointmentRepo, 
+    IMapper mapper,
+    IPatientService patientService, 
+    IUserService userService)
     : BaseEntityService<Appointment, AppointmentDTO, IAppointmentRepository>(appointmentRepo, mapper), IAppointmentService
 {
     private readonly IUserService _userService = userService;
@@ -16,8 +19,13 @@ public class AppointmentService(IAppointmentRepository appointmentRepo, IMapper 
 
     public async Task<IEnumerable<Appointment>> GetAllWithDetailsAsync()
         => await _repo.GetAllWithDetailsAsync();
-    public async Task<IEnumerable<Appointment>> GetAppointmentsForDoctorOnDateAsync(int doctorId, DateTime date)
+    public async Task<IEnumerable<Appointment>> GetAllForDoctorOnDateAsync(int doctorId, DateTime date)
         => await _repo.GetAllForDoctorOnDateAsync(doctorId, date);
+
+    public async Task<IEnumerable<Appointment>> GetAllForPatientAsync(int patientId)
+    {
+        return await _repo.GetAllForPatientAsync(patientId);
+    }
 
     public async override Task<Appointment> CreateAsync(AppointmentDTO dto)
     {
@@ -45,5 +53,19 @@ public class AppointmentService(IAppointmentRepository appointmentRepo, IMapper 
         _mapper.Map(dto, target);
         target.AttendingDoctor = await _userService.GetByIdWithDetailsAsync(dto.AttendingDoctorId);
         target.Patient = await _patientService.GetByIdAsync(dto.PatientId);
+    }
+
+    public async Task<bool> HasAppointmentsForPatient(int patientId)
+    {
+        return await _repo.HasAppointmentsForPatient(patientId);
+    }
+
+    public async Task RemoveAllForPatient(int patientId)
+    {
+        var all = await GetAllForPatientAsync(patientId);
+        foreach(var item in all)
+        {
+            await RemoveAsync(item.Id);
+        }
     }
 }

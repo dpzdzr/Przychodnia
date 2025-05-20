@@ -7,4 +7,6 @@ public interface IAppointmentRepository : IBaseRepository<Appointment>
 {
     Task<IEnumerable<Appointment>> GetAllWithDetailsAsync();
     Task<IEnumerable<Appointment>> GetAllForDoctorOnDateAsync(int doctorId, DateTime date);
+    Task<IEnumerable<Appointment>> GetAllForPatientAsync(int patientId);
+    Task<bool> HasAppointmentsForPatient(int patientId);
 }

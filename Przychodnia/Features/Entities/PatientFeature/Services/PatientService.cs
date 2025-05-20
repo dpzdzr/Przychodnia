@@ -1,15 +1,21 @@
 ﻿using AutoMapper;
 using Przychodnia.Core.Services;
+using Przychodnia.Features.Entities.AppointmentFeature.Services;
 using Przychodnia.Features.Entities.PatientFeature.Models;
 using Przychodnia.Features.Entities.PatientFeature.Repositories;
 using Przychodnia.Features.Entities.PostalCodeFeature.Services;
 
 namespace Przychodnia.Features.Entities.PatientFeature.Services;
 
-public class PatientService(IPatientRepository patientRepo, IPostalCodeService postalCodeService, IMapper mapper)
+public class PatientService(
+    IPatientRepository patientRepo,
+    IPostalCodeService postalCodeService,
+    IMapper mapper,
+    IAppointmentLookupService appointmentService)
     : BaseEntityService<Patient, PatientDTO, IPatientRepository>(patientRepo, mapper), IPatientService
 {
     private readonly IPostalCodeService _postalCodeService = postalCodeService;
+    private readonly IAppointmentLookupService _appointmentService = appointmentService;
 
     public async Task<IEnumerable<Patient>> GetAllWithDetailsAsync()
         => await _repo.GetAllWithDetailsAsync();
