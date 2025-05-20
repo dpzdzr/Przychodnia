@@ -45,5 +45,5 @@ public class UserAddViewModel : UserFormBaseViewModel<UserAddFormData>
     }
     private void ClearForm() => FormData.ClearForm();
     private void NotifyUserAdded(User user)
-        => _messenger.Send(new UserAddedMessage(user));
+        => _messenger.Send<UserChangedMessage>(new(new(user, Shared.Messages.EntityChangedAction.Added)));
 }

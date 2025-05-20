@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
+using Przychodnia.Features.Entities.PatientFeature.Messages;
 using Przychodnia.Features.Entities.PatientFeature.Models;
 using Przychodnia.Features.Entities.PatientFeature.Services;
 using Przychodnia.Features.Entities.PatientFeature.ViewModels.FormData;
 using Przychodnia.Features.Entities.PatientFeature.Wrappers;
 using Przychodnia.Features.Entities.PostalCodeFeature.Services;
+using Przychodnia.Shared.Messages;
 using Przychodnia.Shared.Services.DialogService;
 
 
@@ -35,14 +37,30 @@ public partial class PatientEditViewModel(IPatientService patientService, IDialo
         {
             ValidateFormData();
 
-            _mapper.Map(FormData, EditPatientWrapper);
-            if (FormData.PostalCode is not null && FormData.PostalCode.Id is null)
-                EditPatientWrapper!.PostalCode = null;
-            var dto = _mapper.Map<PatientDTO>(EditPatientWrapper);
-            if (EditPatientWrapper.Id is not int id)
+            if (EditPatientWrapper?.Id is not int id)
                 throw new InvalidOperationException("Nie można aktualizować pacjenta bez ID");
+
+            var dto = MapToDto();
             await _patientService.UpdateAsync(id, dto);
+            await NotifyEntityUpdated(id);
             _dialogService.Show("Sukces", "Pomyślnie edytowano pacjenta");
         });
+    }
+
+    private async Task NotifyEntityUpdated(int id)
+    {
+        var entity = await _patientService.GetByIdAsync(id);
+        _messenger.Send<PatientChangedMessage>(new(new(entity, EntityChangedAction.Edited)));
+    }
+
+    private PatientDTO MapToDto()
+    {
+        _mapper.Map(FormData, EditPatientWrapper);
+
+        // dummy check
+        if (FormData.PostalCode is not null && FormData.PostalCode.Id is null)
+            EditPatientWrapper!.PostalCode = null;
+
+        return _mapper.Map<PatientDTO>(EditPatientWrapper);
     }
 }

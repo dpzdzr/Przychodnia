@@ -34,7 +34,7 @@ public class PatientService(IPatientRepository patientRepo, IPostalCodeService p
 
     public override async Task UpdateAsync(int id, PatientDTO dto)
     {
-        var exists = await _repo.ExistsByPeselAsync(dto.Pesel);
+        var exists = await _repo.AnyAsync(p => p.Pesel == dto.Pesel && p.Id != id);
         if (exists)
         {
             var existing = GetByPeselAsync(dto.Pesel);

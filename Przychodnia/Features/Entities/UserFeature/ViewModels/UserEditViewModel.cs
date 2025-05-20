@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
 using Przychodnia.Features.Entities.LaboratoryFeature.Services;
+using Przychodnia.Features.Entities.UserFeature.Messages;
 using Przychodnia.Features.Entities.UserFeature.Models;
 using Przychodnia.Features.Entities.UserFeature.Services;
 using Przychodnia.Features.Entities.UserFeature.ViewModels.FormData;
@@ -47,12 +48,14 @@ public partial class UserEditViewModel : UserFormBaseViewModel<UserEditFormData>
         ValidateFormData();
         if (EditUserWrapper?.Id is int userId)
         {
-            await TryExecuteAsync(async () =>
-            {
+           // await TryExecuteAsync(async () =>
+            
                 _mapper.Map(FormData, EditUserWrapper);
                 await _userService.UpdateAsync(userId, _mapper.Map<UserDTO>(EditUserWrapper));
+                var entity = await _userService.GetByIdAsync(userId);
+                _messenger.Send<UserChangedMessage>(new(new(entity, Shared.Messages.EntityChangedAction.Edited)));
                 _dialogService.Show("Sukces", "Pomyślnie edytowano użytkownika");
-            });
+            
         }
     }
 }

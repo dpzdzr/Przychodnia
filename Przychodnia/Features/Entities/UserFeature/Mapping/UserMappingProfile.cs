@@ -15,6 +15,8 @@ public class UserMappingProfile : Profile
         // wrapper <-> dto
         CreateMap<UserWrapper, UserDTO>();
 
+        CreateMap<User, UserWrapper>();
+
 
         // wrapper <-> formData
         CreateMap<UserWrapper, UserEditFormData>()

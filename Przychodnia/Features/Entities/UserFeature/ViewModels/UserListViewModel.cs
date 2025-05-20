@@ -1,11 +1,16 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using AutoMapper;
+using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.DependencyInjection;
+using Przychodnia.Features.Entities.PatientFeature.Messages;
+using Przychodnia.Features.Entities.PatientFeature.Models;
 using Przychodnia.Features.Entities.UserFeature.Messages;
+using Przychodnia.Features.Entities.UserFeature.Models;
 using Przychodnia.Features.Entities.UserFeature.Services;
 using Przychodnia.Features.Entities.UserFeature.Wrappers;
 using Przychodnia.Features.Entities.UserTypesFeature.Services;
 using Przychodnia.Features.Entities.UserTypesFeature.Wrappers;
+using Przychodnia.Shared.Messages;
 using Przychodnia.Shared.Services.DialogService;
 using Przychodnia.Shared.Services.NavigationService;
 using Przychodnia.Shared.ViewModels;
@@ -17,6 +22,8 @@ public partial class UserListViewModel : BaseListViewModel<UserWrapper>
 {
     private readonly IUserService _userService;
     private readonly IUserTypeService _userTypeService;
+    private readonly IMapper _mapper;
+
 
 
     private List<UserTypeWrapper> userTypes = [];
@@ -31,18 +38,15 @@ public partial class UserListViewModel : BaseListViewModel<UserWrapper>
 
     public UserListViewModel(IDialogService dialogService, IUserService userService,
     INavigationService navigationService, IServiceProvider serviceProvider,
-    IUserTypeService userTypeService, IMessenger messenger)
+    IUserTypeService userTypeService, IMessenger messenger, IMapper mapper)
         : base(dialogService, navigationService, serviceProvider, messenger)
     {
         _userService = userService;
         _userTypeService = userTypeService;
-
-        WeakReferenceMessenger.Default.Register<UserAddedMessage>(this, (r, m) =>
-        {
-            _allItems.Add(new UserWrapper(m.Value));
-            Filter();
-        });
+        _mapper = mapper;
         _userTypeService = userTypeService;
+
+        _messenger.Register<UserChangedMessage>(this, (r, m) => HandleUserChangedMessage(m));
     }
 
     public static string HeaderText => "Użytkownicy";
@@ -108,5 +112,26 @@ public partial class UserListViewModel : BaseListViewModel<UserWrapper>
         query = FilterByStringAttribute(query, u => u.LastName, SelectedUserLastName);
 
         return query;
+    }
+    private void HandleUserChangedMessage(UserChangedMessage message)
+    {
+        switch (message.Value.Action)
+        {
+            case EntityChangedAction.Added:
+                HandleAdded((User)message.Value.Entity);
+                break;
+            case EntityChangedAction.Edited:
+                HandleEdited((User)message.Value.Entity);
+                break;
+        }
+    }
+    private void HandleAdded(User entity)
+    {
+        Items.Add(new(entity));
+    }
+    private void HandleEdited(User entity)
+    {
+        var current = Items.First(p => p.Id == entity.Id);
+        _mapper.Map(entity, current);
     }
 }

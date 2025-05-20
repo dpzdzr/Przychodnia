@@ -5,6 +5,7 @@ using Przychodnia.Features.Entities.PatientFeature.Models;
 using Przychodnia.Features.Entities.PatientFeature.Services;
 using Przychodnia.Features.Entities.PatientFeature.ViewModels.FormData;
 using Przychodnia.Features.Entities.PostalCodeFeature.Services;
+using Przychodnia.Shared.Messages;
 using Przychodnia.Shared.Services.DialogService;
 
 namespace Przychodnia.Features.Entities.PatientFeature.ViewModels;
@@ -26,7 +27,7 @@ public class PatientAddViewModel(IPostalCodeService postalCodeService, IDialogSe
 
             var dto = _mapper.Map<PatientDTO>(FormData);
             var entity = await _patientService.CreateAsync(dto);
-            //NotifyPatientAdded(entity);
+            _messenger.Send<PatientChangedMessage>(new(new(entity, EntityChangedAction.Added)));
             _dialogService.Show("Sukces", "Pomyślnie dodano nowego pacjenta");
             ClearForm();
         });
