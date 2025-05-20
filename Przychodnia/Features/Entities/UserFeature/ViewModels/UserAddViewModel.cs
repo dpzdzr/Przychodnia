@@ -35,6 +35,7 @@ public class UserAddViewModel : UserFormBaseViewModel<UserAddFormData>
     {
         await TryExecuteAsync(async () =>
         {
+            ValidateFormData();
             var dto = _mapper.Map<UserDTO>(FormData);
             var entity = await _userService.CreateAsync(dto);
             NotifyUserAdded(entity);

@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.ComponentModel.DataAnnotations;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Przychodnia.Features.Entities.PostalCodeFeature.Models;
 using Przychodnia.ViewModel.Base;
 
@@ -6,9 +7,18 @@ namespace Przychodnia.Features.Entities.PostalCodeFeature.Wrappers;
 
 public partial class PostalCodeWrapper : BaseWrapper
 {
-    [ObservableProperty] private string? code;
-    [ObservableProperty] private string? city;
+    [ObservableProperty]
+    //[NotifyDataErrorInfo]
+    //[Required(ErrorMessage = "Kod pocztowy jest wymagany")]
+    //[RegularExpression(@"^\d{2}-\d{3}$", ErrorMessage = "Kod pocztowy musi być w formacie\nxx-xxx")]
+    private string? code;
 
+    [ObservableProperty]
+    //[NotifyDataErrorInfo]
+    //[Required(ErrorMessage = "Miasto jest wymagane")]
+    private string? city;
+
+    public PostalCodeWrapper() { }
     public PostalCodeWrapper(PostalCode? entity, bool createDummy = false)
     {
         if (entity is null)
@@ -27,6 +37,4 @@ public partial class PostalCodeWrapper : BaseWrapper
             City = entity.City;
         }
     }
-    // needed for mapping PatientWrapper -> EditForm
-    public PostalCodeWrapper() { }
 }

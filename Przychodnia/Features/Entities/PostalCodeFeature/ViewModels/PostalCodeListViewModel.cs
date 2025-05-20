@@ -10,6 +10,7 @@ using Przychodnia.Shared.Messages;
 using Przychodnia.Shared.Services.DialogService;
 using Przychodnia.Shared.ViewModels;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Przychodnia.Features.Entities.PostalCodeFeature.ViewModels;
 
@@ -37,7 +38,7 @@ public partial class PostalCodeListViewModel : BaseViewModel
         EditPostalCode = CreateEmptyPostalCodeWrapper();
     }
 
-    public string ActionButtonText => IsEditMode ? "Edytuj" : "Zapisz";
+    public string ActionButtonText => IsEditMode ? "Edytuj" : "Dodaj";
     public string FormHeader => IsEditMode ? "Edytuj wybrany kod pocztowy"
         : "Dodaj nowy kod pocztowy";
 
@@ -78,6 +79,8 @@ public partial class PostalCodeListViewModel : BaseViewModel
             var dto = _mapper.Map<PostalCodeDTO>(EditPostalCode);
             if (EditPostalCode.Id is int id)
             {
+                ValidateUserInput();
+
                 await _postalCodeService.UpdateAsync(id, dto);
                 _dialogService.Show("Sukces", "Pomyślnie zaktualizowano kod pocztowy");
                 _mapper.Map(EditPostalCode, SelectedPostalCode);
@@ -91,6 +94,8 @@ public partial class PostalCodeListViewModel : BaseViewModel
     {
         await TryExecuteAsync(async () =>
         {
+            ValidateUserInput();
+
             var dto = _mapper.Map<PostalCodeDTO>(EditPostalCode);
             var entity = await _postalCodeService.CreateAsync(dto);
             PostalCodes.Add(new(entity));
@@ -105,6 +110,11 @@ public partial class PostalCodeListViewModel : BaseViewModel
     {
         SelectedPostalCode = null;
         EditPostalCode = CreateEmptyPostalCodeWrapper();
+    }
+    private void ValidateUserInput()
+    {
+        if (EditPostalCode is null || !(EditPostalCode.IsValid))
+            throw new ValidationException("Uzupełnij poprawnie wszystkie wymagane pola");
     }
     private static PostalCodeWrapper CreateEmptyPostalCodeWrapper() => new(new PostalCode());
     partial void OnIsEditModeChanged(bool value)

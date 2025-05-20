@@ -1,11 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using Przychodnia.Features.Entities.PatientFeature.Wrappers;
 using Przychodnia.Features.Entities.UserFeature.Wrappers;
+using Przychodnia.Shared.ViewModels;
 using System.ComponentModel.DataAnnotations;
 
 namespace Przychodnia.Features.Entities.AppointmentFeature.ViewModels.FormData;
 
-public abstract partial class AppointmentBaseFormData : ObservableValidator
+public abstract partial class AppointmentBaseFormData : BaseFormData
 {
     [ObservableProperty]
     [NotifyDataErrorInfo]
@@ -37,26 +38,4 @@ public abstract partial class AppointmentBaseFormData : ObservableValidator
     public PatientWrapper? SelectedPatient { get; set; }
     public DateTime? FullDate =>
        SelectedDate is not null && SelectedHour is not null ? SelectedDate.Value.Date + SelectedHour.Value : null;
-
-    public bool IsValid
-    {
-        get
-        {
-            ValidateAllProperties();
-            return !HasErrors;
-        }
-    }
-
-    public void ClearAllErrors()
-    {
-        var errorPropertyNames = GetErrors()
-            .SelectMany(e => e.MemberNames)
-            .Distinct()
-            .ToList();
-
-        foreach (var propertyName in errorPropertyNames)
-        {
-            ClearErrors(propertyName);
-        }
-    }
 }

@@ -11,6 +11,7 @@ using Przychodnia.Features.Entities.UserTypesFeature.Models;
 using Przychodnia.Shared.Services.DialogService;
 using Przychodnia.Shared.ViewModels;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Przychodnia.Features.Entities.LaboratoryFeature.ViewModels;
 
@@ -21,14 +22,14 @@ public partial class LaboratoryListViewModel : BaseViewModel
     private readonly IMapper _mapper;
 
     [ObservableProperty] private bool isEditMode;
-    [ObservableProperty] private LaboratoryWrapper editLab;
+    [ObservableProperty] private LaboratoryWrapper editLab = new();
     [ObservableProperty] private LaboratoryWrapper? selectedLab;
     [ObservableProperty] private ObservableCollection<UserWrapper> workers = [];
     [ObservableProperty] private ObservableCollection<UserWrapper> managers = [];
     [ObservableProperty] private ObservableCollection<LaboratoryWrapper> labs = [];
 
     public LaboratoryListViewModel(IDialogService dialogService, ILaboratoryService labService,
-        IUserService userService, IMapper mapper, IMessenger messenger) 
+        IUserService userService, IMapper mapper, IMessenger messenger)
         : base(dialogService, messenger)
     {
         _labService = labService;
@@ -75,10 +76,14 @@ public partial class LaboratoryListViewModel : BaseViewModel
     }
     private async Task SubmitLaboratoryAsync()
     {
-        if (IsEditMode)
-            await EditLaboratory();
-        else
-            await AddLaboratory();
+        await TryExecuteAsync(async () =>
+        {
+            ValidateUserInput();
+            if (IsEditMode)
+                await EditLaboratory();
+            else
+                await AddLaboratory();
+        });
     }
     private async Task EditLaboratory()
     {
@@ -108,6 +113,11 @@ public partial class LaboratoryListViewModel : BaseViewModel
             _dialogService.Show("Sukces", "Pomyślnie dodano nowe laboratorium");
             ClearForm();
         });
+    }
+    private void ValidateUserInput()
+    {
+        if (EditLab is null || !(EditLab.IsValid))
+            throw new ValidationException("Uzupełnij poprawnie wszystkie wymagane pola");
     }
     private void ClearForm()
     {

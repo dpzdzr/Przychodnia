@@ -10,6 +10,7 @@ using Przychodnia.Shared.Services.DialogService;
 using Przychodnia.Shared.ViewModels;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Przychodnia.Features.Entities.UserFeature.ViewModels;
 
@@ -49,6 +50,12 @@ public abstract partial class UserFormBaseViewModel<TForm> : BaseViewModel
         Laboratories = [null, .. laboratories.Select(l => new LaboratoryWrapper(l))];
 
         FormData.SelectedUserType = UserTypes.First();
+    }
+
+    protected void ValidateFormData()
+    {
+        if (!FormData.IsValid)
+            throw new ValidationException("Uzupełnij poprawnie wszystkie wymagane pola");
     }
 
     private void OnFormDataPropertyChanged(object? sender, PropertyChangedEventArgs e)

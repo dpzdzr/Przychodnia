@@ -13,6 +13,7 @@ using Przychodnia.Shared.Services.DialogService;
 using Przychodnia.Shared.ViewModels;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Przychodnia.Features.Entities.AppointmentFeature.ViewModels;
 
@@ -73,7 +74,11 @@ public abstract partial class AppointmentFormBaseViewModel<TForm> : BaseViewMode
     }
 
     protected abstract Task Submit();
-
+    protected void ValidateFormData()
+    {
+        if (!FormData.IsValid)
+            throw new ValidationException("Uzupełnij poprawnie wszystkie wymagane pola");
+    }
     protected async Task UpdateAvailableHours()
     {
         if (FormData.SelectedDoctor?.Id is not int doctorId || FormData.SelectedDate is null)
@@ -96,6 +101,7 @@ public abstract partial class AppointmentFormBaseViewModel<TForm> : BaseViewMode
 
         FormData.SelectedHour = AvailableHours.FirstOrDefault();
     }
+
     private void OnFormDataPropertyChanged(object? sender, PropertyChangedEventArgs e)
     {
         if (e.PropertyName == nameof(FormData.SelectedDoctor) || e.PropertyName == nameof(FormData.SelectedDate))

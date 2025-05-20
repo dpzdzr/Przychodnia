@@ -49,8 +49,7 @@ public partial class AppointmentEditViewModel(
     {
         await TryExecuteAsync(async () =>
         {
-            if (!FormData.IsValid)
-                throw new ValidationException("Uzupełnij poprawnie wszystkie wymagane pola");
+            ValidateFormData();
 
             _mapper.Map(FormData, appointmentWrapper);
             var dto = _mapper.Map<AppointmentDTO>(FormData);

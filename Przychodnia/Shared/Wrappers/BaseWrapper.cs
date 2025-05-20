@@ -2,7 +2,7 @@
 
 namespace Przychodnia.ViewModel.Base;
 
-public abstract partial class BaseWrapper : ObservableObject
+public abstract partial class BaseWrapper : ObservableValidator
 {
     [ObservableProperty] protected int? id;
 
@@ -15,4 +15,25 @@ public abstract partial class BaseWrapper : ObservableObject
     protected static List<TTarget>? MapListIfNotNull<TSource, TTarget>(
         IEnumerable<TSource> sourceList, Func<TSource, TTarget> mapper)
             => sourceList is not null ? [.. sourceList.Select(mapper)] : null;
+
+    public bool IsValid
+    {
+        get
+        {
+            ValidateAllProperties();
+            return !HasErrors;
+        }
+    }
+    public void ClearAllErrors()
+    {
+        var errorPropertyNames = GetErrors()
+            .SelectMany(e => e.MemberNames)
+            .Distinct()
+            .ToList();
+
+        foreach (var propertyName in errorPropertyNames)
+        {
+            ClearErrors(propertyName);
+        }
+    }
 }

@@ -4,6 +4,7 @@ using Przychodnia.Features.Login.Services;
 using Przychodnia.Features.Login.ViewModels;
 using Przychodnia.Features.Panels.Admin.ViewModels;
 using Przychodnia.Features.Panels.Admin.Views;
+using Przychodnia.Shared.Services.DialogService;
 using Przychodnia.Shared.Services.NavigationService;
 using System.Windows;
 using System.Windows.Controls;
@@ -29,10 +30,18 @@ namespace Przychodnia.Features.Login.Views
 
         private void OnLoginSucceeded(int userTypeId)
         {
-            var window = _windowFactory.CreateFor(userTypeId);
-            window.Show();
+            try
+            {
+                var window = _windowFactory.CreateFor(userTypeId);
+                window.Show();
 
-            this.Close();
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "Błąd", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+
         }
 
         private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)

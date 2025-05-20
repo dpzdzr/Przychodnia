@@ -13,6 +13,7 @@ using Przychodnia.Shared.Messages;
 using Przychodnia.Shared.Services.DialogService;
 using Przychodnia.Shared.ViewModels;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Przychodnia.Features.Entities.PatientFeature.ViewModels;
 
@@ -57,6 +58,11 @@ public abstract partial class PatientFormBaseViewModel<TForm> : BaseViewModel
         FilterCodes();
     }
     protected abstract Task Submit();
+    protected void ValidateFormData()
+    {
+        if (!FormData.IsValid)
+            throw new ValidationException("Uzupełnij poprawnie wszystkie wymagane pola");
+    }
 
     private void HandlePostalCodeMessage(BaseEntityChangedMessage message)
     {

@@ -22,6 +22,8 @@ public class PatientAddViewModel(IPostalCodeService postalCodeService, IDialogSe
     {
         await TryExecuteAsync(async () =>
         {
+            ValidateFormData();
+
             var dto = _mapper.Map<PatientDTO>(FormData);
             var entity = await _patientService.CreateAsync(dto);
             //NotifyPatientAdded(entity);

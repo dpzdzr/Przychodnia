@@ -12,6 +12,7 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <converter:NullToStringConverter x:Key="NullToStringConverter"/>
+        <converter:BoolToHiddenConverter x:Key="BoolToHiddenConverter"/>
     </UserControl.Resources>
 
     <Grid d:Background="Gray">
@@ -69,72 +70,86 @@
                     </DataGrid>
                 </Border>
             </Grid>
+            
+            
         </Grid>
 
-        <Border Grid.Column="1" CornerRadius="10" BorderThickness="2" BorderBrush="#FAFAFA" Background="#FAFAFA" Margin="30,30,50,30" >
-            <Grid Grid.Column="1">
+        <Border Grid.Column="1" CornerRadius="10" BorderThickness="2" BorderBrush="#FAFAFA" Background="#FAFAFA" Margin="30,30,50,30">
+            
+            <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="3*"/>
+                    <RowDefinition Height="2*"/>
                 </Grid.RowDefinitions>
 
-                <Grid Grid.Row="1">
-                    <TextBlock d:Text="Dodaj nowe laboratorium" Text="{Binding FormHeaderText}" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="25" FontWeight="DemiBold" TextWrapping="Wrap"/>
-                </Grid>
-                <Grid Grid.Row="2" Margin="0,30,0,0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Row="0" Grid.Column="1" Text="Nazwa" Margin="0,0,0,2" FontSize="13"/>
-                    <TextBox Grid.Row="1" Grid.Column="1" FontSize="17" Text="{Binding EditLab.Name}"/>
-                </Grid>
-                <Grid Grid.Row="3" Margin="0,10,0,0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Row="0" Grid.Column="1" Text="Typ" Margin="0,0,0,2" FontSize="13"/>
-                    <TextBox Grid.Row="1" Grid.Column="1" FontSize="17" Text="{Binding EditLab.Type}"/>
-                </Grid>
-                <Grid Grid.Row="4" Margin="0,10,0,0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Row="0" Grid.Column="1" Text="Kierownik laboratorium" Margin="0,0,0,2" FontSize="13"/>
-                    <ComboBox Grid.Row="1" Grid.Column="1" FontSize="13" ItemsSource="{Binding Managers}" 
+                <TextBlock Grid.Row="1"
+                    d:Text="Dodaj nowe laboratorium"
+                    Text="{Binding FormHeaderText}" 
+                    VerticalAlignment="Center" 
+                    HorizontalAlignment="Center" 
+                    FontSize="30" FontWeight="DemiBold"
+                    TextWrapping="Wrap"/>
+
+                <StackPanel Grid.Row="2"
+                     HorizontalAlignment="Center"
+                     Width="250">
+
+                    <TextBlock Margin="0,50,0,5" 
+                               FontSize="15">
+                        <Run Text="Nazwa"/>
+                        <Run Text=" *" Foreground="OrangeRed" FontWeight="Bold"/>
+                    </TextBlock>
+                    <TextBox Text="{Binding EditLab.Name,
+                                     ValidatesOnDataErrors=True,
+                                     NotifyOnValidationError=True, 
+                                     UpdateSourceTrigger=PropertyChanged}"
+                      x:Name="NameBox"
+                      FontSize="18"/>
+                    <TextBlock Foreground="OrangeRed" FontSize="11" Margin="0,5,0,0"
+                        Text="{Binding ElementName=NameBox, 
+                                       Path=(Validation.Errors)[0].ErrorContent}"
+                        Visibility="{Binding ElementName=NameBox, 
+                                             Path=(Validation.HasError),
+                                             Converter={StaticResource BoolToHiddenConverter}}"/>
+
+                    <TextBlock Margin="0,50,0,5" 
+                               FontSize="15">
+                        <Run Text="Typ"/>
+                        <Run Text=" *" Foreground="OrangeRed" FontWeight="Bold"/>
+                    </TextBlock>
+                    <TextBox FontSize="18" 
+                             x:Name="TypeBox"
+                             Text="{Binding EditLab.Type,
+                                            ValidatesOnDataErrors=True,
+                                            NotifyOnValidationError=True, 
+                                            UpdateSourceTrigger=PropertyChanged}"
+                             Background="#FAFAFA"
+                             BorderThickness="0,0,0,1" 
+                             BorderBrush="#808080" />
+                    <TextBlock Foreground="OrangeRed" FontSize="11" Margin="0,5,0,0"
+                               Text="{Binding ElementName=TypeBox, 
+                                              Path=(Validation.Errors)[0].ErrorContent}"
+                               Visibility="{Binding ElementName=TypeBox, 
+                                                    Path=(Validation.HasError),
+                                                    Converter={StaticResource BoolToHiddenConverter}}"/>
+
+                    <TextBlock Text="Kierownik laboratorium" Margin="0,50,0,5" FontSize="15"/>
+                    <ComboBox FontSize="15" 
+                              ItemsSource="{Binding Managers}" 
                               DisplayMemberPath="FullName"
                               SelectedItem="{Binding EditLab.Manager}"/>
-                </Grid>
-                <Grid Grid.Row="5" Margin="0,20,0,0">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                    </Grid.RowDefinitions>
-                    <Button Grid.Row="0" Content="{Binding ActionButtonText}" Command="{Binding ActionButtonCommand}"/>
-                </Grid>
+
+                    <Button IsDefault="True"
+                            Margin="0,70,0,0"
+                            Content="{Binding ActionButtonText}" 
+                            Command="{Binding ActionButtonCommand}"/>
+                </StackPanel>
+
             </Grid>
         </Border>
+
+
     </Grid>
 </UserControl>

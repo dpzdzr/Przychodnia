@@ -27,8 +27,7 @@ public partial class AppointmentAddViewModel(IDialogService dialogService, IUser
     {
         await TryExecuteAsync(async () =>
         {
-            if (!FormData.IsValid)
-                throw new ValidationException("Uzupełnij poprawnie wszystkie wymagane pola");
+            ValidateFormData();
 
             var dto = _mapper.Map<AppointmentDTO>(FormData);
             dto.PatientId = (await _patientService.GetByPeselAsync(FormData.EnteredPatientPesel))!.Id;

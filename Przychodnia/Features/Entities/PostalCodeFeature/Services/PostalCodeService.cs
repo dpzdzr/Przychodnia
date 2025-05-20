@@ -10,6 +10,10 @@ public class PostalCodeService(IPostalCodeRepository repo, IMapper mapper)
 {
     public override async Task<PostalCode> CreateAsync(PostalCodeDTO dto)
     {
+        var exists = await _repo.AnyAsync(pc => pc.City == dto.City && pc.Code == dto.Code);
+        if (exists)
+            throw new ArgumentException("Podana kombinacja kodu i miasta jest już w bazie");
+
         var entity = _mapper.Map<PostalCode>(dto);
         await _repo.AddAsync(entity);
         await _repo.SaveChangesAsync();

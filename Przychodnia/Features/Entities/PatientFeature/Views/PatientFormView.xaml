@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Przychodnia.Features.Entities.PatientFeature.Views"
-             xmlns:converter="clr-namespace:Przychodnia.Shared.Converters"
+             xmlns:converter="clr-namespace:Przychodnia.Shared.Converters" xmlns:viewmodels="clr-namespace:Przychodnia.Features.Entities.PatientFeature.ViewModels" d:DataContext="{d:DesignInstance Type=viewmodels:PatientAddViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="900" d:DesignWidth="1200">
     
@@ -12,6 +12,8 @@
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <converter:NullToStringConverter x:Key="NullToStringConverter"/>
         <converter:SexToStringConverter x:Key="SexToStringConverter"/>
+        <converter:BoolToHiddenConverter x:Key="BoolToHiddenConverter"/>
+        
         <Style TargetType="StackPanel">
             <Setter Property="Width" Value="300"/>
             <Setter Property="VerticalAlignment" Value="Top"/>
@@ -45,33 +47,83 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
 
-                <TextBlock Grid.Row="1" d:Text="Edytuj wybranego pacjenta" Text="{Binding HeaderText}" Margin="20" Grid.ColumnSpan="2" 
-                   VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="40" FontWeight="DemiBold"/>
+                <TextBlock Grid.Row="1" Grid.ColumnSpan="2"
+                           d:Text="Dodaj nowego pacjenta"
+                           Text="{Binding HeaderText}" 
+                           Margin="30" 
+                           VerticalAlignment="Center" HorizontalAlignment="Center" 
+                           FontSize="40" FontWeight="DemiBold"/>
 
-                <StackPanel Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Margin="0,30,50,0">
+                <StackPanel Grid.Row="2" Grid.Column="0" 
+                            HorizontalAlignment="Right" 
+                            Margin="0,30,50,0">
+                    
+                    <!--Imię-->
                     <TextBlock Margin="0,0,0,5">
-                        <Run Text="Imię "/>
-                        <Run Text="*" Foreground="Red"/>
-                    </TextBlock>  
-                    <TextBox d:Text="Jan" Text="{Binding FormData.FirstName}"/>
+                        <Run Text="Imię"/>
+                        <Run Text="*" 
+                             Foreground="OrangeRed"
+                             FontWeight="Bold"/>
+                    </TextBlock>
+                    <TextBox x:Name="FirstNameBox"
+                             Text="{Binding FormData.FirstName,
+                                            ValidatesOnDataErrors=True,
+                                            NotifyOnValidationError=True, 
+                                            UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Foreground="OrangeRed" FontSize="11" Margin="0,5,0,0"
+                               Text="{Binding ElementName=FirstNameBox, 
+                                              Path=(Validation.Errors)[0].ErrorContent}"
+                               Visibility="{Binding ElementName=FirstNameBox, 
+                                                    Path=(Validation.HasError),
+                                                    Converter={StaticResource BoolToHiddenConverter}}"/>
+                    
+                    <!--Nazwisko-->
                     <TextBlock>
                         <Run Text="Nazwisko "/>
-                        <Run Text="*" Foreground="Red"/>
+                        <Run Text="*"                            
+                             Foreground="OrangeRed"
+                             FontWeight="Bold"/>
                     </TextBlock>
-                    <TextBox Text="{Binding FormData.LastName}"/>
-                    <TextBlock>
+                    <TextBox  x:Name="LastNameBox" Text="{Binding FormData.LastName,    
+                                                                  ValidatesOnDataErrors=True,
+                                                                  NotifyOnValidationError=True, 
+                                                                  UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Foreground="OrangeRed" FontSize="11" Margin="0,5,0,0"
+                               Text="{Binding ElementName=LastNameBox, 
+                                              Path=(Validation.Errors)[0].ErrorContent}"
+                               Visibility="{Binding ElementName=LastNameBox, 
+                                                    Path=(Validation.HasError),
+                                                    Converter={StaticResource BoolToHiddenConverter}}"/>
+
+                    <!--Pesel-->
+                    <TextBlock >
                         <Run Text="PESEL "/>
-                        <Run Text="*" Foreground="Red"/>
+                        <Run Text="*"                             
+                             Foreground="OrangeRed"
+                             FontWeight="Bold"/>
                     </TextBlock>
-                    <TextBox Text="{Binding FormData.Pesel}"/>
+                    <TextBox x:Name="PeselBox" Text="{Binding FormData.Pesel,    
+                                                              ValidatesOnDataErrors=True,
+                                                              NotifyOnValidationError=True, 
+                                                              UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Foreground="OrangeRed" FontSize="11" Margin="0,5,0,0"
+                               Text="{Binding ElementName=PeselBox, 
+                                              Path=(Validation.Errors)[0].ErrorContent}"
+                               Visibility="{Binding ElementName=PeselBox, 
+                                                    Path=(Validation.HasError),
+                                                    Converter={StaticResource BoolToHiddenConverter}}"/>
+
+
                     <TextBlock Text="Płeć"/>
                     <ComboBox ItemsSource="{Binding SexDispDict}"
-                      DisplayMemberPath="Value"
-                      SelectedValuePath="Key"
-                      SelectedValue="{Binding FormData.Sex}"/>
+                              DisplayMemberPath="Value"
+                              SelectedValuePath="Key"
+                              SelectedValue="{Binding FormData.Sex}"/>
                 </StackPanel>
                 
-                <StackPanel Grid.Row="2" Grid.Column="1" HorizontalAlignment="Left" Margin="50,30,0,0">
+                <StackPanel Grid.Row="2" Grid.Column="1" 
+                            HorizontalAlignment="Left" 
+                            Margin="50,30,0,0">
                     <TextBlock Text="Ulica" Margin="0,0,0,5"/>
                     <TextBox Text="{Binding FormData.Street}"/>
                     <TextBlock Text="Nr domu"/>
@@ -79,15 +131,24 @@
                     <TextBlock Text="Nr mieszkania"/>
                     <TextBox Text="{Binding FormData.ApartmentNumber}"/>
                     <TextBlock Text="Kod pocztowy"/>
-                    <ComboBox ItemsSource="{Binding PostalCodes}" IsEditable="True" IsTextSearchEnabled="False" DisplayMemberPath="Code" Text="{Binding EnteredCode, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
+                    <ComboBox ItemsSource="{Binding PostalCodes}" 
+                              IsEditable="True" 
+                              IsTextSearchEnabled="False" 
+                              DisplayMemberPath="Code" 
+                              Text="{Binding EnteredCode, 
+                                             UpdateSourceTrigger=PropertyChanged, 
+                                             Mode=TwoWay}"/>
                     <TextBlock Text="Miasto"/>
                     <ComboBox ItemsSource="{Binding Cities}"
-                      SelectedItem="{Binding FormData.PostalCode}"
-                      DisplayMemberPath="City"/>
+                              SelectedItem="{Binding FormData.PostalCode}"
+                              DisplayMemberPath="City"/>
                 </StackPanel>
                 
-                <Button Grid.Row="3" Grid.ColumnSpan="2" IsDefault="True"
-                        Content="{Binding SubmitButtonText}" Margin="0,40,0,0" Command="{Binding SubmitCommand}"/>
+                <Button Grid.Row="3" Grid.ColumnSpan="2" 
+                        IsDefault="True"
+                        Margin="0,60,0,0"
+                        Content="{Binding SubmitButtonText}" 
+                        Command="{Binding SubmitCommand}"/>
             </Grid>
         </Border>
     </Grid>

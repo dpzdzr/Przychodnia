@@ -33,6 +33,8 @@ public partial class PatientEditViewModel(IPatientService patientService, IDialo
     {
         await TryExecuteAsync(async () =>
         {
+            ValidateFormData();
+
             _mapper.Map(FormData, EditPatientWrapper);
             if (FormData.PostalCode is not null && FormData.PostalCode.Id is null)
                 EditPatientWrapper!.PostalCode = null;

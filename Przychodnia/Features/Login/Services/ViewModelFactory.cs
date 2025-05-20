@@ -26,8 +26,7 @@ public class ViewModelFactory(IServiceProvider serviceProvider) : IViewModelFact
                 => _services.GetRequiredService<ReceptionistPanelViewModel>(),            
             (int)UserTypeEnum.Lekarz
                 => _services.GetRequiredService<DoctorPanelViewModel>(),
-            
-            _ => throw new InvalidOperationException("Brak użytkownika takiego typu")
+            _ => throw new InvalidOperationException("Nie zaimplementowano panelu obsługi dla użytkownika tego typu")
         };
     }
 

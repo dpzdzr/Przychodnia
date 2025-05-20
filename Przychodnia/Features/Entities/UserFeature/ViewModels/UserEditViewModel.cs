@@ -44,6 +44,7 @@ public partial class UserEditViewModel : UserFormBaseViewModel<UserEditFormData>
 
     private async Task EditUserAsync()
     {
+        ValidateFormData();
         if (EditUserWrapper?.Id is int userId)
         {
             await TryExecuteAsync(async () =>
