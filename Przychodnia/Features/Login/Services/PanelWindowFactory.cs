@@ -32,7 +32,7 @@ public class PanelWindowFactory(IServiceProvider serviceProvider, IViewModelFact
             (int)UserTypeEnum.Admin => new AdminPanelWindow((AdminPanelViewModel)vm),
             (int)UserTypeEnum.Rejestrator => new ReceptionistPanelWindow((ReceptionistPanelViewModel)vm),
             (int)UserTypeEnum.Lekarz => new DoctorPanelWindow((DoctorPanelViewModel)vm),
-            _ => throw new InvalidOperationException("Nie zaimplementowano panelu obsługi dla użytkownika tego typu")
+            _ => throw new InvalidOperationException("Nie zaimplementowano panelu obsługi dla użytkownika tego typu.")
         };
     }
 }

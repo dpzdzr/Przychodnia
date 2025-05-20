@@ -42,11 +42,15 @@ public partial class LoginViewModel : BaseViewModel
         _viewModelFactory = viewModelFactory;
 
         LoginCommand = new AsyncRelayCommand(TryLogin, () => CanLogin);
+        CloseCommand = new RelayCommand(DemandWindowClose);
         _viewModelFactory = viewModelFactory;
     }
 
     public event Action<int>? LoginSucceeded;
+    public event Action? CloseWindow;
     public IAsyncRelayCommand LoginCommand { get; }
+    public IRelayCommand CloseCommand { get; }
+
     public SecureString? Password { private get; set; }
 
     public bool CanLogin => IsLoginNotEmpty && IsPasswordNotEmpty;
@@ -63,6 +67,7 @@ public partial class LoginViewModel : BaseViewModel
             ShowError("Niepoprawne dane logowania lub użytkownik nieaktywny.");
        
     }
+    private void DemandWindowClose() => CloseWindow?.Invoke();
     private bool IsPasswordNotEmpty => InputPassword is not null && InputPassword.Length > 0;
     private bool IsLoginNotEmpty => !string.IsNullOrEmpty(InputLogin);
     private void DisposePassword()

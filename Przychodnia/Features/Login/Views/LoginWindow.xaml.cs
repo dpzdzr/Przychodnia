@@ -25,6 +25,7 @@ namespace Przychodnia.Features.Login.Views
             _windowFactory = windowFactory;
 
             vm.LoginSucceeded += OnLoginSucceeded;
+            vm.CloseWindow += Close;
             DataContext = vm;
         }
 
