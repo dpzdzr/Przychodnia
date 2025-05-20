@@ -14,7 +14,6 @@ public enum UserTypeEnum
     Lekarz,
     Laborant,
     Rejestrator,
-    Menadżer,
     KierownikLaboratorium
 }
 

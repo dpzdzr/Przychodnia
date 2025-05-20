@@ -41,14 +41,13 @@ public class AppDbContext : DbContext
             .OnDelete(DeleteBehavior.SetNull);
 
         modelBuilder.Entity<UserType>().HasData(
-            new UserType { Id = 1, Name = "Admin" },
+            new UserType { Id = 1, Name = "Administrator" },
             new UserType { Id = 2, Name = "Lekarz" },
             new UserType { Id = 3, Name = "Laborant" },
             new UserType { Id = 4, Name = "Rejestrator" },
-            new UserType { Id = 5, Name = "Menadżer" },
-            new UserType { Id = 6, Name = "Kierownik laboratorium" });
+            new UserType { Id = 5, Name = "Kierownik laboratorium" });
 
-        modelBuilder.Entity<User>().HasData(new User { Id = 1, Login = "admin", PasswordHash = "admin", UserTypeId = 1 });
+        modelBuilder.Entity<User>().HasData(new User { Id = 1, Login = "admin", PasswordHash = "admin", UserTypeId = 1, IsActive = true });
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
